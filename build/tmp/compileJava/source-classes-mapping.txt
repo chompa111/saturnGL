@@ -1,0 +1,114 @@
+graphical/basics/ColorHolder.java
+ graphical.basics.ColorHolder
+graphical/basics/task/transformation/value/ValueTransform.java
+ graphical.basics.task.transformation.value.ValueTransform
+codec/PresentationEx.java
+ codec.PresentationEx
+graphical/basics/task/transformation/gobject/Pepe.java
+ graphical.basics.task.transformation.gobject.Pepe
+graphical/basics/task/TaskPainter.java
+ graphical.basics.task.TaskPainter
+graphical/basics/task/CodeTask.java
+ graphical.basics.task.CodeTask
+graphical/basics/gobject/latex/lixao/Latex.java
+ graphical.basics.gobject.latex.lixao.Latex
+graphical/basics/task/ParalelTask.java
+ graphical.basics.task.ParalelTask
+graphical/basics/gobject/GroupGobject.java
+ graphical.basics.gobject.GroupGobject
+graphical/basics/gobject/latex/lixao/ProxyBox.java
+ graphical.basics.gobject.latex.lixao.ProxyBox
+graphical/basics/location/Point.java
+ graphical.basics.location.Point
+codec/Ex2.java
+ codec.Ex2
+graphical/basics/gobject/latex/lixao/Gambeta.java
+ graphical.basics.gobject.latex.lixao.Gambeta
+graphical/basics/task/transformation/gobject/PositionTransform.java
+ graphical.basics.task.transformation.gobject.PositionTransform
+graphical/basics/gobject/Circle.java
+ graphical.basics.gobject.Circle
+graphical/basics/location/Location.java
+ graphical.basics.location.Location
+graphical/basics/location/LocationPair.java
+ graphical.basics.location.LocationPair
+graphical/basics/gobject/latex/lixao/BoxProxy.java
+ graphical.basics.gobject.latex.lixao.BoxProxy
+graphical/basics/gobject/latex/lixao/FakeInheritance.java
+ graphical.basics.gobject.latex.lixao.FakeInheritance
+codec/Exp10.java
+ codec.Exp10
+graphical/basics/gobject/latex/GraphicsdrawCharProxy.java
+ graphical.basics.gobject.latex.GraphicsdrawCharProxy
+graphical/basics/task/transformation/gobject/MorfTransform.java
+ graphical.basics.task.transformation.gobject.MorfTransform
+graphical/basics/task/SequenceTask.java
+ graphical.basics.task.SequenceTask
+codec/LatexEx.java
+ codec.LatexEx
+codec/Ex1.java
+ codec.Ex1
+graphical/basics/value/BindedNumberHolder.java
+ graphical.basics.value.BindedNumberHolder
+graphical/basics/gobject/Ball.java
+ graphical.basics.gobject.Ball
+graphical/basics/task/RepeatTask.java
+ graphical.basics.task.RepeatTask
+graphical/basics/value/DoubleHolder.java
+ graphical.basics.value.DoubleHolder
+codec/ExBman.java
+ codec.ExBman
+codec/ExBman2.java
+ codec.ExBman2
+codec/FpsEx.java
+ codec.FpsEx
+codec/GroupEx.java
+ codec.GroupEx
+graphical/basics/gobject/latex/GraphicsProxy.java
+ graphical.basics.gobject.latex.GraphicsProxy
+graphical/basics/task/transformation/gobject/ColorTranform.java
+ graphical.basics.task.transformation.gobject.ColorTranform
+graphical/basics/value/NumberHolder.java
+ graphical.basics.value.NumberHolder
+graphical/basics/task/Task.java
+ graphical.basics.task.Task
+codec/Presentation.java
+ codec.Presentation
+codec/Ex5.java
+ codec.Ex5
+graphical/basics/task/transformation/gobject/Pixel.java
+ graphical.basics.task.transformation.gobject.Pixel
+graphical/basics/gobject/latex/Rect.java
+ graphical.basics.gobject.latex.Rect
+graphical/basics/location/SupplierPoint.java
+ graphical.basics.location.SupplierPoint
+graphical/basics/gobject/latex/Char.java
+ graphical.basics.gobject.latex.Char
+graphical/basics/location/SeekPoint.java
+ graphical.basics.location.SeekPoint
+codec/VideoCodec.java
+ codec.VideoCodec
+graphical/basics/gobject/Img.java
+ graphical.basics.gobject.Img
+codec/Ex3.java
+ codec.Ex3
+codec/JavcCodec.java
+ codec.JavcCodec
+graphical/basics/gobject/Gobject.java
+ graphical.basics.gobject.Gobject
+graphical/basics/task/WaitTask.java
+ graphical.basics.task.WaitTask
+graphical/basics/gobject/Line.java
+ graphical.basics.gobject.Line
+graphical/basics/gobject/GobjectFrame.java
+ graphical.basics.gobject.GobjectFrame
+graphical/basics/gobject/latex/lixao/BoxFrame.java
+ graphical.basics.gobject.latex.lixao.BoxFrame
+graphical/basics/gobject/Polygon.java
+ graphical.basics.gobject.Polygon
+codec/BubbleEx.java
+ codec.BubbleEx
+codec/EXPrecision.java
+ codec.EXPrecision
+graphical/basics/gobject/latex/Text.java
+ graphical.basics.gobject.latex.Text

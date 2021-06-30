@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation group: 'org.jcodec', name: 'jcodec', version: '0.2.5'
+    implementation group: 'org.jcodec', name: 'jcodec-javase', version: '0.2.5'
+
+    implementation 'org.scilab.forge:jlatexmath:1.0.7'
+    implementation group: 'cglib', name: 'cglib', version: '3.3.0'
+    implementation group: 'org.objenesis', name: 'objenesis', version: '3.2'
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
