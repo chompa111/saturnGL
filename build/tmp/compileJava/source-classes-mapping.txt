@@ -1,81 +1,109 @@
-graphical/basics/ColorHolder.java
- graphical.basics.ColorHolder
 graphical/basics/task/transformation/value/ValueTransform.java
  graphical.basics.task.transformation.value.ValueTransform
-codec/PresentationEx.java
- codec.PresentationEx
+presentation/Exp10.java
+ presentation.Exp10
+codec/JCodec.java
+ codec.JCodec
+presentation/IgunaaEx.java
+ presentation.IgunaaEx
+graphical/basics/gobject/Group.java
+ graphical.basics.gobject.Group
+presentation/CircleOfLife.java
+ presentation.CircleOfLife
 graphical/basics/task/transformation/gobject/Pepe.java
  graphical.basics.task.transformation.gobject.Pepe
 graphical/basics/task/TaskPainter.java
  graphical.basics.task.TaskPainter
+presentation/ExBman2.java
+ presentation.ExBman2
 graphical/basics/task/CodeTask.java
  graphical.basics.task.CodeTask
+presentation/Ex5.java
+ presentation.Ex5
+graphical/basics/gobject/Arc.java
+ graphical.basics.gobject.Arc
 graphical/basics/gobject/latex/lixao/Latex.java
  graphical.basics.gobject.latex.lixao.Latex
+graphical/basics/ColorHolder.java
+ graphical.basics.ColorHolder
+graphical/basics/behavior/Behavior.java
+ graphical.basics.behavior.Behavior
 graphical/basics/task/ParalelTask.java
  graphical.basics.task.ParalelTask
-graphical/basics/gobject/GroupGobject.java
- graphical.basics.gobject.GroupGobject
-graphical/basics/gobject/latex/lixao/ProxyBox.java
- graphical.basics.gobject.latex.lixao.ProxyBox
+presentation/Converter.java
+ presentation.Converter
+presentation/JaveEncoder.java
+ presentation.JaveEncoder
 graphical/basics/location/Point.java
  graphical.basics.location.Point
-codec/Ex2.java
- codec.Ex2
-graphical/basics/gobject/latex/lixao/Gambeta.java
- graphical.basics.gobject.latex.lixao.Gambeta
 graphical/basics/task/transformation/gobject/PositionTransform.java
  graphical.basics.task.transformation.gobject.PositionTransform
+presentation/GroupEx.java
+ presentation.GroupEx
 graphical/basics/gobject/Circle.java
  graphical.basics.gobject.Circle
-graphical/basics/location/Location.java
- graphical.basics.location.Location
+presentation/ExBman.java
+ presentation.ExBman
+presentation/EXPrecision.java
+ presentation.EXPrecision
+presentation/NovoEx.java
+ presentation.NovoEx
+presentation/Ex3.java
+ presentation.Ex3
 graphical/basics/location/LocationPair.java
  graphical.basics.location.LocationPair
-graphical/basics/gobject/latex/lixao/BoxProxy.java
- graphical.basics.gobject.latex.lixao.BoxProxy
+graphical/basics/location/Location.java
+ graphical.basics.location.Location
 graphical/basics/gobject/latex/lixao/FakeInheritance.java
  graphical.basics.gobject.latex.lixao.FakeInheritance
-codec/Exp10.java
- codec.Exp10
+graphical/basics/gobject/StringGobject.java
+ graphical.basics.gobject.StringGobject
 graphical/basics/gobject/latex/GraphicsdrawCharProxy.java
  graphical.basics.gobject.latex.GraphicsdrawCharProxy
+presentation/BuilderEx.java
+ presentation.BuilderEx
 graphical/basics/task/transformation/gobject/MorfTransform.java
  graphical.basics.task.transformation.gobject.MorfTransform
 graphical/basics/task/SequenceTask.java
  graphical.basics.task.SequenceTask
-codec/LatexEx.java
- codec.LatexEx
-codec/Ex1.java
- codec.Ex1
+presentation/PresentationEx.java
+ presentation.PresentationEx
 graphical/basics/value/BindedNumberHolder.java
  graphical.basics.value.BindedNumberHolder
+presentation/FpsEx.java
+ presentation.FpsEx
 graphical/basics/gobject/Ball.java
  graphical.basics.gobject.Ball
+presentation/BubbleEx.java
+ presentation.BubbleEx
 graphical/basics/task/RepeatTask.java
  graphical.basics.task.RepeatTask
 graphical/basics/value/DoubleHolder.java
  graphical.basics.value.DoubleHolder
-codec/ExBman.java
- codec.ExBman
-codec/ExBman2.java
- codec.ExBman2
-codec/FpsEx.java
- codec.FpsEx
-codec/GroupEx.java
- codec.GroupEx
+graphical/basics/behavior/FollowBehavior.java
+ graphical.basics.behavior.FollowBehavior
+graphical/basics/AnimationBuilder.java
+ graphical.basics.AnimationBuilder
+graphical/basics/gobject/Text.java
+ graphical.basics.gobject.Text
 graphical/basics/gobject/latex/GraphicsProxy.java
  graphical.basics.gobject.latex.GraphicsProxy
+presentation/ExRoblox.java
+ presentation.ExRoblox
 graphical/basics/task/transformation/gobject/ColorTranform.java
  graphical.basics.task.transformation.gobject.ColorTranform
+presentation/ConverterEx.java
+ presentation.ConverterEx
 graphical/basics/value/NumberHolder.java
  graphical.basics.value.NumberHolder
 graphical/basics/task/Task.java
  graphical.basics.task.Task
+graphical/basics/gobject/latex/Text.java
+ graphical.basics.gobject.latex.Text
+presentation/Ex2.java
+ presentation.Ex2
 codec/Presentation.java
  codec.Presentation
-codec/Ex5.java
- codec.Ex5
 graphical/basics/task/transformation/gobject/Pixel.java
  graphical.basics.task.transformation.gobject.Pixel
 graphical/basics/gobject/latex/Rect.java
@@ -90,12 +118,16 @@ codec/VideoCodec.java
  codec.VideoCodec
 graphical/basics/gobject/Img.java
  graphical.basics.gobject.Img
-codec/Ex3.java
- codec.Ex3
-codec/JavcCodec.java
- codec.JavcCodec
+presentation/ExBardeli.java
+ presentation.ExBardeli
+presentation/Ex1.java
+ presentation.Ex1
 graphical/basics/gobject/Gobject.java
  graphical.basics.gobject.Gobject
+presentation/LatexEx.java
+ presentation.LatexEx
+graphical/basics/gobject/CircleBuilder.java
+ graphical.basics.gobject.CircleBuilder
 graphical/basics/task/WaitTask.java
  graphical.basics.task.WaitTask
 graphical/basics/gobject/Line.java
@@ -104,11 +136,13 @@ graphical/basics/gobject/GobjectFrame.java
  graphical.basics.gobject.GobjectFrame
 graphical/basics/gobject/latex/lixao/BoxFrame.java
  graphical.basics.gobject.latex.lixao.BoxFrame
+codec/HumbleVideoCodec.java
+ codec.HumbleVideoCodec
 graphical/basics/gobject/Polygon.java
  graphical.basics.gobject.Polygon
-codec/BubbleEx.java
- codec.BubbleEx
-codec/EXPrecision.java
- codec.EXPrecision
-graphical/basics/gobject/latex/Text.java
- graphical.basics.gobject.latex.Text
+presentation/BatikEx.java
+ presentation.BatikEx
+graphical/basics/gobject/ShapeGobject.java
+ graphical.basics.gobject.ShapeGobject
+presentation/Batiks.java
+ presentation.Batiks

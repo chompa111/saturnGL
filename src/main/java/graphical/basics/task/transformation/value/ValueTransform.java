@@ -3,6 +3,7 @@ package graphical.basics.task.transformation.value;
 import graphical.basics.task.Task;
 import graphical.basics.value.NumberHolder;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ValueTransform implements Task {
@@ -20,6 +21,12 @@ public class ValueTransform implements Task {
         this.change = change;
     }
 
+    public ValueTransform(NumberHolder numberHolder, double change, int steps) {
+        this.steps = steps;
+        this.numberHolders = Arrays.asList(numberHolder);
+        this.change = change;
+    }
+
     @Override
     public void setup() {
         stepCount = 0;
@@ -31,10 +38,10 @@ public class ValueTransform implements Task {
     public void step() {
 
         if (stepCount < (steps / 2)) {
+            delta += a;
             for (NumberHolder numberHolder : numberHolders) {
                 numberHolder.change(delta);
             }
-            delta += a;
         } else {
             for (NumberHolder numberHolder : numberHolders) {
                 numberHolder.change(delta);

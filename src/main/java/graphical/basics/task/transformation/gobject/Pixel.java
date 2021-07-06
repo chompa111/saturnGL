@@ -43,7 +43,7 @@ public class Pixel {
 
     public void paint(Graphics g) {
         g.setColor(colorHolder.getColor());
-        g.drawLine((int) x, (int) y, (int) x+1, (int) y+1);
+        g.drawLine((int) x, (int) y, (int) x, (int) y);
     }
 
     public Pixel clone() {

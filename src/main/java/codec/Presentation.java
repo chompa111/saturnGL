@@ -1,8 +1,11 @@
 package codec;
 
+import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
+import graphical.basics.task.transformation.gobject.ColorTranform;
+import presentation.JaveEncoder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,14 +15,16 @@ import java.util.List;
 
 public abstract class Presentation extends JFrame {
 
-    public static int FRAME_RATE = 60;
+    public static int FRAME_RATE = 30;
     public static Presentation staticReference;
 
     BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     Graphics bufferedGraphics = bufferedImage.getGraphics();
 
-    VideoCodec videoCodec = new JavcCodec();
+     VideoCodec videoCodec = new JCodec();
+    //VideoCodec videoCodec = new JaveEncoder();
     List<Gobject> gobjects = new ArrayList<>();
+    List<Behavior> behaviors = new ArrayList<>();
 
     int clipCounter = 0;
     int frameCounter = 0;
@@ -30,12 +35,13 @@ public abstract class Presentation extends JFrame {
 
 
     public Presentation() {
-
+        // ((Graphics2D)bufferedGraphics).scale(1.5,1.5);
 
         videoCodec.startNewVideo("", "pepe" + clipCounter + ".mov", FRAME_RATE);
 
 
         Graphics2D g2 = (Graphics2D) bufferedGraphics;
+
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -71,6 +77,7 @@ public abstract class Presentation extends JFrame {
     }
 
     public void processFrame() {
+        runBehaviors();
         frameCounter++;
         System.out.println("COUNTER(" + frameCounter + ")");
         var before1 = System.currentTimeMillis();
@@ -83,6 +90,7 @@ public abstract class Presentation extends JFrame {
     }
 
     public void paintComponent(Graphics g) {
+
         // background;
         g.setColor(Color.black);
         g.fillRect(0, 0, 1000, 1000);
@@ -92,9 +100,19 @@ public abstract class Presentation extends JFrame {
         }
     }
 
+    public void runBehaviors() {
+        for (Behavior behavior : behaviors) {
+            behavior.update();
+        }
+    }
+
     //
     public void add(Gobject gobject) {
         gobjects.add(gobject);
+    }
+
+    public void add(Behavior behavior) {
+        behaviors.add(behavior);
     }
 
     public void remove(Gobject gobject) {
@@ -124,8 +142,16 @@ public abstract class Presentation extends JFrame {
         return (int) (seconds * FRAME_RATE);
     }
 
-    Task paralel(Task... tasks) {
+    public Task paralel(Task... tasks) {
         return new ParalelTask(tasks);
+    }
+
+    public Task fadeOut(Gobject gobject, int steps) {
+        return new ColorTranform(gobject, new Color(0, 0, 0, 0), steps);
+    }
+
+    public Task fadeOut(Gobject gobject) {
+        return new ColorTranform(gobject, new Color(0, 0, 0, 0), seconds(1));
     }
 
 

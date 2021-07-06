@@ -18,7 +18,7 @@ public class SupplierPoint implements Location {
 
     @Override
     public void setX(double x) {
-        xOffset=(x-xSupplier.get());
+        //xOffset=(x-xSupplier.get());
     }
 
     @Override
@@ -28,7 +28,7 @@ public class SupplierPoint implements Location {
 
     @Override
     public void setY(double y) {
-        yOffset=(y-ySupplier.get());
+        //yOffset=(y-ySupplier.get());
     }
 
     public SupplierPoint(double xOffset, double yOffset, Supplier<Double> xSupplier, Supplier<Double> ySupplier) {

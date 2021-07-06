@@ -1,8 +1,6 @@
 package graphical.basics.gobject.latex;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
+
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;

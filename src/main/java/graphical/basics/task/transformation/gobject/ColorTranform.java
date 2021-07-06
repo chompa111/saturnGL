@@ -2,7 +2,7 @@ package graphical.basics.task.transformation.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Gobject;
-import graphical.basics.gobject.GroupGobject;
+import graphical.basics.gobject.Group;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
@@ -87,9 +87,9 @@ public class ColorTranform implements Task {
 
     public static Task delaYad(Gobject gobject, Color color, int steps, int delay) {
         List<Task> tasks = new ArrayList<>();
-        if (gobject instanceof GroupGobject) {
+        if (gobject instanceof Group) {
             int i=1;
-            for (Gobject go : ((GroupGobject) gobject).getGobjects()) {
+            for (Gobject go : ((Group) gobject).getGobjects()) {
                 tasks.add(new WaitTask(i*delay).andThen(new ColorTranform(go, color, steps)));
                 i++;
             }

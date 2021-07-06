@@ -1,39 +1,60 @@
 package graphical.basics.gobject;
 
+
 import graphical.basics.ColorHolder;
+import graphical.basics.behavior.Behavior;
+import graphical.basics.behavior.FollowBehavior;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
 import graphical.basics.value.NumberHolder;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Circle extends Gobject {
 
     Location center;
-    NumberHolder radio;
+    NumberHolder radius;
     ColorHolder colorHolder;
 
-    public Circle(Location center, NumberHolder radio, Color color) {
+    public Circle(Location center, NumberHolder radius, Color color) {
         this.center = center;
-        this.radio = radio;
+        this.radius = radius;
         this.colorHolder = new ColorHolder(color);
     }
 
     @Override
     public void paint(Graphics g) {
+        int r = (int) radius.getValue();
         g.setColor(colorHolder.getColor());
-
-        int r = (int) radio.getValue();
         g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+
+//        try {
+//            var border = getBorders();
+//            var b = ImageIO.read(getClass().getResource("/3px-tile.png"));
+//            ((Graphics2D) g).setPaint(new TexturePaint(b, new Rectangle((int)border.getL1().getX(), (int)border.getL1().getY(), 200, 200)));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+
+
     }
 
     @Override
     public LocationPair getBorders() {
-        return new LocationPair(new Point(center.getX() - radio.getValue(), center.getY() - radio.getValue()),
-                new Point(center.getX() + radio.getValue(), center.getY() + radio.getValue()));
+        return new LocationPair(new Point(center.getX() - radius.getValue()/2, center.getY() - radius.getValue()/2),
+                new Point(center.getX() + radius.getValue()/2, center.getY() + radius.getValue()/2));
     }
 
     @Override
@@ -46,12 +67,12 @@ public class Circle extends Gobject {
         return Arrays.asList(center);
     }
 
-    public NumberHolder getRadio() {
-        return radio;
+    public NumberHolder getRadius() {
+        return radius;
     }
 
-    public void setRadio(NumberHolder radio) {
-        this.radio = radio;
+    public void setRadius(NumberHolder radius) {
+        this.radius = radius;
     }
 
     public Location getCenter() {
@@ -69,4 +90,9 @@ public class Circle extends Gobject {
     public void setColorHolder(ColorHolder colorHolder) {
         this.colorHolder = colorHolder;
     }
+
+
+
+
+
 }

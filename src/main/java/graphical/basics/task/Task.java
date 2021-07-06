@@ -1,5 +1,12 @@
 package graphical.basics.task;
 
+import codec.Presentation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 public interface Task {
 
     public void setup();
@@ -40,5 +47,17 @@ public interface Task {
             task.step();
         }
     }
+
+    default void execute() {
+        Presentation.staticReference.execute(this);
+    }
+
+//
+//    public static <T extends Task> Collector<T, ?, ParalelTask> toList() {
+//        return new Collectors.CollectorImpl(ArrayList::new, List::add, (left, right) -> {
+//            left.addAll(right);
+//            return left;
+//        }, CH_ID);
+//    }
 
 }

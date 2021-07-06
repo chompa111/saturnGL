@@ -31,7 +31,7 @@ public class GobjectFrame extends Gobject {
             for (int j = 0; j < 1000; j++) {
                 var value = bufferedImage.getRGB(i, j);
                 if (value != 0) {
-                    pixels.add(new Pixel(new Color(value), i, j));
+                    pixels.add(new Pixel(new Color(value,true), i, j));
                 }
             }
         }
