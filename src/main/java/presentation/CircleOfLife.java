@@ -1,6 +1,8 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Effects;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.behavior.FollowBehavior;
 import graphical.basics.gobject.*;
 import graphical.basics.gobject.Polygon;
@@ -11,6 +13,11 @@ import graphical.basics.value.DoubleHolder;
 import java.awt.*;
 
 public class CircleOfLife extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+        presentationConfig.setDisableCodec(false);
+    }
+
     @Override
     public void buildPresentation() {
         Circle te = CircleBuilder.aCircle().withColor(Color.magenta).build();
@@ -43,7 +50,8 @@ public class CircleOfLife extends Presentation {
         add(new FollowBehavior(string, point2));
 
         var line = new Line(center, point, Color.red, new DoubleHolder(2));
-
+        add(line);
+        Effects.init(line).execute();
 
         var cospoint = new SupplierPoint(point::getX, center::getY);
 
@@ -53,7 +61,6 @@ public class CircleOfLife extends Presentation {
         var sinLine = new Line(cospoint, point, Color.blue, new DoubleHolder(2));
         add(sinLine);
         // execute(circle.transform(line));
-        add(line);
         add(string);
         var gg = new Group(circle, line, cosLine, sinLine);
         var init = angArc.aceleratedChange(360, seconds(5));

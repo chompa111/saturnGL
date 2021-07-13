@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Ball;
 import graphical.basics.location.Point;
 import graphical.basics.task.transformation.gobject.ColorTranform;
@@ -9,6 +10,11 @@ import graphical.basics.task.transformation.gobject.PositionTransform;
 import java.awt.*;
 
 public class Ex1 extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
 

@@ -1,6 +1,8 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Effects;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Ball;
 import graphical.basics.gobject.Gobject;
@@ -21,6 +23,11 @@ import java.util.stream.Collectors;
 
 
 public class LatexEx extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         List<Gobject> latex = Latex.generateExp("a^2+2ab+b^2", 200, 500, Color.white);

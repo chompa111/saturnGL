@@ -1,30 +1,37 @@
-package codec;
+package graphical.basics.presentation;
 
+import codec.JCodec;
+import codec.VideoCodec;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.transformation.gobject.ColorTranform;
-import presentation.JaveEncoder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Presentation extends JFrame {
 
-    public static int FRAME_RATE = 30;
+    public static int FRAME_RATE = 60;
     public static Presentation staticReference;
 
-    BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
-    Graphics bufferedGraphics = bufferedImage.getGraphics();
+    private boolean disableCodec;
 
-     VideoCodec videoCodec = new JCodec();
+    BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    public Graphics bufferedGraphics = bufferedImage.getGraphics();
+
+    VideoCodec videoCodec = new JCodec();
     //VideoCodec videoCodec = new JaveEncoder();
     List<Gobject> gobjects = new ArrayList<>();
     List<Behavior> behaviors = new ArrayList<>();
+
+    FpsControler fpsControler = new FpsControler();
 
     int clipCounter = 0;
     int frameCounter = 0;
@@ -50,14 +57,35 @@ public abstract class Presentation extends JFrame {
         //preview window
 
         setSize(1000, 1000);
-        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setUndecorated(true);
+
+        // setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        setVisible(true);
 
 
         staticReference = this;
+
+        PresentationConfig presentationConfig = new PresentationConfig();
+        setup(presentationConfig);
+        applyConfigs(presentationConfig);
+
     }
 
-    public void setup() {
+    public abstract void setup(PresentationConfig presentationConfig);
+
+    private void applyConfigs(PresentationConfig presentationConfig) {
+        if (presentationConfig.getFramerate() != null) {
+            FRAME_RATE = presentationConfig.getFramerate();
+        } else {
+            FRAME_RATE = 30;
+        }
+
+        if (presentationConfig.isDisableCodec() != null) {
+            disableCodec = presentationConfig.isDisableCodec();
+        } else {
+            disableCodec = false;
+        }
 
     }
 
@@ -85,15 +113,28 @@ public abstract class Presentation extends JFrame {
         repaint();
         System.out.println((System.currentTimeMillis() - before1) + "ms processando quadro");
         var before2 = System.currentTimeMillis();
-        videoCodec.addFrame(bufferedImage);
+        if (!disableCodec) videoCodec.addFrame(bufferedImage);
         System.out.println((System.currentTimeMillis() - before1) + "ms de codec");
+
+        if(disableCodec) {
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void paintComponent(Graphics g) {
 
         // background;
-        g.setColor(Color.black);
+        g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 1000, 1000);
+//        int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
+//
+//        Arrays.fill(pixels,0);
+//        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), pixels, 0, bufferedImage.getWidth());
+//
 
         for (int i = 0; i < gobjects.size(); i++) {
             gobjects.get(i).paint(g);
@@ -153,6 +194,5 @@ public abstract class Presentation extends JFrame {
     public Task fadeOut(Gobject gobject) {
         return new ColorTranform(gobject, new Color(0, 0, 0, 0), seconds(1));
     }
-
 
 }

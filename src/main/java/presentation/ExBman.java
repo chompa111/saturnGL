@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.Polygon;
@@ -15,6 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ExBman extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
 

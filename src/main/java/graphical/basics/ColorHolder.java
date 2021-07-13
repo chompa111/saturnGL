@@ -1,6 +1,9 @@
 package graphical.basics;
 
+
 import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ColorHolder {
 
@@ -24,8 +27,12 @@ public class ColorHolder {
 
     public static Color hex2Rgb(String colorStr) {
         return new Color(
-                Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
-                Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
-                Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+                Integer.valueOf(colorStr.substring(1, 3), 16),
+                Integer.valueOf(colorStr.substring(3, 5), 16),
+                Integer.valueOf(colorStr.substring(5, 7), 16));
+    }
+
+    public static List<Color> toColorList(List<ColorHolder> colorHolderList) {
+        return colorHolderList.stream().map(ColorHolder::getColor).collect(Collectors.toList());
     }
 }

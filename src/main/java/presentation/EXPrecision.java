@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Circle;
 import graphical.basics.gobject.Line;
 import graphical.basics.location.Point;
@@ -13,6 +14,11 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class EXPrecision extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         var line = new Line(new Point(200, 500), new Point(500, 500), Color.red, new DoubleHolder(10));

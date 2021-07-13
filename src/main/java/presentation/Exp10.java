@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.Img;
@@ -12,6 +13,11 @@ import java.awt.*;
 import java.util.List;
 
 public class Exp10 extends Presentation {
+
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
 
     @Override
     public void buildPresentation() {

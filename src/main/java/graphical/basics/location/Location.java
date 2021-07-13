@@ -18,4 +18,12 @@ public interface Location {
     default void incrementY(double amount) {
         this.setY(this.getY() + amount);
     }
+
+    static Point midPoint(Location a, Location b) {
+        return new Point((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
+    }
+
+    static SupplierPoint spyMidPoint(Location a, Location b) {
+        return new SupplierPoint(()->((a.getX() + b.getX()) / 2), ()->((a.getY() + b.getY()) / 2));
+    }
 }

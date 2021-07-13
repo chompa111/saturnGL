@@ -1,6 +1,6 @@
 package graphical.basics.value;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
 import graphical.basics.task.Task;
 import graphical.basics.task.transformation.value.ValueTransform;
 

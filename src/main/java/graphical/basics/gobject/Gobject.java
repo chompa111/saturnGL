@@ -1,7 +1,7 @@
 package graphical.basics.gobject;
 
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
 import graphical.basics.AnimationBuilder;
 import graphical.basics.ColorHolder;
 import graphical.basics.behavior.Behavior;

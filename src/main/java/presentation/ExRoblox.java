@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Circle;
 import graphical.basics.gobject.Gobject;
@@ -19,6 +20,11 @@ import java.util.List;
 
 public class ExRoblox extends Presentation {
 
+
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
 
     @Override
     public void buildPresentation() {

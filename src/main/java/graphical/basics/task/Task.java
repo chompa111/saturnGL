@@ -1,19 +1,14 @@
 package graphical.basics.task;
 
-import codec.Presentation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import graphical.basics.presentation.Presentation;
 
 public interface Task {
 
-    public void setup();
+    void setup();
 
-    public void step();
+    void step();
 
-    public boolean isDone();
+    boolean isDone();
 
     default Task andThen(Task t2) {
         if (this instanceof SequenceTask) {
@@ -39,6 +34,10 @@ public interface Task {
 
     default Task wait(int steps) {
         return this.andThen(new WaitTask(steps));
+    }
+
+    default Task step(Runnable runnable) {
+        return this.andThen(new SingleStepTask(runnable));
     }
 
     static void consume(Task task) {

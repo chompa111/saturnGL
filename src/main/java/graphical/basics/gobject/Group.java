@@ -3,11 +3,15 @@ package graphical.basics.gobject;
 import graphical.basics.ColorHolder;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
+import graphical.basics.task.ParalelTask;
+import graphical.basics.task.Task;
+import graphical.basics.task.WaitTask;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class Group extends Gobject {
 
@@ -15,7 +19,7 @@ public class Group extends Gobject {
 
 
     public Group(Gobject... gobjects) {
-        this.gobjects = Arrays.asList(gobjects);
+        this.gobjects = new ArrayList<>(Arrays.asList(gobjects));
     }
 
     public Group(List<Gobject> gobjects) {
@@ -59,5 +63,28 @@ public class Group extends Gobject {
 
     public List<Gobject> getGobjects() {
         return gobjects;
+    }
+
+
+    public ParalelTask onChildren(Function<Gobject, Task> taskFunction, int delay) {
+        var list = new ArrayList<Task>();
+        for (int i = 0; i < gobjects.size(); i++) {
+            list.add(new WaitTask((i * delay) + 1).andThen(taskFunction.apply(gobjects.get(i))));
+        }
+        return new ParalelTask(list);
+    }
+
+    public ParalelTask onChildren(Function<Gobject, Task> taskFunction) {
+        var list = new ArrayList<Task>();
+
+        for (Gobject gobject : gobjects) {
+            list.add(taskFunction.apply(gobject));
+        }
+
+        return new ParalelTask(list);
+    }
+
+    public void add(Gobject g) {
+        gobjects.add(g);
     }
 }

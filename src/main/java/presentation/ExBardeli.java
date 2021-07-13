@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.latex.lixao.Latex;
@@ -9,6 +10,11 @@ import graphical.basics.location.Point;
 import java.awt.*;
 
 public class ExBardeli extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         var cicle = CircleBuilder.aCircle()

@@ -1,6 +1,6 @@
 package graphical.basics.task.transformation.gobject;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.gobject.GobjectFrame;

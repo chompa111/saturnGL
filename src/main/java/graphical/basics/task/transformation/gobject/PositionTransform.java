@@ -70,19 +70,6 @@ public class PositionTransform implements Task {
         stepCount++;
     }
 
-    public static Task delayed(Gobject gobject, double amountX, double amountY, int steps, int delay) {
-        List<Task> tasks = new ArrayList<>();
-        if (gobject instanceof Group) {
-            int i=1;
-            for (Gobject go : ((Group) gobject).getGobjects()) {
-                tasks.add(new WaitTask(i*delay).andThen(new PositionTransform(go, amountX, amountY, steps)));
-                i++;
-            }
-            return new ParalelTask(tasks);
-        }
-        return null;
-    }
-
     @Override
     public boolean isDone() {
         return stepCount == steps;

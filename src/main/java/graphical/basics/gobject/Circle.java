@@ -2,26 +2,18 @@ package graphical.basics.gobject;
 
 
 import graphical.basics.ColorHolder;
-import graphical.basics.behavior.Behavior;
-import graphical.basics.behavior.FollowBehavior;
+import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
 import graphical.basics.value.NumberHolder;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Circle extends Gobject {
+public class Circle extends Gobject implements ShapeLike {
 
     Location center;
     NumberHolder radius;
@@ -53,8 +45,8 @@ public class Circle extends Gobject {
 
     @Override
     public LocationPair getBorders() {
-        return new LocationPair(new Point(center.getX() - radius.getValue()/2, center.getY() - radius.getValue()/2),
-                new Point(center.getX() + radius.getValue()/2, center.getY() + radius.getValue()/2));
+        return new LocationPair(new Point(center.getX() - radius.getValue() / 2, center.getY() - radius.getValue() / 2),
+                new Point(center.getX() + radius.getValue() / 2, center.getY() + radius.getValue() / 2));
     }
 
     @Override
@@ -92,7 +84,8 @@ public class Circle extends Gobject {
     }
 
 
-
-
-
+    @Override
+    public Shape asShape() {
+        return new Ellipse2D.Double(center.getX() - radius.getValue() / 2, center.getY() - radius.getValue() / 2, radius.getValue(), radius.getValue());
+    }
 }

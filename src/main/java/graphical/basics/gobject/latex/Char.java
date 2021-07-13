@@ -52,4 +52,8 @@ public class Char extends Gobject {
     public List<Location> getRefereceLocations() {
         return Arrays.asList(location);
     }
+
+    public Font getFont() {
+        return font;
+    }
 }

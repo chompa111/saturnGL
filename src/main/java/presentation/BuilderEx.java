@@ -1,12 +1,18 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.task.WaitTask;
 
 import java.awt.*;
 
 public class BuilderEx extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         var circlinho = CircleBuilder.aCircle()

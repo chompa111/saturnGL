@@ -85,19 +85,6 @@ public class ColorTranform implements Task {
 
     }
 
-    public static Task delaYad(Gobject gobject, Color color, int steps, int delay) {
-        List<Task> tasks = new ArrayList<>();
-        if (gobject instanceof Group) {
-            int i=1;
-            for (Gobject go : ((Group) gobject).getGobjects()) {
-                tasks.add(new WaitTask(i*delay).andThen(new ColorTranform(go, color, steps)));
-                i++;
-            }
-            return new ParalelTask(tasks);
-        }
-        return null;
-    }
-
     @Override
     public boolean isDone() {
         return steps == stepCount;

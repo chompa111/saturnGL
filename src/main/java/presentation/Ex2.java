@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Ball;
 import graphical.basics.location.Point;
 import graphical.basics.task.ParalelTask;
@@ -13,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ex2 extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         List<Ball> ballList = new ArrayList<>();

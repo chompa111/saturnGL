@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Ball;
 import graphical.basics.ColorHolder;
 import graphical.basics.location.Point;
@@ -14,6 +15,11 @@ import graphical.basics.task.transformation.gobject.PositionTransform;
 import java.awt.*;
 
 public class Ex3 extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         var b1 = new Ball(new Point(50, 500), 0.0, 0.0, Color.yellow);

@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.*;
 import graphical.basics.gobject.Polygon;
 import graphical.basics.task.WaitTask;
@@ -9,6 +10,11 @@ import graphical.basics.task.transformation.gobject.MorfTransform;
 import java.awt.*;
 
 public class ExBman2 extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
 

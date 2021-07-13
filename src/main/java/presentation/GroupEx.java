@@ -1,6 +1,7 @@
 package presentation;
 
-import codec.Presentation;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.gobject.Ball;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.gobject.Group;
@@ -17,6 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupEx extends Presentation {
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+
+    }
+
     @Override
     public void buildPresentation() {
         List<Gobject> balls = new ArrayList<>();
@@ -38,10 +44,8 @@ public class GroupEx extends Presentation {
         add(group);
 
         // execute(new ColorTranform(eveng, Color.magenta,seconds(1)));
-        var v1 = ColorTranform.delaYad(group, Color.magenta, seconds(1), 1);
-        var v2 = PositionTransform.delayed(group, 0, 30, seconds(1), 1);
 
-        execute(v1, v2);
+
 
         execute(new WaitTask(seconds(1)));
         cut();

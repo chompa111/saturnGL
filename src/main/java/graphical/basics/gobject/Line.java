@@ -1,16 +1,18 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
+import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.value.DoubleHolder;
 import graphical.basics.value.NumberHolder;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.Arrays;
 import java.util.List;
 
-public class Line extends Gobject {
+public class Line extends Gobject implements ShapeLike {
 
     Location p1;
     Location p2;
@@ -42,6 +44,15 @@ public class Line extends Gobject {
 
     }
 
+    public void paint(Graphics g, double perc) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke((float) thickness.getValue()));
+        g.setColor(colorHolder.getColor());
+        g.drawLine((int) p1.getX(), (int) p1.getY(), (int) (p1.getX() + (p2.getX() - p1.getX()) * perc), (int) (p1.getY() + (p2.getY() - p1.getY()) * perc));
+        g2.setStroke(new BasicStroke(1));
+
+    }
+
     @Override
     public LocationPair getBorders() {
         return new LocationPair(p1, p2);
@@ -58,4 +69,12 @@ public class Line extends Gobject {
     }
 
 
+    public double lenght() {
+        return Math.sqrt(((p1.getX() - p2.getX()) * (p1.getX() - p2.getX())) + ((p1.getY() - p2.getY()) * (p1.getY() - p2.getY())));
+    }
+
+    @Override
+    public Shape asShape() {
+        return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+    }
 }
