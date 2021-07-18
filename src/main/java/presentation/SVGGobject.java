@@ -127,7 +127,11 @@ public class SVGGobject extends Gobject {
 
     @Override
     public LocationPair getBorders() {
-        return null;
+        var list = new ArrayList<LocationPair>();
+        for (ShapeGobject shapeGobject : shapeGobjects) {
+            list.add(shapeGobject.getBorders());
+        }
+        return new LocationPair(list);
     }
 
     @Override

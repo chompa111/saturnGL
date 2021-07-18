@@ -8,6 +8,7 @@ import graphical.basics.task.Task;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class MorfTransform implements Task {
@@ -77,6 +78,19 @@ public class MorfTransform implements Task {
 
             }
         }
+
+        var p1Mid = g1.getBorders().midPoint();
+        var p2Mid = g2.getBorders().midPoint();
+
+        p1.sort(Comparator.comparingDouble(a -> messureAng( p1Mid.getX(), p1Mid.getY(),a.x, a.y)));
+        p2.sort(Comparator.comparingDouble(a -> messureAng( p2Mid.getX(), p2Mid.getY(),a.x, a.y)));
+
+
+//        p1.sort(Comparator.comparingInt(a -> a.colorHolder.getColor().getRGB()));
+//        p2.sort(Comparator.comparingInt(a -> a.colorHolder.getColor().getRGB()));
+
+//        p1.sort(Comparator.comparingDouble(a ->Math.random()));
+//        p2.sort(Comparator.comparingDouble(a ->Math.random()));
 
         aceleration = new double[p1.size()][2];
         delta = new double[p1.size()][2];
@@ -177,6 +191,10 @@ public class MorfTransform implements Task {
 
         stepCount++;
 
+    }
+
+    double messureAng(double cx, double cy, double px, double py) {
+        return  Math.atan((py-cy)/((px-cx)+0.01));
     }
 
     @Override

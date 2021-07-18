@@ -19,7 +19,7 @@ public class ShapeCircleEx extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
         presentationConfig.setFramerate(60);
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
 
     }
 

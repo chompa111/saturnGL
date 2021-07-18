@@ -72,7 +72,11 @@ public class ShapeGobject extends Gobject {
 
     @Override
     public LocationPair getBorders() {
-        return null;
+
+        var bounds = shape.getBounds();
+        double x = bounds.getBounds().getX() + location.getX();
+        double y = bounds.getY() + location.getY();
+        return new LocationPair(new Point(x, y), new Point(x + bounds.getWidth(), x + bounds.getHeight()));
     }
 
     @Override

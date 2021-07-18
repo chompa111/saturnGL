@@ -66,7 +66,7 @@ public class Effects {
                             .step(() -> presentation.remove(sw));
                 });
             }, 1);
-            return (writeTask.parallel(new WaitTask(presentation.seconds(0.5)).andThen(fadeIn(gobject))));
+            return (writeTask.parallel(new WaitTask(presentation.seconds(0.3)).andThen(fadeIn(gobject))));
         } else if (gobject instanceof ShapeLike) {
             return new ContextSetupTask(() -> {
                 var shapeGobject = (ShapeLike) gobject;

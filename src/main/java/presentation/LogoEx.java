@@ -22,35 +22,30 @@ public class LogoEx extends Presentation {
 
     @Override
     public void buildPresentation() {
-        var logo = new SVGGobject("C:\\Users\\gusta\\Desktop\\repos\\saturnGL\\src\\main\\resources\\desenho.svg");
-        add(logo);
-        Effects.init(logo).execute();
+        var logo = new SVGGobject("C:\\Users\\gusta\\Desktop\\repos\\saturnGL\\src\\main\\resources\\saturn-font-logo.svg");
 
-        //
-//       add(logo);
-//        logo.getGroup("planeta").toGroupGobject().onChildren(x -> {
-//            double xx = Math.random() * 500 - 250;
-//            double yy = Math.random() * 500 - 250;
-//
-//            x.changeSetPosition(xx, yy);
-//            return x.move(-xx, -yy).parallel(Effects.fadeIn(x));
-//        }).parallel(Effects.init(logo.getGroupExcept("planeta"))).execute();
+        var planeta = logo.getGroup("planeta");
+        var resto= logo.getGroupExcept("planeta");
 
+        add(planeta);
+        Effects.init(planeta).execute();
+
+        planeta.transform(resto).execute();
+
+
+//        var planeta= logo.getGroup("planeta");
+//        add(planeta);
 //
+//        planeta.changeSetPosition(0,-700);
+////
 //        var planetaCaindo = planeta.move(0, 750).parallel(Effects.fadeIn(planeta))
 //                .andThen(planeta.move(0, -60, seconds(0.6))
 //                        .andThen(planeta.move(0, 10, seconds(0.6)))
 //                );
 //
-//        name.changeSetPosition(0, -700);
-//        planeta.changeSetPosition(0, -700);
-//        name.toGroupGobject().onChildren(letra -> {
-//            return letra.move(0, 700);
-//        }, 2).parallel(planetaCaindo)
-//                .execute();
+//        planetaCaindo.execute();
 //
-//
-//        var resto = logo.getGroupExcept("planeta","satName");
+//        var resto = logo.getGroupExcept("planeta");
 //        add(resto);
 //
 //        Effects.init(resto).execute();
