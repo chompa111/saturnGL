@@ -1,6 +1,5 @@
 package graphical.basics.task;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ContextSetupTask implements Task {
@@ -20,8 +19,8 @@ public class ContextSetupTask implements Task {
     }
 
     @Override
-    public void step() {
-        slaveTask.step();
+    public void afterStep() {
+        slaveTask.afterStep();
     }
 
     @Override

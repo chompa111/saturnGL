@@ -77,4 +77,8 @@ public class Line extends Gobject implements ShapeLike {
     public Shape asShape() {
         return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
     }
+
+    public NumberHolder getThickness() {
+        return thickness;
+    }
 }

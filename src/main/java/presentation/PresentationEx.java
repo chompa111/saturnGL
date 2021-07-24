@@ -95,7 +95,7 @@ public class PresentationEx extends JFrame {
     public static void main(String[] args) throws InterruptedException {
         var presentation = new PresentationEx();
         while (!presentation.colorTranform.isDone()){
-            presentation.colorTranform.step();
+            presentation.colorTranform.afterStep();
             presentation.frame();
         }
 

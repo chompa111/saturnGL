@@ -23,14 +23,14 @@ public class ParalelTask implements Task {
     }
 
     @Override
-    public void step() {
+    public void afterStep() {
         //TODO problemas de desempenho
         Set<Task> toRemove = new HashSet<>();
         for (Task task : taskList) {
             if (task.isDone()) {
                 toRemove.add(task);
             } else {
-                task.step();
+                task.afterStep();
             }
         }
         toRemove.forEach(task -> taskList.remove(task));

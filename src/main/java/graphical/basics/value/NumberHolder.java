@@ -14,15 +14,15 @@ public interface NumberHolder {
 
     Supplier<Double> getSupplier();
 
-    void change(double x);
+    void add(double x);
 
 
-    default Task aceleratedChange(double amount, int steps) {
+    default Task change(double amount, int steps) {
         return new ValueTransform(this, amount, steps);
     }
 
-    default Task aceleratedChange(double amount) {
-        return aceleratedChange(amount, Presentation.staticReference.seconds(1));
+    default Task change(double amount) {
+        return change(amount, Presentation.staticReference.seconds(1));
     }
 
 

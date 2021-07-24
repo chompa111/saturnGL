@@ -33,7 +33,7 @@ public class BindedNumberHolder implements NumberHolder {
     }
 
     @Override
-    public void change(double x) {
+    public void add(double x) {
         offset += x;
     }
 }

@@ -1,50 +1,70 @@
 package presentation;
 
-import graphical.basics.gobject.Group;
-import graphical.basics.gobject.shape.StrokeWriterV2;
+import graphical.basics.gobject.EffectLens;
+import graphical.basics.gobject.LatexGobject;
+import graphical.basics.location.Point;
 import graphical.basics.presentation.Effects;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.gobject.StrokeWriter;
-import graphical.basics.gobject.latex.Char;
-import graphical.basics.location.Point;
-import graphical.basics.task.CodeTask;
-import graphical.basics.task.ContextSetupTask;
-import graphical.basics.value.DoubleHolder;
+import graphical.basics.task.WaitTask;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
+
+import static graphical.basics.gobject.latex.lixao.Latex.generateExp;
 
 public class Latex extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
         presentationConfig.setFramerate(60)
-                .setDisableCodec(false);
+                .setDisableCodec(true);
     }
 
     @Override
     public void buildPresentation() {
-        var x = graphical.basics.gobject.latex.lixao.Latex.generateExp("Sanduba", new Point(500, 500), Color.white);
-        var s=(Char)x.get(0);
-        var group= new Group(x);
-        add(group);
-        var font = s.getFont();
-       // bufferedGraphics.setFont(new Font(font.getFontName(), font.getStyle(), 0));
-        var t=new AffineTransform();
-        t.translate(520,587);
-        t.scale(0.5,0.5);
-        t.translate(-520,-587);
-        var pepe = s.getFont().createGlyphVector(new FontRenderContext(null,true,true), "Sanduba");
 
-        var pepe2 = new StrokeWriterV2(t.createTransformedShape(pepe.getOutline(500, 500)), Color.white);
-        var perc = pepe2.getPerc();
+        var logo = new SVGGobject("C:\\Users\\PICHAU\\Desktop\\repos\\Saturn\\src\\main\\resources\\saturn-font-logo.svg");
+        var exp = new LatexGobject("\\[ \\lim_{x\\to\\infty \\otimes} \\[ \\prod_{i=a}^{x} f(i) \\] \\]", new Point(100, 300), new Color(200, 0, 150));
 
-        add(pepe2);
 
-        perc.aceleratedChange(1,seconds(2)).andThen(new ContextSetupTask(()->Effects.fadeIn(group))).execute();
-        ;
+        var anel=logo.getGroupExcept("satName","planeta");
+        var resto= logo.getGroup("satName","planeta");
+
+        add(resto);
+        add(anel);
+
+        anel.init().parallel(resto.init()).execute();
+
+
+        anel.toGroupGobject().onChildren(Effects::emphasize,4).execute();
+
+       // exp.onChildren(x->x.rotate(2*3.14)).execute();
+
+
+        //exp.getAng().change(1).execute();
+
+
+
         cut();
+
+//        var list = generateExp("Bola", new Point(200, 300), Color.white);
+//        var sub= new Group(list);
+//
+//        var circle = CircleBuilder.aCircle().withColor(Color.magenta).build();
+//
+//
+//
+//
+//        var behaviorSub=circle.asSubtitle(sub,0);
+//        add(behaviorSub);
+//        add(circle);
+//
+//        add(sub);
+//        Effects.init(circle).parallel(Effects.init(sub)).execute();
+//
+//        circle.getRadius().aceleratedChange(200).execute();
+//        circle.move(200,0).execute();
+
+
     }
 
     public static void main(String[] args) {

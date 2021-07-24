@@ -2,16 +2,12 @@ package graphical.basics.task.transformation.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Gobject;
-import graphical.basics.gobject.Group;
-import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
-import graphical.basics.task.WaitTask;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ColorTranform implements Task {
+public class ColorTranform2 implements Task {
 
     int steps;
     int stepCount;
@@ -25,10 +21,13 @@ public class ColorTranform implements Task {
 
     Gobject gobject;
 
-    public ColorTranform(Gobject gobject, Color color, int steps) {
+    double factor;
+
+    public ColorTranform2(Gobject gobject, Color color, double factor, int steps) {
         this.color = color;
         this.steps = steps;
         this.gobject = gobject;
+        this.factor = factor;
     }
 
 
@@ -44,10 +43,10 @@ public class ColorTranform implements Task {
 
         for (int i = 0; i < aceleration.length; i++) {
 
-            aceleration[i][0] = 4 * (color.getRed() - colorHolders.get(i).getColor().getRed() + 0.0) / (2 * steps + (steps * steps));
-            aceleration[i][1] = 4 * (color.getGreen() - colorHolders.get(i).getColor().getGreen() + 0.0) / (2 * steps + (steps * steps));
-            aceleration[i][2] = 4 * (color.getBlue() - colorHolders.get(i).getColor().getBlue() + 0.0) / (2 * steps + (steps * steps));
-            aceleration[i][3] = 4 * (color.getAlpha() - colorHolders.get(i).getColor().getAlpha() + 0.0) / (2 * steps + (steps * steps));
+            aceleration[i][0] = 4 * (color.getRed() - colorHolders.get(i).getColor().getRed() + 0.0) / (2 * factor * steps + (steps * factor * factor * steps));
+            aceleration[i][1] = 4 * (color.getGreen() - colorHolders.get(i).getColor().getGreen() + 0.0) / (2 * factor * steps + (steps * factor * factor * steps));
+            aceleration[i][2] = 4 * (color.getBlue() - colorHolders.get(i).getColor().getBlue() + 0.0) / (2 * factor * steps + (steps * factor * factor * steps));
+            aceleration[i][3] = 4 * (color.getAlpha() - colorHolders.get(i).getColor().getAlpha() + 0.0) / (2 * factor * steps + (steps * factor * factor * steps));
 
             accumulation[i][0] = colorHolders.get(i).getColor().getRed();
             accumulation[i][1] = colorHolders.get(i).getColor().getGreen();

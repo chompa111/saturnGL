@@ -25,7 +25,7 @@ public class DoubleHolder implements NumberHolder {
     }
 
     @Override
-    public void change(double x) {
+    public void add(double x) {
         this.value += x;
     }
 

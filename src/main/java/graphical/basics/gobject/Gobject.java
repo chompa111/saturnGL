@@ -1,8 +1,8 @@
 package graphical.basics.gobject;
 
 
+import graphical.basics.presentation.Effects;
 import graphical.basics.presentation.Presentation;
-import graphical.basics.AnimationBuilder;
 import graphical.basics.ColorHolder;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.behavior.FollowBehavior;
@@ -21,21 +21,34 @@ import java.awt.geom.AffineTransform;
 import java.util.List;
 
 
-public abstract class Gobject implements AnimationBuilder {
+public abstract class Gobject {
 
-    NumberHolder ang;
+    NumberHolder angle = new DoubleHolder(0);
     public NumberHolder zoom = new DoubleHolder(1);
 
     public void paint(Graphics g, boolean b) {
+
+
         var midpoint = getBorders().midPoint();
         var g2d = (Graphics2D) g;
         var oldT = (AffineTransform) g2d.getTransform().clone();
         g.translate((int) midpoint.getX(), (int) midpoint.getY());
         g2d.scale(zoom.getValue(), zoom.getValue());
+        g2d.rotate(angle.getValue());
         g.translate(-(int) midpoint.getX(), -(int) midpoint.getY());
         paint(g);
 
         g2d.setTransform(oldT);
+
+//        var x=getBorders().midPoint();
+//        g.setColor(Color.green);
+//        var xx=(int)x.getX();
+//        var yy=(int)x.getY();
+//        g.setFont(new Font("Consola",Font.BOLD,8));
+//        g.drawString(xx+","+yy,xx+3,yy);
+//        g.fillOval(xx-3,yy-3,6,6);
+//        g.setColor(Color.black);
+//        g.fillOval(xx-1,yy-1,2,2);
     }
 
     public abstract void paint(Graphics g);
@@ -43,6 +56,9 @@ public abstract class Gobject implements AnimationBuilder {
     public abstract LocationPair getBorders();
 
     public abstract List<ColorHolder> getColors();
+//
+//    public abstract ColorHolder getStrokeColor();
+//    public abstract ColorHolder fillColor();
 
     public abstract List<Location> getRefereceLocations();
 
@@ -75,6 +91,10 @@ public abstract class Gobject implements AnimationBuilder {
         return move(x, y, Presentation.staticReference.seconds(1));
     }
 
+    public Task init() {
+        return Effects.init(this);
+    }
+
     public void changeSetPosition(double x, double y) {
         for (Location location : this.getRefereceLocations()) {
             location.incrementX(x);
@@ -82,7 +102,7 @@ public abstract class Gobject implements AnimationBuilder {
         }
     }
 
-    public Behavior asSubtitle(Gobject gobject,int border) {
+    public Behavior asSubtitle(Gobject gobject, int border) {
         var myBorders = this.getBorders();
         var subBorders = gobject.getBorders();
 
@@ -90,12 +110,37 @@ public abstract class Gobject implements AnimationBuilder {
         var mid2 = subBorders.midPoint();
 
         var deltaX = mid1.getX() - mid2.getX();
-        var deltaY = myBorders.getL1().getY() - subBorders.getL1().getY()+(myBorders.getL2().getY()-myBorders.getL1().getY()+border);
+        var deltaY = myBorders.getL1().getY() - subBorders.getL1().getY() + (myBorders.getL2().getY() - myBorders.getL1().getY() + border);
 
         gobject.changeSetPosition(deltaX, deltaY);
 
-        return new FollowBehavior(gobject, new SupplierPoint(()->this.getBorders().midPoint().getX(),()->this.getBorders().getL2().getY()));
+        return new FollowBehavior(gobject, new SupplierPoint(() -> this.getBorders().midPoint().getX(), () -> this.getBorders().getL2().getY()));
 
+    }
+
+    public NumberHolder getScale() {
+        return zoom;
+    }
+
+    public NumberHolder getAngle() {
+        return angle;
+    }
+
+    public Task scale(double factor, int steps) {
+        var actual = zoom.getValue();
+        return zoom.change(actual * factor - actual, steps);
+    }
+
+    public Task scale(double amount) {
+        return scale(amount,Presentation.staticReference.seconds(1));
+    }
+
+    public Task rotate(double amount, int steps) {
+        return angle.change(amount, steps);
+    }
+
+    public Task rotate(double amount) {
+        return angle.change(amount);
     }
 
 }

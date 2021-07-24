@@ -1,7 +1,5 @@
 package graphical.basics.task;
 
-import java.util.function.Consumer;
-
 public class CodeTask implements Task {
     Thread thread;
 
@@ -18,7 +16,7 @@ public class CodeTask implements Task {
     }
 
     @Override
-    public void step() {
+    public void afterStep() {
         if (!once) {
             thread.start();
             once = true;
@@ -38,7 +36,7 @@ public class CodeTask implements Task {
     public static void runTask(Task task){
         task.setup();
         while (!task.isDone()) {
-            task.step();
+            task.afterStep();
             doStep();
         }
     }

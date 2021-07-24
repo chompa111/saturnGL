@@ -43,7 +43,7 @@ public class PositionListTransform implements Task {
     }
 
     @Override
-    public void step() {
+    public void afterStep() {
 
         if (stepCount < (steps / 2)) {
 

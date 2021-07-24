@@ -1,11 +1,8 @@
 package graphical.basics.presentation;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.Gobject;
-import graphical.basics.gobject.Group;
+import graphical.basics.gobject.*;
 import graphical.basics.gobject.Polygon;
-import graphical.basics.gobject.ShapeGobject;
-import graphical.basics.gobject.StrokeWriter;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.shape.StrokeWriterV2;
 import graphical.basics.task.ContextSetupTask;
@@ -13,6 +10,7 @@ import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
 import graphical.basics.task.transformation.gobject.ColorListTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform;
+import graphical.basics.task.transformation.gobject.ColorTranform2;
 import graphical.basics.task.transformation.gobject.PositionListTransform;
 import graphical.basics.value.DoubleHolder;
 import presentation.SVGGobject;
@@ -56,14 +54,14 @@ public class Effects {
                 return new ContextSetupTask(() -> {
                     var y = (ShapeGobject) x;
 
-                   // var sw = new StrokeWriter(y.getShape(), y.getRefereceLocations().get(0), perc);
+                    // var sw = new StrokeWriter(y.getShape(), y.getRefereceLocations().get(0), perc);
                     var sw = new StrokeWriterV2(y.getShape(), Color.white);
                     var perc = sw.getPerc();
                     presentation.add(sw);
 
-                    return perc.aceleratedChange(1, presentation.seconds(1))
+                    return perc.change(1, presentation.seconds(1))
                             .parallel(sw.changeColor(new Color(0, 0, 0, 0), presentation.seconds(1)))
-                            .step(() -> presentation.remove(sw));
+                            .afterStep(() -> presentation.remove(sw));
                 });
             }, 1);
             return (writeTask.parallel(new WaitTask(presentation.seconds(0.3)).andThen(fadeIn(gobject))));
@@ -73,14 +71,14 @@ public class Effects {
 
                 var sw = new StrokeWriterV2(shapeGobject.asShape(), gobject.getColors().get(0).getColor());
                 presentation.add(sw);
-                var perc =sw.getPerc();
-                return perc.aceleratedChange(1, presentation.seconds(1))
-                        .andThen(fadeIn(gobject, presentation.seconds(1.0)))
-                        .andThen(fadeOut(sw))
-                        .step(() -> presentation.remove(sw));
+                var perc = sw.getPerc();
+                return perc.change(1, presentation.seconds(1))
+                        .parallel(new WaitTask(presentation.seconds(0.5)).andThen(fadeIn(gobject, presentation.seconds(1.0))))
+                        .andThen(fadeOut(sw, presentation.seconds(0.5)))
+                        .afterStep(() -> presentation.remove(sw));
             });
         } else if (gobject instanceof Group) {
-            return ((Group) gobject).onChildren(Effects::init, 1);
+            return ((Group) gobject).onChildren(Effects::init);
         } else if (gobject instanceof ShapeGobject) {
 
             return new ContextSetupTask(() -> {
@@ -89,10 +87,10 @@ public class Effects {
                 var sw = new StrokeWriter(shapeGobject.getShape(), shapeGobject.getRefereceLocations().get(0), perc);
                 presentation.add(sw);
 
-                return perc.aceleratedChange(1, presentation.seconds(1))
+                return perc.change(1, presentation.seconds(1))
                         //  .parallel(sw.changeColor(new Color(0, 0, 0, 0), presentation.seconds(1)))
                         .parallel(fadeIn(shapeGobject))
-                        .step(()->presentation.remove(sw));
+                        .afterStep(() -> presentation.remove(sw));
             });
 
         }
@@ -153,6 +151,42 @@ public class Effects {
     public static Task formTransform(SVGGobject svgGobject, Gobject gobject) {
         return svgGobject.toGroupGobject().onChildren(x -> formTransform(x, gobject));
     }
+
+
+    public static Task emphasize(Gobject gobject) {
+        return new ContextSetupTask(() -> {
+            var colorHolders = gobject.getColors();
+            var beforeColors = ColorHolder.toColorList(colorHolders);
+
+            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, presentation.seconds(0.5));
+
+            return new ColorTranform2(gobject, Color.yellow, 1.5, presentation.seconds(0.5))
+                    .parallel(gobject.getScale().change(0.1, presentation.seconds(0.5)))
+                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
+        });
+    }
+
+    public static Task wooble(Gobject gobject) {
+        return gobject.getAngle().change(0.5, presentation.seconds(0.5))
+                .andThen(gobject.getAngle().change(-1.0, presentation.seconds(0.5))
+                        .andThen(gobject.getAngle().change(0.5, presentation.seconds(0.5))));
+    }
+
+    public static Task singleRedLine(Gobject gobject) {
+        return new ContextSetupTask(() -> {
+            var borders = gobject.getBorders();
+            Line l1 = new Line(borders.getL1(), borders.getL2(), Color.red);
+            presentation.add(l1);
+            return l1.init().andThen(new ContextSetupTask(()->fadeOut(l1))
+            ).afterStep(() -> {
+                presentation.remove(l1);
+            });
+        });
+    }
+
+
+
+
 
 
 }

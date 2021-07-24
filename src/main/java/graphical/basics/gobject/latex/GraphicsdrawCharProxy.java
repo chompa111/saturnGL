@@ -31,8 +31,9 @@ public class GraphicsdrawCharProxy extends GraphicsProxy {
         if(size2!=size){
             System.out.println();
         }
-
-        charList.add(new Char(font, new Point(xx, yy), data, size, color));
+        // stá truncado pra evitar dessincronia dos movimentos
+        //charList.add(new Char(font, new Point((int)xx, (int)yy), data, size, color));
+        charList.add(new Char(font, new Point((int)xx, (int)yy), data, size, color));
         super.drawChars(data, offset, length, x, y);
     }
 

@@ -35,16 +35,16 @@ public class ValueTransform implements Task {
     }
 
     @Override
-    public void step() {
+    public void afterStep() {
 
         if (stepCount < (steps / 2)) {
             delta += a;
             for (NumberHolder numberHolder : numberHolders) {
-                numberHolder.change(delta);
+                numberHolder.add(delta);
             }
         } else {
             for (NumberHolder numberHolder : numberHolders) {
-                numberHolder.change(delta);
+                numberHolder.add(delta);
             }
             delta -= a;
         }

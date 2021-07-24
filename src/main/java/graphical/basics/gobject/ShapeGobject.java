@@ -43,6 +43,8 @@ public class ShapeGobject extends Gobject {
 
     @Override
     public void paint(Graphics g) {
+
+
         var g2d = ((Graphics2D) g);
 //
 //        Stroke s = new BasicStroke(1.0f,                      // Width
@@ -76,7 +78,7 @@ public class ShapeGobject extends Gobject {
         var bounds = shape.getBounds();
         double x = bounds.getBounds().getX() + location.getX();
         double y = bounds.getY() + location.getY();
-        return new LocationPair(new Point(x, y), new Point(x + bounds.getWidth(), x + bounds.getHeight()));
+        return new LocationPair(new Point(x, y), new Point(x + bounds.getWidth(), y + bounds.getHeight()));
     }
 
     @Override

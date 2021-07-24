@@ -63,8 +63,8 @@ public class CircleOfLife extends Presentation {
         // execute(circle.transform(line));
         add(string);
         var gg = new Group(circle, line, cosLine, sinLine);
-        var init = angArc.aceleratedChange(360, seconds(5));
-        ang.aceleratedChange(-2 * Math.PI, seconds(5))
+        var init = angArc.change(360, seconds(5));
+        ang.change(-2 * Math.PI, seconds(5))
               //  .parallel(new WaitTask(seconds(1.5)).andThen(string.move(-115, 0, 30)))
               //  .parallel(new WaitTask(seconds(2.5)).andThen(string.move(0, 50, 30)))
                // .parallel(new WaitTask(seconds(3.5)).andThen(string.move(115, 0, 30)))

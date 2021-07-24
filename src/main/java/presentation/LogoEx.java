@@ -17,20 +17,21 @@ import java.util.Random;
 public class LogoEx extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setFramerate(60).setDisableCodec(false);
+        presentationConfig.setFramerate(60).setDisableCodec(true);
     }
 
     @Override
     public void buildPresentation() {
-        var logo = new SVGGobject("C:\\Users\\gusta\\Desktop\\repos\\saturnGL\\src\\main\\resources\\saturn-font-logo.svg");
+        var logo = new SVGGobject("C:\\Users\\PICHAU\\Desktop\\repos\\Saturn\\src\\main\\resources\\saturn-font-logo.svg");
 
         var planeta = logo.getGroup("planeta");
         var resto= logo.getGroupExcept("planeta");
 
-        add(planeta);
-        Effects.init(planeta).execute();
+        //add(planeta);
+        add(logo);
+        Effects.init(logo).execute();
 
-        planeta.transform(resto).execute();
+        //planeta.transform(resto).execute();
 
 
 //        var planeta= logo.getGroup("planeta");

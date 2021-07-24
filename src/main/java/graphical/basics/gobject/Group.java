@@ -17,6 +17,9 @@ public class Group extends Gobject {
 
     private List<Gobject> gobjects;
 
+    public Group() {
+        gobjects = new ArrayList<>();
+    }
 
     public Group(Gobject... gobjects) {
         this.gobjects = new ArrayList<>(Arrays.asList(gobjects));
@@ -29,7 +32,7 @@ public class Group extends Gobject {
     @Override
     public void paint(Graphics g) {
         for (Gobject gobject : gobjects) {
-            gobject.paint(g);
+            gobject.paint(g,true);
         }
     }
 
@@ -86,5 +89,18 @@ public class Group extends Gobject {
 
     public void add(Gobject g) {
         gobjects.add(g);
+    }
+
+    public void addAll(List<Gobject> gobjectList) {
+        this.gobjects.addAll(gobjectList);
+    }
+
+
+    public Group subGroup(Integer... index) {
+        var list = new ArrayList<Gobject>();
+        for (Integer i : index) {
+            list.add(gobjects.get(i));
+        }
+        return new Group(list);
     }
 }

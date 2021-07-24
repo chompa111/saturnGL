@@ -18,8 +18,8 @@ public class SequenceTask implements Task {
     }
 
     @Override
-    public void step() {
-        taskList.get(0).step();
+    public void afterStep() {
+        taskList.get(0).afterStep();
         //TODO problemas de desempenho
         if (taskList.get(0).isDone()) {
             taskList.remove(taskList.get(0));

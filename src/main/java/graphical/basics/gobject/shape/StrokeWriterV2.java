@@ -4,6 +4,7 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
+import graphical.basics.location.Point;
 import graphical.basics.value.DoubleHolder;
 import graphical.basics.value.NumberHolder;
 import org.apache.batik.ext.awt.geom.PathLength;
@@ -18,6 +19,8 @@ public class StrokeWriterV2 extends Gobject {
     Shape shape;
 
     double len;
+    //TODO
+    Location location= new Point(0,0);
 
     NumberHolder perc;
 
@@ -26,7 +29,7 @@ public class StrokeWriterV2 extends Gobject {
         this.strokeColor = new ColorHolder(color);
 
         len = new PathLength(shape).lengthOfPath();
-        perc=new DoubleHolder(0);
+        perc = new DoubleHolder(0);
     }
 
     @Override
@@ -45,7 +48,10 @@ public class StrokeWriterV2 extends Gobject {
 
     @Override
     public LocationPair getBorders() {
-        return null;
+        var bounds = shape.getBounds();
+        double x = bounds.getBounds().getX() + location.getX();
+        double y = bounds.getY() + location.getY();
+        return new LocationPair(new graphical.basics.location.Point(x, y), new Point(x + bounds.getWidth(), y + bounds.getHeight()));
     }
 
     @Override

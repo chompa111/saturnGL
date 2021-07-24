@@ -7,13 +7,13 @@ import graphical.basics.gobject.Gobject;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.transformation.gobject.ColorTranform;
+import org.apache.regexp.RE;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Presentation extends JFrame {
@@ -23,7 +23,7 @@ public abstract class Presentation extends JFrame {
 
     private boolean disableCodec;
 
-    BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    public BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     public Graphics bufferedGraphics = bufferedImage.getGraphics();
 
     VideoCodec videoCodec = new JCodec();
@@ -50,8 +50,15 @@ public abstract class Presentation extends JFrame {
         Graphics2D g2 = (Graphics2D) bufferedGraphics;
 
         RenderingHints rh = new RenderingHints(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+
+                new HashMap<>() {
+                    {
+                        put(RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);
+                        put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                    }
+                });
+
         g2.setRenderingHints(rh);
 
         //preview window
@@ -116,7 +123,7 @@ public abstract class Presentation extends JFrame {
         if (!disableCodec) videoCodec.addFrame(bufferedImage);
         System.out.println((System.currentTimeMillis() - before1) + "ms de codec");
 
-        if(disableCodec) {
+        if (disableCodec) {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {
@@ -137,7 +144,7 @@ public abstract class Presentation extends JFrame {
 //
 
         for (int i = 0; i < gobjects.size(); i++) {
-            gobjects.get(i).paint(g);
+            gobjects.get(i).paint(g, true);
         }
     }
 
@@ -164,7 +171,7 @@ public abstract class Presentation extends JFrame {
         t = task;
         task.setup();
         while (!task.isDone()) {
-            task.step();
+            task.afterStep();
             processFrame();
         }
     }

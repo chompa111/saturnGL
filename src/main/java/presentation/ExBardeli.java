@@ -25,7 +25,7 @@ public class ExBardeli extends Presentation {
         var radius = cicle.getRadius();
 
 
-        radius.aceleratedChange(200)
+        radius.change(200)
                 .parallel(cicle.move(200, 0, seconds(0.5))
                         .parallel(cicle.changeColor(Color.red)))
                 .execute();

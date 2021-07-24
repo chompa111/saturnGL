@@ -121,7 +121,7 @@ public class SVGGobject extends Gobject {
 //        }
 
         for (ShapeGobject shape : shapeGobjects) {
-            shape.paint(g);
+            shape.paint(g,true);
         }
     }
 
