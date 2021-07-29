@@ -1,6 +1,7 @@
 package graphical.basics.gobject;
 
 
+import graphical.basics.Pivot;
 import graphical.basics.presentation.Effects;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
@@ -141,6 +142,13 @@ public abstract class Gobject {
 
     public Task rotate(double amount) {
         return angle.change(amount);
+    }
+
+    public Pivot createPivot( Location location){
+        var x=new Pivot(this, location);
+
+
+        return x;
     }
 
 }

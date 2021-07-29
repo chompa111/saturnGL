@@ -60,11 +60,11 @@ public class Effects {
                     presentation.add(sw);
 
                     return perc.change(1, presentation.seconds(1))
-                            .parallel(sw.changeColor(new Color(0, 0, 0, 0), presentation.seconds(1)))
+                            .andThen(sw.changeColor(new Color(0, 0, 0, 0), presentation.seconds(1)))
                             .afterStep(() -> presentation.remove(sw));
                 });
             }, 1);
-            return (writeTask.parallel(new WaitTask(presentation.seconds(0.3)).andThen(fadeIn(gobject))));
+            return (writeTask.parallel(new WaitTask(presentation.seconds(1)).andThen(fadeIn(gobject))));
         } else if (gobject instanceof ShapeLike) {
             return new ContextSetupTask(() -> {
                 var shapeGobject = (ShapeLike) gobject;

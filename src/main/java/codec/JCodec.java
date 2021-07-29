@@ -20,7 +20,7 @@ public class JCodec implements VideoCodec {
     @Override
     public void startNewVideo(String path, String name, int frameRate) {
         try {
-            out = NIOUtils.writableFileChannel(name);
+            out = NIOUtils.writableFileChannel(path+""+name);
             encoder = new AWTSequenceEncoder(out, Rational.R(frameRate, 1));
         } catch (Exception e) {
             e.printStackTrace();

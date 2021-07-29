@@ -49,6 +49,8 @@ graphical/basics/task/transformation/gobject/PositionTransform.java
  graphical.basics.task.transformation.gobject.PositionTransform
 presentation/GroupEx.java
  presentation.GroupEx
+graphical/basics/Pivot.java
+ graphical.basics.Pivot
 graphical/basics/gobject/Circle.java
  graphical.basics.gobject.Circle
 presentation/ExBman.java

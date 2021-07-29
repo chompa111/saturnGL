@@ -44,7 +44,7 @@ public abstract class Presentation extends JFrame {
     public Presentation() {
         // ((Graphics2D)bufferedGraphics).scale(1.5,1.5);
 
-        videoCodec.startNewVideo("", "pepe" + clipCounter + ".mov", FRAME_RATE);
+        videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
 
 
         Graphics2D g2 = (Graphics2D) bufferedGraphics;
@@ -174,6 +174,7 @@ public abstract class Presentation extends JFrame {
             task.afterStep();
             processFrame();
         }
+        //cut();
     }
 
     public void execute(Task... tasks) {
@@ -183,7 +184,7 @@ public abstract class Presentation extends JFrame {
     public void cut() {
         videoCodec.saveVideo();
         clipCounter++;
-        videoCodec.startNewVideo("", "pepe" + clipCounter + ".mov", FRAME_RATE);
+        videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
     }
 
     public int seconds(double seconds) {

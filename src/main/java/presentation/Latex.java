@@ -1,5 +1,7 @@
 package presentation;
 
+import graphical.basics.ColorHolder;
+import graphical.basics.Pivot;
 import graphical.basics.gobject.EffectLens;
 import graphical.basics.gobject.LatexGobject;
 import graphical.basics.location.Point;
@@ -7,6 +9,8 @@ import graphical.basics.presentation.Effects;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.task.WaitTask;
+import graphical.basics.task.transformation.gobject.ColorListTranform2;
+import graphical.basics.task.transformation.gobject.ColorTranform2;
 
 import java.awt.*;
 
@@ -22,29 +26,27 @@ public class Latex extends Presentation {
     @Override
     public void buildPresentation() {
 
-        var logo = new SVGGobject("C:\\Users\\PICHAU\\Desktop\\repos\\Saturn\\src\\main\\resources\\saturn-font-logo.svg");
-        var exp = new LatexGobject("\\[ \\lim_{x\\to\\infty \\otimes} \\[ \\prod_{i=a}^{x} f(i) \\] \\]", new Point(100, 300), new Color(200, 0, 150));
+        var logo = new SVGGobject("C:\\Users\\PICHAU\\Desktop\\repos\\Saturn\\src\\main\\resources\\azuis.svg");
 
 
-        var anel=logo.getGroupExcept("satName","planeta");
-        var resto= logo.getGroup("satName","planeta");
+       add(logo);
 
-        add(resto);
-        add(anel);
-
-        anel.init().parallel(resto.init()).execute();
+       logo.toGroupGobject().onChildren(Effects::emphasize,2).execute();
+       logo.init().execute();
 
 
-        anel.toGroupGobject().onChildren(Effects::emphasize,4).execute();
 
-       // exp.onChildren(x->x.rotate(2*3.14)).execute();
+
+       new WaitTask(1).execute();
+       cut();
+
+
+        // exp.onChildren(x->x.rotate(2*3.14)).execute();
 
 
         //exp.getAng().change(1).execute();
 
-
-
-        cut();
+        // cut();
 
 //        var list = generateExp("Bola", new Point(200, 300), Color.white);
 //        var sub= new Group(list);

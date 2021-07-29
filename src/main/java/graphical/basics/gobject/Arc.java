@@ -3,6 +3,7 @@ package graphical.basics.gobject;
 import graphical.basics.ColorHolder;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
+import graphical.basics.location.Point;
 import graphical.basics.value.DoubleHolder;
 import graphical.basics.value.NumberHolder;
 
@@ -44,7 +45,8 @@ public class Arc extends Gobject {
 
     @Override
     public LocationPair getBorders() {
-        return null;
+        return new LocationPair(new graphical.basics.location.Point(center.getX() - radius.getValue() / 2, center.getY() - radius.getValue() / 2),
+                new Point(center.getX() + radius.getValue() / 2, center.getY() + radius.getValue() / 2));
     }
 
     @Override
