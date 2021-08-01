@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "https://packages.atlassian.com/maven-public/"
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation group: 'org.jcodec', name: 'jcodec', version: '0.2.5'
+    implementation group: 'org.jcodec', name: 'jcodec-javase', version: '0.2.5'
+
+    implementation 'org.scilab.forge:jlatexmath:1.0.7'
+//    implementation group: 'cglib', name: 'cglib', version: '3.3.0'
+//    implementation group: 'org.objenesis', name: 'objenesis', version: '3.2'
+
+  //  implementation 'org.jfree:org.jfree.svg:5.0'
+
+    //implementation 'com.kitfox.svg:svg-salamander:1.0'
+    implementation group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.14'
+    implementation group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.14'
+
+
+    //implementation group: 'com.github.hoary', name: 'JavaAV', version: '0.5'
+
+    implementation 'ws.schild:jave-all-deps:3.1.1'
+    implementation 'io.humble:humble-video-all:0.3.0'
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
