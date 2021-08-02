@@ -62,6 +62,7 @@ public class ShapeGobject2 extends FillAndStroke {
 
     @Override
     public void paint(Graphics g) {
+        g.setClip(null);
         var g2d = ((Graphics2D) g);
 
         ((Graphics2D) g).setStroke(new BasicStroke((float) this.strokeThickness.getValue()));

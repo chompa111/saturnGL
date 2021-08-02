@@ -34,23 +34,23 @@ public abstract class Gobject {
         var midpoint = getBorders().midPoint();
         var g2d = (Graphics2D) g;
         var oldT = (AffineTransform) g2d.getTransform().clone();
-        g.translate((int) midpoint.getX(), (int) midpoint.getY());
-        g2d.scale(scale.getValue(), scale.getValue());
+        g2d.translate(midpoint.getX(), midpoint.getY());
         g2d.rotate(angle.getValue());
-        g.translate(-(int) midpoint.getX(), -(int) midpoint.getY());
+        g2d.scale(scale.getValue(), scale.getValue());
+        g2d.translate(-midpoint.getX(), -midpoint.getY());
         paint(g);
 
         g2d.setTransform(oldT);
 
-//        var x = getBorders().midPoint();
-//        g.setColor(Color.green);
-//        var xx = (int) x.getX();
-//        var yy = (int) x.getY();
-//        g.setFont(new Font("Consola", Font.BOLD, 8));
-//        g.drawString(xx + "," + yy, xx + 3, yy);
-//        g.fillOval(xx - 3, yy - 3, 6, 6);
-//        g.setColor(Color.black);
-//        g.fillOval(xx - 1, yy - 1, 2, 2);
+        var x = getBorders().midPoint();
+        g.setColor(Color.green);
+        var xx = (int) x.getX();
+        var yy = (int) x.getY();
+        g.setFont(new Font("Consola", Font.BOLD, 8));
+        g.drawString(xx + "," + yy, xx + 3, yy);
+        g.fillOval(xx - 3, yy - 3, 6, 6);
+        g.setColor(Color.black);
+        g.fillOval(xx - 1, yy - 1, 2, 2);
     }
 
     public abstract void paint(Graphics g);
