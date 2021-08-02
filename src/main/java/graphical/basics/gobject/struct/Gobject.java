@@ -1,8 +1,6 @@
 package graphical.basics.gobject.struct;
 
 
-import graphical.basics.Pivot;
-import graphical.basics.presentation.Effects;
 import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
@@ -21,6 +19,8 @@ import graphical.basics.value.NumberHolder;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.List;
+
+import static graphical.basics.presentation.Positioning.Reference.BOTTOM;
 
 
 public abstract class Gobject {
@@ -87,10 +87,6 @@ public abstract class Gobject {
         return move(x, y, Presentation.staticReference.seconds(1));
     }
 
-    public Task init() {
-        return Effects.init(this);
-    }
-
     public void changeSetPosition(double x, double y) {
         for (Location location : this.getRefereceLocations()) {
             location.incrementX(x);
@@ -98,45 +94,15 @@ public abstract class Gobject {
         }
     }
 
-    public Behavior asSubtitle(Gobject gobject, int border) {
-        var myBorders = this.getBorders();
-        var subBorders = gobject.getBorders();
-
-        var mid1 = myBorders.midPoint();
-        var mid2 = subBorders.midPoint();
-
-        var deltaX = mid1.getX() - mid2.getX();
-        var deltaY = myBorders.getL1().getY() - subBorders.getL1().getY() + (myBorders.getL2().getY() - myBorders.getL1().getY() + border);
-
-        gobject.changeSetPosition(deltaX, deltaY);
+    public Behavior asSubtitle(Gobject gobject, Positioning.Reference reference) {
+        //por enquanto
+        switch (reference) {
+            case BOTTOM:
+                Positioning.align(gobject, this, BOTTOM);
+        }
 
         return new FollowBehavior(gobject, new SupplierPoint(() -> this.getBorders().midPoint().getX(), () -> this.getBorders().getL2().getY()));
 
-    }
-
-    public Behavior asSubtitle(Gobject gobject, Positioning.Reference reference) {
-        switch (reference) {
-            case BOTTOM:
-                Positioning.alignX(gobject, Positioning.Reference.CENTER, this, Positioning.Reference.CENTER);
-                Positioning.alignY(gobject, Positioning.Reference.TOP, this, Positioning.Reference.BOTTOM);
-                break;
-            case RIGHT:
-                Positioning.alignX(gobject, Positioning.Reference.LEFT, this, Positioning.Reference.RIGHT);
-                Positioning.alignY(gobject, Positioning.Reference.CENTER, this, Positioning.Reference.CENTER);
-                break;
-            case LEFT:
-                Positioning.alignX(gobject, Positioning.Reference.RIGHT, this, Positioning.Reference.LEFT);
-                Positioning.alignY(gobject, Positioning.Reference.CENTER, this, Positioning.Reference.CENTER);
-                break;
-            case TOP:
-                Positioning.alignX(gobject, Positioning.Reference.CENTER, this, Positioning.Reference.CENTER);
-                Positioning.alignY(gobject, Positioning.Reference.BOTTOM, this, Positioning.Reference.TOP);
-                break;
-            case CENTER:
-                Positioning.alignX(gobject, Positioning.Reference.CENTER, this, Positioning.Reference.CENTER);
-                Positioning.alignY(gobject, Positioning.Reference.CENTER, this, Positioning.Reference.CENTER);
-        }
-        return null;
     }
 
 
@@ -163,13 +129,6 @@ public abstract class Gobject {
 
     public Task rotate(double amount) {
         return angle.change(amount);
-    }
-
-    public Pivot createPivot(Location location) {
-        var x = new Pivot(this, location);
-
-
-        return x;
     }
 
 }

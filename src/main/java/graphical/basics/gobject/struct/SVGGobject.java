@@ -2,7 +2,6 @@ package graphical.basics.gobject.struct;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Group;
-import graphical.basics.gobject.ShapeGobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import org.apache.batik.parser.AWTPathProducer;
@@ -20,17 +19,17 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
-public class SVGGobject2 extends Gobject {
+public class SVGGobject extends Gobject {
 
     ArrayList<Shape> shapeList = new ArrayList<>();
     List<ShapeGobject2> shapeGobjects = new ArrayList<>();
 
-    private HashMap<String, SVGGobject2> groups;
+    private HashMap<String, SVGGobject> groups;
 
-    public SVGGobject2() {
+    public SVGGobject() {
     }
 
-    public SVGGobject2(String path) {
+    public SVGGobject(String path) {
         try {
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -73,7 +72,7 @@ public class SVGGobject2 extends Gobject {
             }
             groups = new HashMap<>();
             groupAux.forEach((k, v) -> {
-                var svgGobject = new SVGGobject2();
+                var svgGobject = new SVGGobject();
                 svgGobject.shapeGobjects = v;
                 groups.put(k, svgGobject);
             });
@@ -135,10 +134,10 @@ public class SVGGobject2 extends Gobject {
         return shapeGobjects;
     }
 
-    public SVGGobject2 getGroup(String... s) {
+    public SVGGobject getGroup(String... s) {
         var excepts = new HashSet<>(Arrays.asList(s));
 
-        var sVGGobject = new SVGGobject2();
+        var sVGGobject = new SVGGobject();
         sVGGobject.shapeGobjects = new ArrayList<>();
         groups.forEach((k, v) -> {
             if (excepts.contains(k)) {
@@ -148,11 +147,11 @@ public class SVGGobject2 extends Gobject {
         return sVGGobject;
     }
 
-    public SVGGobject2 getGroupExcept(String... s) {
+    public SVGGobject getGroupExcept(String... s) {
 
         var excepts = new HashSet<>(Arrays.asList(s));
 
-        var sVGGobject = new SVGGobject2();
+        var sVGGobject = new SVGGobject();
         sVGGobject.shapeGobjects = new ArrayList<>();
         groups.forEach((k, v) -> {
             if (!excepts.contains(k)) {

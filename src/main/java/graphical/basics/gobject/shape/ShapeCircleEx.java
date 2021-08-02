@@ -1,17 +1,8 @@
 package graphical.basics.gobject.shape;
 
-import graphical.basics.ColorHolder;
 import graphical.basics.gobject.*;
-import graphical.basics.gobject.Polygon;
-import graphical.basics.location.Point;
-import graphical.basics.presentation.Effects;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.task.CodeTask;
-import graphical.basics.task.WaitTask;
-import graphical.basics.task.transformation.gobject.PositionListTransform;
-import graphical.basics.value.DoubleHolder;
-import presentation.SVGGobject;
 
 import java.awt.*;
 

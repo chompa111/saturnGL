@@ -10,34 +10,34 @@ import org.apache.batik.ext.awt.geom.PathLength;
 import java.awt.*;
 import java.util.List;
 
-public class StrokeGobject3 extends ShapeGobject2 {
+public class StrokeGobject extends ShapeGobject2 {
 
-    NumberHolder perc= new DoubleHolder(0);
+    NumberHolder perc = new DoubleHolder(0);
     double len;
 
 
-
-    public StrokeGobject3(Shape shape, Color fillColor, Color strokeColor) {
+    public StrokeGobject(Shape shape, Color fillColor, Color strokeColor) {
         super(shape, fillColor, strokeColor);
     }
 
-    public StrokeGobject3(ShapeGobject2 shapeGobject2) {
-        this.strokeColorHolder = shapeGobject2.strokeColorHolder != null ? shapeGobject2.strokeColorHolder : shapeGobject2.fillColorHolder;
+    public StrokeGobject(ShapeGobject2 shapeGobject2) {
+        this.strokeColorHolder = shapeGobject2.strokeColorHolder != null ? new ColorHolder(shapeGobject2.strokeColorHolder.getColor())
+                : shapeGobject2.fillColorHolder != null ? new ColorHolder(shapeGobject2.fillColorHolder.getColor()) : new ColorHolder(new Color(0, 0, 0, 0));
         this.shapeOfsetX = shapeGobject2.shapeOfsetX;
         this.shapeOfsetY = shapeGobject2.shapeOfsetY;
-        this.shape=shapeGobject2.shape;
+        this.shape = shapeGobject2.shape;
         this.location = shapeGobject2.location;
-        this.angle=shapeGobject2.getAngle();
-        this.scale=shapeGobject2.getScale();
+        this.angle = shapeGobject2.getAngle();
+        this.scale = shapeGobject2.getScale();
 
         len = new PathLength(shape).lengthOfPath();
     }
 
-    public StrokeGobject3(ShapeGobject2 shapeGobject2, Color color) {
+    public StrokeGobject(ShapeGobject2 shapeGobject2, Color color) {
         this.strokeColorHolder = new ColorHolder(color);
         this.shapeOfsetX = shapeGobject2.shapeOfsetX;
         this.shapeOfsetY = shapeGobject2.shapeOfsetY;
-        this.shape=shapeGobject2.shape;
+        this.shape = shapeGobject2.shape;
         this.location = shapeGobject2.location;
 
         len = new PathLength(shape).lengthOfPath();
@@ -48,9 +48,9 @@ public class StrokeGobject3 extends ShapeGobject2 {
     public void paint(Graphics g) {
         var g2d = ((Graphics2D) g);
 
-        if(len==0)return;
-
-        g.setColor(strokeColorHolder.getColor());
+        if (len == 0) return;
+        if (strokeColorHolder != null)
+            g.setColor(strokeColorHolder.getColor());
         Stroke s = new BasicStroke((float) this.strokeThickness.getValue(),                      // Width
                 BasicStroke.CAP_SQUARE,    // End cap
                 BasicStroke.JOIN_MITER,    // Join style
