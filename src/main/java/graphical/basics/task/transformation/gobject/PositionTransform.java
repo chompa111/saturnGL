@@ -43,7 +43,7 @@ public class PositionTransform implements Task {
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
 
         if (stepCount < (steps / 2)) {
             deltaX += aX;

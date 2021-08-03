@@ -16,7 +16,7 @@ public class WaitTask implements Task {
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
         stepCount++;
     }
 

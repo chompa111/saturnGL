@@ -172,7 +172,7 @@ public abstract class Presentation extends JFrame {
         t = task;
         task.setup();
         while (!task.isDone()) {
-            task.afterStep();
+            task.step();
             processFrame();
         }
         //cut();

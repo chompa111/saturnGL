@@ -16,7 +16,7 @@ public class SingleStepTask implements Task{
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
         step.run();
         hasExecuted=true;
     }

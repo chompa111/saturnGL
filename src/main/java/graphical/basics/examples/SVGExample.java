@@ -1,48 +1,56 @@
 package graphical.basics.examples;
 
 import graphical.basics.gobject.CircleBuilder;
+import graphical.basics.gobject.Group;
 import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.StringGobject;
 import graphical.basics.gobject.struct.SVGGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
+import graphical.basics.task.ContextSetupTask;
+import graphical.basics.task.WaitTask;
+import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
 
 public class SVGExample extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setFramerate(30);
-        presentationConfig.setDisableCodec(true);
+        presentationConfig.setFramerate(60);
+        presentationConfig.setDisableCodec(false);
     }
 
     @Override
     public void buildPresentation() {
-       // var logo = new LatexGobject(new Font("Dialog",Font.ITALIC,30),"C:\\Users\\PICHAU\\Desktop\\azuis.svg",new Point(500,500),Color.red);
 
-        var logo= CircleBuilder.aCircle().build().asShapeGobject();
 
-        add(logo);
-        //logo.getAngle().setValue(3.1415926535/2);
-       logo.scale(10).execute();
-        logo.move(100,0,seconds(10)).execute();
-//
-//                logo.rotate(1)
-//                .parallel(
-//                        logo.scale(5))
-//                .repeat(2)
-//                .andThen(logo.changeColor(Color.cyan).parallel(logo.move(0,500))
-//                        .parallel(logo.rotate(4.14)))
-//                .andThen(logo.move(10000,0))
-//                .wait(seconds(2))
-//                .andThen(logo.move(-10000,0))
-//                .andThen(logo.move(-100,0))
-//                .andThen(logo.move(100,0))
-//                .execute();
+        DoubleHolder vh = new DoubleHolder(2);
 
-//        Animation.strokeAndFill(logo,seconds(3)).execute();
-//        Animation.fadeInGrow(logo,seconds(1)).execute();
+        var formula_rect = new LatexGobject("f(x)=a.x+b", new Point(200, 500), new Color(187, 174, 100));
+
+        add(formula_rect);
+        Animation.strokeAndFill(formula_rect, seconds(2)).execute();
+
+        var parenthesisL = new LatexGobject("(f(x))^2=(a.x+b)^2+c", new Point(200, 500), new Color(187, 174, 100));
+        //add(parenthesisL);
+        var sub = parenthesisL.subGroupExept(0, 5, 6, 8, 14, 15);
+        var f = parenthesisL.subGroup(0, 5, 6, 8, 14, 15,16,17);
+        Positioning.alignAll(formula_rect.getGobjects(), sub.getGobjects())
+                .parallel(new ContextSetupTask(() -> {
+                    add(f);
+                    return new WaitTask(seconds(0.5)).andThen(Animation.strokeAndFill(f, seconds(1)));
+                }))
+                .execute();
+
+
+        formula_rect.subGroup(5).changeColor(Color.red)
+                .parallel(formula_rect.subGroup(9).changeColor(Color.green))
+                .execute();
+
+        Animation.emphasize(f).execute();
 
         cut();
     }

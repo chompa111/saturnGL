@@ -35,7 +35,7 @@ public class ValueTransform implements Task {
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
 
         if (stepCount < (steps / 2)) {
             delta += a;

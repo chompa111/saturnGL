@@ -6,7 +6,7 @@ public interface Task {
 
     void setup();
 
-    void afterStep();
+    void step();
 
     boolean isDone();
 
@@ -36,14 +36,14 @@ public interface Task {
         return this.andThen(new WaitTask(steps));
     }
 
-    default Task afterStep(Runnable runnable) {
+    default Task step(Runnable runnable) {
         return this.andThen(new SingleStepTask(runnable));
     }
 
     static void consume(Task task) {
         task.setup();
         while (!task.isDone()) {
-            task.afterStep();
+            task.step();
         }
     }
 

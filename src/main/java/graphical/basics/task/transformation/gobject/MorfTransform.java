@@ -125,7 +125,7 @@ public class MorfTransform implements Task {
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
 
         if (stepCount < (steps / 2)) {
             for (int i = 0; i < p1.size(); i++) {

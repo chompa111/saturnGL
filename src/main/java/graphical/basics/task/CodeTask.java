@@ -16,7 +16,7 @@ public class CodeTask implements Task {
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
         if (!once) {
             thread.start();
             once = true;
@@ -36,7 +36,7 @@ public class CodeTask implements Task {
     public static void runTask(Task task){
         task.setup();
         while (!task.isDone()) {
-            task.afterStep();
+            task.step();
             doStep();
         }
     }

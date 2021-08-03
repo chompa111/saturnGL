@@ -50,14 +50,14 @@ public class Animation {
             presentation.add(sw);
             return sw.getPerc().change(1, steps)
                     .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
-                    .afterStep(() -> presentation.remove(sw));
+                    .step(() -> presentation.remove(sw));
         }
         if (gobject instanceof ShapeLike) {
             var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
             presentation.add(sw);
             return sw.getPerc().change(1, steps)
                     .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
-                    .afterStep(() -> presentation.remove(sw));
+                    .step(() -> presentation.remove(sw));
 
         }
 

@@ -19,8 +19,8 @@ public class RepeatTask implements Task {
     }
 
     @Override
-    public void afterStep() {
-        task.afterStep();
+    public void step() {
+        task.step();
         if (task.isDone() && (countTimes < times)) {
             task.setup();
             countTimes++;

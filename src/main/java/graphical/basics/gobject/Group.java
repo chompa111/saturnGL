@@ -11,6 +11,7 @@ import graphical.basics.task.WaitTask;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
 
@@ -101,6 +102,17 @@ public class Group extends Gobject {
         var list = new ArrayList<Gobject>();
         for (Integer i : index) {
             list.add(gobjects.get(i));
+        }
+        return new Group(list);
+    }
+
+    public Group subGroupExept(Integer... index) {
+        var list = new ArrayList<Gobject>();
+        var set = new HashSet<>(Arrays.asList(index));
+        for (int i=0;i<gobjects.size();i++) {
+            if(!set.contains(i)){
+                list.add(gobjects.get(i));
+            }
         }
         return new Group(list);
     }

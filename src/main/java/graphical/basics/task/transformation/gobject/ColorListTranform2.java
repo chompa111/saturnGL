@@ -55,7 +55,7 @@ public class ColorListTranform2 implements Task {
     }
 
     @Override
-    public void afterStep() {
+    public void step() {
         if (stepCount < steps / 2) {
             for (int i = 0; i < aceleration.length; i++) {
                 for (int j = 0; j < aceleration[i].length; j++) {

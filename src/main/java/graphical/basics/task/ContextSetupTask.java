@@ -19,8 +19,8 @@ public class ContextSetupTask implements Task {
     }
 
     @Override
-    public void afterStep() {
-        slaveTask.afterStep();
+    public void step() {
+        slaveTask.step();
     }
 
     @Override
