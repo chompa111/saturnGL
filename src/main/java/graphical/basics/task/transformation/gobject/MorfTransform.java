@@ -82,8 +82,8 @@ public class MorfTransform implements Task {
         var p1Mid = g1.getBorders().midPoint();
         var p2Mid = g2.getBorders().midPoint();
 
-//        p1.sort(Comparator.comparingDouble(a -> messureAng( p1Mid.getX(), p1Mid.getY(),a.x+Math.random()*0.1, a.y)));
-//        p2.sort(Comparator.comparingDouble(a -> messureAng( p2Mid.getX(), p2Mid.getY(),a.x+Math.random()*0.1, a.y)));
+        p1.sort(Comparator.comparingDouble(a -> messureAng( p1Mid.getX(), p1Mid.getY(),a.x, a.y)));
+        p2.sort(Comparator.comparingDouble(a -> messureAng( p2Mid.getX(), p2Mid.getY(),a.x, a.y)));
 
 
 //        p1.sort(Comparator.comparingInt(a -> a.colorHolder.getColor().getRGB()));

@@ -2,6 +2,7 @@ package graphical.basics.gobject.struct;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.location.Location;
+import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -23,6 +24,9 @@ public class Char2 extends ShapeGobject2 {
         t.translate(location.getX(), location.getY());
         t.scale(size / 100.0, size / 100.0);
         t.translate(-(location.getX()), -(location.getY()));
+
+        //this.scale=new DoubleHolder(size/100.0);
+
         var pepe = font.createGlyphVector(new FontRenderContext(null, true, true), "" + c[0]);
         this.shape = t.createTransformedShape(pepe.getOutline((int) location.getX(), (int) location.getY()));
         var bounds = shape.getBounds();

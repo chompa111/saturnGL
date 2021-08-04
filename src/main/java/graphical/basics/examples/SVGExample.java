@@ -20,7 +20,7 @@ public class SVGExample extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
         presentationConfig.setFramerate(60);
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
     }
 
     @Override
@@ -32,6 +32,8 @@ public class SVGExample extends Presentation {
         var formula_rect = new LatexGobject("f(x)=a.x+b", new Point(200, 500), new Color(187, 174, 100));
 
         add(formula_rect);
+        LatexGobject.indexsize(formula_rect);
+
         Animation.strokeAndFill(formula_rect, seconds(2)).execute();
 
         var parenthesisL = new LatexGobject("(f(x))^2=(a.x+b)^2+c", new Point(200, 500), new Color(187, 174, 100));

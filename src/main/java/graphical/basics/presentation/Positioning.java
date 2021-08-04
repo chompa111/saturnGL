@@ -1,5 +1,6 @@
 package graphical.basics.presentation;
 
+import graphical.basics.gobject.struct.Char2;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.Point;

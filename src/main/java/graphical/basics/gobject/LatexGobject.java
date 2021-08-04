@@ -6,6 +6,7 @@ import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
 import graphical.basics.location.Point;
+import graphical.basics.presentation.Presentation;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -45,5 +46,15 @@ public class LatexGobject extends Group {
 
         return gobjects;
 
+    }
+
+    public static void indexsize(Group group){
+        int index=0;
+        for (Gobject gobject:group.getGobjects()){
+
+            var number= new LatexGobject(new Font("Consolas",Font.BOLD,15),index+"",gobject.getBorders().midPoint(), Color.green);
+            Presentation.staticReference.add(number);
+            index++;
+        }
     }
 }
