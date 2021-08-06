@@ -15,7 +15,7 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 
 
 
-## Saturn suportsLatex
+## Saturn suports [Latex](https://en.wikipedia.org/wiki/LaTeX)
 
 ![latex](https://user-images.githubusercontent.com/43425971/128233754-3aa6fa40-8ff8-402c-8cc7-07d7610c6fcb.gif)
 
