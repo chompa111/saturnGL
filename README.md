@@ -84,9 +84,9 @@ circle.changeColor(new Color(255,0,0)).execute(); // red color
 ```
 <img src="https://user-images.githubusercontent.com/43425971/128456165-cb901a8f-e2a0-41e3-9d96-f64a40fdb58d.gif" alt="drawing" width="550"/>
 
-What if we wanted to move and change color at the same time? Its a good moment to talk about Tasks on SaturnGL.
+What if we wanted to move and change color at the same time? It's a good moment to talk about Tasks on SaturnGL.
 `Task` is some action that occurs in a given time, by the way  `move()` and `changeColor()` are examples of tasks that you already know.
-On Saturn you can **compose** two or more tasks on a a single complex task. in our example we need to compose the task `move` and `changeColor` to another taks 
+On Saturn you can **compose** two or more tasks on a a single complex task. in our example we need to compose the task `move` and `changeColor` to another tasks 
 that execute it in paralel way. we could do that as following:
 
 ```java
