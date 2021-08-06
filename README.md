@@ -53,7 +53,7 @@ public class Example extends Presentation {
 
 ## 2.1 First Animation
 
-#### our first animation will be a moving circle.
+#### Our first animation will be a moving circle.
 
 - to create a circle:
 
