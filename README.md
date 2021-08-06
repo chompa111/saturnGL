@@ -24,7 +24,7 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 
 ## 1.1 Create a class that extends Presentation
 
-to create your first animation on Saturn, you need:
+to create your first animation on Saturn, you need to:
 - create a class that extends Presentation
 - create a new instace of its class
 - call the method `buildPresentation()` that is the method were you will create your _animation code_ properly, on the main function.
