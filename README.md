@@ -72,14 +72,14 @@ add(circle);
 ```
 - move your circle:
 ```java
-circle.move(200,0).execute()// first arg is the amount on X, the second on Y
+circle.move(200,0).execute();// first arg is the amount on X, the second on Y
 ```
 <img src="https://user-images.githubusercontent.com/43425971/128455601-1ee5ab65-8b10-4d5c-8ca6-cd0e9db2c9f1.gif" alt="drawing" width="550"/>
 
 - and change its color:
 
 ```java
-circle.move(200,0).execute()
+circle.move(200,0).execute();
 circle.changeColor(new Color(255,0,0)).execute(); // red color
 ```
 <img src="https://user-images.githubusercontent.com/43425971/128456165-cb901a8f-e2a0-41e3-9d96-f64a40fdb58d.gif" alt="drawing" width="550"/>
@@ -111,9 +111,30 @@ Finally!
 
 
 
+## Generating the _.mov_ video
 
 
+Only by executing the main method with the circle example, the library will generate a live preview on your screen, and in the end a .mov file with your animation inside the `/video` folder on the root of project.
 
+you can set the fps of the generated video on the `setup()` method as following:
+
+
+``` java
+@Override
+public void setup(PresentationConfig presentationConfig) {
+    presentationconfig.setFps(75);        
+}
+```
+> presentation config always have a default value for every config, in case 60 fps is the default value
+
+you can disable the video generation to increase your preview fps while you are testing your code.
+
+``` java
+@Override
+public void setup(PresentationConfig presentationConfig) {
+    presentationconfig.setFps(75);
+    presentationconfig.disableCodec(true);
+}
 
 
 
