@@ -135,9 +135,6 @@ public void setup(PresentationConfig presentationConfig) {
     presentationconfig.setFps(75);
     presentationconfig.disableCodec(true);
 }
-
-
-
-
+```
 
 
