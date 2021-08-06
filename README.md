@@ -90,8 +90,8 @@ On Saturn you can **compose** two or more tasks on a a single complex task. In o
 that execute it in paralel way. We could do that as following:
 
 ```java
-var taskMove=circle.move(400,0);
-var taskChangeColor=circle.changeColor(new Color(255,0,0));
+var taskMove = circle.move(400,0);
+var taskChangeColor = circle.changeColor(new Color(255,0,0));
 var parallelTask = taskMove.parallel(taskChangeColor);
 
 // or simplifying
