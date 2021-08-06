@@ -22,7 +22,7 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 
 # First Steps
 
-## 1.1 Create a class that extends Presentation
+## 1) Create a class that extends Presentation
 
 to create your first animation on Saturn, you need to:
 - create a class that extends Presentation
@@ -51,7 +51,7 @@ public class Example extends Presentation {
 > the method `buildPresentation()` will contain all your instructions to build the animation, and the method `setup()` to config preferences about de video codec, fps and so on
 
 
-## 2.1 First Animation
+## 2) First Animation
 
 #### Our first animation will be a moving circle.
 
@@ -111,7 +111,7 @@ Finally!
 
 
 
-## Generating the _.mov_ video
+## 3) Generating the _.mov_ video
 
 
 Only by executing the main method with the circle example, the library will generate a live preview on your screen, and in the end a .mov file with your animation inside the `/video` folder on the root of project.
@@ -136,5 +136,13 @@ public void setup(PresentationConfig presentationConfig) {
     presentationconfig.disableCodec(true);
 }
 ```
+
+
+
+
+
+
+
+
 
 
