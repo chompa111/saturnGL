@@ -15,7 +15,7 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 
 
 
-## Saturn works with Latex
+## Saturn suportsLatex
 
 ![latex](https://user-images.githubusercontent.com/43425971/128233754-3aa6fa40-8ff8-402c-8cc7-07d7610c6fcb.gif)
 
@@ -24,8 +24,8 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 
 ## 1.1 Create a class that extends Presentation
 
-to make your first animation you need:
--create a class that extends Presentation
+to create your first animation on Saturn, you need:
+- create a class that extends Presentation
 - create a new instace of its class
 - call the method `buildPresentation()` that is the method were you will create your _animation code_ properly, on the main function.
 
@@ -51,9 +51,9 @@ public class Example extends Presentation {
 > the method `buildPresentation()` will contain all your instructions to build the animation, and the method `setup()` to config preferences about de video codec, fps and so on
 
 
-## 2.1 Make something on your screen
+## 2.1 First Animation
 
-- our first animation will be a moving circle., to create a circle:
+- our first animation will be a moving circle. to create a circle:
 
 ```java
 var center = new Point(100,500);
@@ -82,7 +82,7 @@ circle.changeColor(new Color(255,0,0)).execute(); // red color
 ```
 <img src="https://user-images.githubusercontent.com/43425971/128456165-cb901a8f-e2a0-41e3-9d96-f64a40fdb58d.gif" alt="drawing" width="550"/>
 
-What if we would move and change color at the same time? Its a good moment to talk about Tasks on SaturnGL.
+What if we wanted to move and change color at the same time? Its a good moment to talk about Tasks on SaturnGL.
 `Task` is some action that occurs in a given time, by the way  `move()` and `changeColor()` are examples of tasks that you already know.
 On Saturn you can **compose** two or more tasks on a a single complex task. in our example we need to compose the task `move` and `changeColor` to another taks 
 that execute it in paralel way. we could do that as following:
@@ -92,7 +92,7 @@ var taskMove=circle.move(400,0);
 var taskChangeColor=circle.changeColor(new Color(255,0,0));
 var parallelTask = taskMove.parallel(taskChangeColor);
 
-// or simply
+// or simplifying
 var parallelTask=circle.move(400,0).paralel(circle.changeColor(new Color(255,0,0));
 
 ```
