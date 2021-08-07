@@ -27,7 +27,7 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 to create your first animation on Saturn, you need to:
 - create a class that extends Presentation
 - create a new instace of its class 
-- on the main function: call the method `buildPresentation()` that is the method where you will create your _animation code_ properly:
+- on the main function: call the method `buildPresentation()`, this is where you will create your _animation code_ properly:
 
 
 ```java
@@ -87,7 +87,7 @@ circle.changeColor(new Color(255,0,0)).execute(); // red color
 What if we wanted to move and change color at the same time? It's a good moment to talk about Tasks on SaturnGL.
 `Task` is some action that occurs in a given time, by the way  `move()` and `changeColor()` are examples of tasks that you already know.
 On Saturn you can **compose** two or more tasks on a a single complex task. In our example we need to compose the task `move` and `changeColor` to another task 
-that execute it in paralel way. We could do that as following:
+that executes it in paralel way. We could do that as following:
 
 ```java
 var taskMove = circle.move(400,0);
@@ -114,7 +114,7 @@ Finally!
 ## 3) Generating the _.mov_ video
 
 
-Only by executing the main method with the circle example, the library will generate a live preview on your screen, and in the end a .mov file with your animation inside the `/video` folder on the root of project.
+Simply by executing the main method with the circle example, the library will generate a live preview on your screen, and in the end a .mov file with your animation inside the `/video` folder on the root of project.
 
 you can set the fps of the generated video on the `setup()` method as following:
 
@@ -127,7 +127,7 @@ public void setup(PresentationConfig presentationConfig) {
 ```
 > presentation config always have a default value for every config, in case 60 fps is the default value
 
-you can disable the video generation to increase your preview fps while you are testing your code.
+you can disable the video generation to increase your preview fps while testing your code.
 
 ``` java
 @Override
