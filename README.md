@@ -48,7 +48,7 @@ public class Example extends Presentation {
 }
 ```
 
-> the method `buildPresentation()` will contain all your instructions to build the animation, and the method `setup()` to config preferences about de video codec, fps and so on
+> the method `buildPresentation()` will contain all your instructions to build the animation, and the method `setup()` those to config preferences about de video codec, fps and so on
 
 
 ## 2) First Animation
