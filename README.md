@@ -125,7 +125,7 @@ public void setup(PresentationConfig presentationConfig) {
     presentationconfig.setFps(75);        
 }
 ```
-> presentation config always have a default value for every config, in case 60 fps is the default value
+> presentation config always has a default value for every config, in case 60 fps is the default value
 
 you can disable the video generation to increase your preview fps while testing your code.
 
