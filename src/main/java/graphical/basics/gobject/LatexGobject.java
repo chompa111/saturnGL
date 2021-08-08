@@ -57,4 +57,14 @@ public class LatexGobject extends Group {
             index++;
         }
     }
+
+    public static void colorizeOrder(List<Gobject> l1, List<Gobject> l2){
+
+
+        for(int i=0;i< Math.min(l1.size(),l2.size());i++){
+            var color= ColorHolder.randomColor();
+            l1.get(i).changeColor(color,4).execute();
+            l2.get(i).changeColor(color,4).execute();
+        }
+    }
 }

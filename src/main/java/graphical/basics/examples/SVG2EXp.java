@@ -2,6 +2,7 @@ package graphical.basics.examples;
 
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.Group;
+import graphical.basics.gobject.struct.SVGGobject;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
@@ -9,25 +10,22 @@ import graphical.basics.task.WaitTask;
 
 import java.awt.*;
 
-public class CircleEx extends Presentation {
+public class SVG2EXp extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setFramerate(30);
-        presentationConfig.setDisableCodec(true);
+        presentationConfig.setFramerate(10);
+        presentationConfig.setDisableCodec(false);
     }
 
     @Override
     public void buildPresentation() {
+        //getBackGround().getColors().get(0).setColor(Color.white);
+        var svg=new SVGGobject("C:\\Users\\PICHAU\\Desktop\\azuis.svg");
+        var balao=svg.getGroup("balao");
+        add(balao);
 
-        var circle = CircleBuilder.aCircle().build();
-        var circle2 = CircleBuilder.aCircle().withCenter(200, 200).withColor(Color.magenta).build();
+        Animation.strokeAndFill(balao,seconds(4)).execute();
 
-        var group = new Group(circle, circle2);
-        add(group);
-        Animation.strokeAndFill(group, seconds(1)).execute();
-
-        group.getAngle().change(3.1415).execute();
-        group.getScale().change(-0.5).execute();
 
         new WaitTask(1).execute();
         cut();
@@ -35,6 +33,6 @@ public class CircleEx extends Presentation {
     }
 
     public static void main(String[] args) {
-        new CircleEx().buildPresentation();
+        new SVG2EXp().buildPresentation();
     }
 }

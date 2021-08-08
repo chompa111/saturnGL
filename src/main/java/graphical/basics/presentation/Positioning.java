@@ -131,7 +131,16 @@ public class Positioning {
         List<Task> taskList = new ArrayList<>();
 
         for (int i = 0; i < l1.size(); i++) {
-            taskList.add(Positioning.animation.align(l1.get(i), l2.get(i), CENTER));
+            if(l1.get(i) instanceof Char2){
+                var char1=(Char2)l1.get(i);
+                var char2=(Char2)l2.get(i);
+
+                double ration=(char2.getSize()+0.0)/(char1.getSize()+0.0);
+                taskList.add(Positioning.animation.align(l1.get(i), l2.get(i), CENTER).parallel(char1.scale(ration)));
+            }else{
+
+                taskList.add(Positioning.animation.align(l1.get(i), l2.get(i), CENTER));
+            }
         }
 
         return new ParalelTask(taskList);

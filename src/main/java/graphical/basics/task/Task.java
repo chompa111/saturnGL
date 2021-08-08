@@ -2,6 +2,9 @@ package graphical.basics.task;
 
 import graphical.basics.presentation.Presentation;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 public interface Task {
 
     void setup();
@@ -19,6 +22,10 @@ public interface Task {
         }
     }
 
+    default Task andThen(Supplier<Task> supplier){
+        return andThen(new ContextSetupTask(supplier));
+    }
+
     default Task parallel(Task t2) {
         if (this instanceof ParalelTask) {
             ((ParalelTask) this).addTask(t2);
@@ -26,6 +33,10 @@ public interface Task {
         } else {
             return new ParalelTask(this, t2);
         }
+    }
+
+    default Task parallel(Supplier<Task> supplier) {
+        return parallel(new ContextSetupTask(supplier));
     }
 
     default Task repeat(int times) {

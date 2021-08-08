@@ -36,5 +36,11 @@ public class Char2 extends ShapeGobject2 {
         this.c = c;
     }
 
+    public int getSize() {
+        return size;
+    }
 
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

@@ -1,6 +1,7 @@
 package graphical.basics.presentation;
 
 import codec.JCodec;
+import codec.RawImageCodec;
 import codec.VideoCodec;
 import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
@@ -26,8 +27,7 @@ public abstract class Presentation extends JFrame {
     public BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     public Graphics bufferedGraphics = bufferedImage.getGraphics();
 
-    VideoCodec videoCodec = new JCodec();
-    //VideoCodec videoCodec = new JaveEncoder();
+    VideoCodec videoCodec;
     List<Gobject> gobjects = new ArrayList<>();
     List<Behavior> behaviors = new ArrayList<>();
 
@@ -44,7 +44,11 @@ public abstract class Presentation extends JFrame {
     private BackGround backGround = new BackGround();
 
     public Presentation() {
-        // ((Graphics2D)bufferedGraphics).scale(1.5,1.5);
+
+
+        PresentationConfig presentationConfig = new PresentationConfig();
+        setup(presentationConfig);
+        applyConfigs(presentationConfig);
 
         videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
 
@@ -57,7 +61,6 @@ public abstract class Presentation extends JFrame {
                     {
                         put(RenderingHints.KEY_ANTIALIASING,
                                 RenderingHints.VALUE_ANTIALIAS_ON);
-                       // put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
                     }
                 });
 
@@ -67,17 +70,11 @@ public abstract class Presentation extends JFrame {
 
         setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setUndecorated(true);
-
-        // setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         setVisible(true);
 
 
         staticReference = this;
 
-        PresentationConfig presentationConfig = new PresentationConfig();
-        setup(presentationConfig);
-        applyConfigs(presentationConfig);
 
     }
 
@@ -96,6 +93,21 @@ public abstract class Presentation extends JFrame {
             disableCodec = false;
         }
 
+        if (presentationConfig.getCodec() != null) {
+            switch (presentationConfig.getCodec()) {
+                case JCODEC:
+                    this.videoCodec = new JCodec();
+                    break;
+                case RAW_IMAGE:
+                    this.videoCodec = new RawImageCodec();
+                    break;
+            }
+
+        } else {
+            this.videoCodec = new JCodec();
+        }
+
+
     }
 
     public abstract void buildPresentation();
@@ -107,10 +119,6 @@ public abstract class Presentation extends JFrame {
         g.drawString("" + frameCounter, 900, 100);
         g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
         lastMesure = System.currentTimeMillis();
-//        g.setColor(Color.white);
-//        g.fillRect(0, 0, 1000, 1000);
-
-        // TaskPainter.paint(g,t,500,200);
     }
 
     public void processFrame() {
@@ -136,13 +144,7 @@ public abstract class Presentation extends JFrame {
 
     public void paintComponent(Graphics g) {
 
-        // background;
         backGround.paint(g);
-//        int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
-//
-//        Arrays.fill(pixels,0);
-//        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), pixels, 0, bufferedImage.getWidth());
-//
 
         for (int i = 0; i < gobjects.size(); i++) {
             gobjects.get(i).paint(g, true);
@@ -155,7 +157,6 @@ public abstract class Presentation extends JFrame {
         }
     }
 
-    //
     public void add(Gobject gobject) {
         gobjects.add(gobject);
     }
