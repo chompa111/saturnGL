@@ -8,6 +8,7 @@ import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
+import graphical.basics.task.WaitTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 
 import javax.swing.*;
@@ -19,10 +20,13 @@ import java.util.List;
 
 public abstract class Presentation extends JFrame {
 
-    public static int FRAME_RATE = 60;
     public static Presentation staticReference;
 
+    private boolean switchProcessing = true;
     private boolean disableCodec;
+
+    public static int FRAME_RATE = 60;
+
 
     public BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     public Graphics bufferedGraphics = bufferedImage.getGraphics();
@@ -31,14 +35,13 @@ public abstract class Presentation extends JFrame {
     List<Gobject> gobjects = new ArrayList<>();
     List<Behavior> behaviors = new ArrayList<>();
 
-    FpsControler fpsControler = new FpsControler();
+    //FpsControler fpsControler = new FpsControler();
 
     int clipCounter = 0;
     int frameCounter = 0;
 
     long lastMesure = System.currentTimeMillis();
 
-    Task t;
 
 
     private BackGround backGround = new BackGround();
@@ -70,6 +73,7 @@ public abstract class Presentation extends JFrame {
 
         setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setUndecorated(true);
         setVisible(true);
 
 
@@ -170,11 +174,12 @@ public abstract class Presentation extends JFrame {
     }
 
     public void execute(Task task) {
-        t = task;
+
         task.setup();
         while (!task.isDone()) {
             task.step();
-            processFrame();
+            if (switchProcessing)
+                processFrame();
         }
         //cut();
     }
@@ -207,6 +212,19 @@ public abstract class Presentation extends JFrame {
 
     public BackGround getBackGround() {
         return backGround;
+    }
+
+    public Task wait(int steps) {
+        return new WaitTask(steps);
+    }
+
+
+    public void switchOff() {
+        switchProcessing = false;
+    }
+
+    public void switchOn() {
+        switchProcessing = true;
     }
 
     public void setBackGround(BackGround backGround) {

@@ -42,7 +42,7 @@ public class Light extends Gobject {
 
     @Override
     public LocationPair getBorders() {
-        return null;
+        return new LocationPair(center,center);
     }
 
     @Override

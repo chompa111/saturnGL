@@ -10,12 +10,12 @@ import java.util.List;
 
 public class BackGround extends Gobject {
 
-    ColorHolder backGroundColor=new ColorHolder(Color.black);
+    ColorHolder backGroundColor = new ColorHolder(Color.black);
 
     @Override
     public void paint(Graphics g) {
         g.setColor(backGroundColor.getColor());
-        g.fillRect(0,0,1000,1000);
+        g.fillRect(0, 0, 1000, 1000);
     }
 
     @Override
@@ -31,5 +31,9 @@ public class BackGround extends Gobject {
     @Override
     public List<Location> getRefereceLocations() {
         return null;
+    }
+
+    public ColorHolder getBackGroundColor() {
+        return backGroundColor;
     }
 }

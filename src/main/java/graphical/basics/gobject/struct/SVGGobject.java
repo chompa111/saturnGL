@@ -46,7 +46,7 @@ public class SVGGobject extends Gobject {
             NodeList svgPathsG = (NodeList) expressionG.evaluate(document, XPathConstants.NODESET);
 
             HashMap<String, List<ShapeGobject2>> groupAux = new HashMap<>();
-            for (int i = 0; i < svgPathsG.getLength(); i++) {
+             for (int i = 0; i < svgPathsG.getLength(); i++) {
                 var item = svgPathsG.item(i);
 
                 var d = item.getAttributes().getNamedItem("d").getNodeValue();

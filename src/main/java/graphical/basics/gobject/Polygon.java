@@ -86,9 +86,15 @@ public class Polygon extends Gobject implements ShapeLike {
     }
 
     public void addPoints(int amount) {
-        for (int i = 0; i < amount; i++) {
-            int randomIndex = (int) ((locations.size() - 1) * Math.random());
-            locations.add(randomIndex + 1, Location.midPoint(locations.get(randomIndex), locations.get(randomIndex + 1)));
+        if (locations.size() == 1) {
+            for (int i = 0; i < amount; i++) {
+                locations.add(0, Location.midPoint(locations.get(0), locations.get(0)));
+            }
+        } else {
+            for (int i = 0; i < amount; i++) {
+                int randomIndex = (int) ((locations.size() - 1) * Math.random());
+                locations.add(randomIndex + 1, Location.midPoint(locations.get(randomIndex), locations.get(randomIndex + 1)));
+            }
         }
         this.xs = new int[locations.size()];
         this.ys = new int[locations.size()];
@@ -131,12 +137,14 @@ public class Polygon extends Gobject implements ShapeLike {
     public void paint(Graphics g) {
         g.setColor(colorHolder.getColor());
         updateShape();
-        g.drawPolygon(xs, ys, xs.length);
+        g.fillPolygon(xs, ys, xs.length);
     }
 
+
+    //TODO GAMBETA
     @Override
     public LocationPair getBorders() {
-        return null;
+        return this.asShapeGobject().getBorders();
     }
 
     @Override

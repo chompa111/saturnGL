@@ -1,18 +1,24 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
+import graphical.basics.gobject.latex.Char;
+import graphical.basics.gobject.latex.lixao.Latex;
 import graphical.basics.gobject.struct.Char2;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Presentation;
+import graphical.basics.task.Task;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static graphical.basics.gobject.latex.lixao.Latex.generateExp;
 
@@ -41,30 +47,39 @@ public class LatexGobject extends Group {
             t.translate(location.getX(), location.getY());
             sh = t.createTransformedShape(sh);
             //gobjects.add(new Char2(font, new Point(sh.getBounds().x , sh.getBounds().y ), new char[]{c}, font.getSize(), color));
-            gobjects.add(new ShapeGobject2(sh,new ColorHolder(color),null));
+            gobjects.add(new ShapeGobject2(sh, new ColorHolder(color), null));
         }
 
         return gobjects;
 
     }
 
-    public static void indexsize(Group group){
-        int index=0;
-        for (Gobject gobject:group.getGobjects()){
+    public static void indexsize(Group group) {
+        int index = 0;
+        for (Gobject gobject : group.getGobjects()) {
 
-            var number= new LatexGobject(new Font("Consolas",Font.BOLD,15),index+"",gobject.getBorders().midPoint(), Color.green);
+            var number = new LatexGobject(new Font("Consolas", Font.BOLD, 15), index + "", gobject.getBorders().midPoint(), Color.green);
             Presentation.staticReference.add(number);
             index++;
         }
     }
 
-    public static void colorizeOrder(List<Gobject> l1, List<Gobject> l2){
+    public static void colorizeOrder(List<Gobject> l1, List<Gobject> l2) {
 
 
-        for(int i=0;i< Math.min(l1.size(),l2.size());i++){
-            var color= ColorHolder.randomColor();
-            l1.get(i).changeColor(color,4).execute();
-            l2.get(i).changeColor(color,4).execute();
+        for (int i = 0; i < Math.min(l1.size(), l2.size()); i++) {
+            var color = ColorHolder.randomColor();
+            l1.get(i).changeColor(color, 4).execute();
+            l2.get(i).changeColor(color, 4).execute();
         }
+    }
+
+
+    public Shape toSingleShape() {
+        Path2D path = new Path2D.Float();
+        for (Shape shape : this.getGobjects().stream().map(x -> (ShapeGobject2) x).map(ShapeGobject2::getShape).collect(Collectors.toList())) {
+            path.append(shape, false);
+        }
+        return path;
     }
 }

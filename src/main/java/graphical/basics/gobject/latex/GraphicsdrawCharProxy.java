@@ -40,7 +40,7 @@ public class GraphicsdrawCharProxy extends GraphicsProxy {
             var yy = transform.getTranslateY();
             var size =  transform.getScaleX();
             var rect = (Rectangle2D) shape;
-            charList.add(new Rect(new Point(rect.getX()*size, rect.getY()*size), new Point((rect.getX() + rect.getWidth())*size, size*(rect.getY() + rect.getHeight())),Color.black));
+            charList.add(new Rect(new Point(rect.getX()*size, rect.getY()*size), new Point((rect.getX() + rect.getWidth())*size, size*(rect.getY() + rect.getHeight())),Color.white));
         }
         super.fill(shape);
     }

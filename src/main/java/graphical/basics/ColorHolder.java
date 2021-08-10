@@ -35,4 +35,8 @@ public class ColorHolder {
     public static List<Color> toColorList(List<ColorHolder> colorHolderList) {
         return colorHolderList.stream().map(ColorHolder::getColor).collect(Collectors.toList());
     }
+
+    public ColorHolder copy() {
+        return new ColorHolder(color);
+    }
 }
