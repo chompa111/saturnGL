@@ -7,6 +7,11 @@ public class PresentationConfig {
     public PresentationConfig() {
     }
 
+    private int width = 1000;//default value
+    private int height = 1000;// defaultvalue;
+
+    private boolean previewWindowBarVisible = false;
+
     private CodecType codecType;
     private Boolean disableCodec;
     private Integer framerate;
@@ -36,5 +41,29 @@ public class PresentationConfig {
     public PresentationConfig setCodec(CodecType codecType) {
         this.codecType = codecType;
         return this;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public boolean isPreviewWindowBarVisible() {
+        return previewWindowBarVisible;
+    }
+
+    public void setPreviewWindowBarVisible(boolean previewWindowBarr) {
+        this.previewWindowBarVisible = previewWindowBarr;
     }
 }

@@ -119,8 +119,8 @@ public class Animation {
         if (b instanceof ShapeGobject2) {
             sb = (ShapeGobject2) b;
         }
-        Polygon pa = new Polygon(sa.getShape(), sa.getFillColorHolder()!=null? sa.getFillColorHolder().copy():sa.getStrokeColorHolder().copy());
-        Polygon pb = new Polygon(sb.getShape(),sb.getFillColorHolder()!=null? sb.getFillColorHolder().copy():sb.getStrokeColorHolder().copy());
+        Polygon pa = new Polygon(sa.getShape(), sa.getFillColorHolder() != null ? sa.getFillColorHolder().copy() : sa.getStrokeColorHolder().copy());
+        Polygon pb = new Polygon(sb.getShape(), sb.getFillColorHolder() != null ? sb.getFillColorHolder().copy() : sb.getStrokeColorHolder().copy());
         presentation.add(pa);
 
         //equalizing number of vertex;
@@ -142,17 +142,9 @@ public class Animation {
                 });
     }
 
-//    public static Task turnInto(LatexGobject a, Gobject b, int steps) {
-//
-//        presentation.remove(a);
-//        //var sg=new ShapeGobject2(a.toSingleShape(),Color.white,null);
-//        List<Task> taskList = new ArrayList<>();
-//
-//        return new ParalelTask(a.getGobjects().stream().map(x -> turnInto(x, b, steps)).collect(Collectors.toList()));
-//
-//    }
 
-    public static Task peperain(Gobject a, Gobject b, int steps) {
+
+    public static Task t3b1b(Gobject a, Gobject b, int steps) {
 
         presentation.remove(a);
         List<ShapeGobject2> la = asShapeList(a);
@@ -175,16 +167,19 @@ public class Animation {
                 taskList.add(turnInto(la.get(i), lb.get(i), steps));
             }
 
-            int diff=lb.size()-la.size();
-            int count=0;
-
-            BOB:while(true){
-                for(int i=0;i<la.size();i++){
-                    taskList.add(turnInto(la.get(i), lb.get(la.size()+count), steps));
-                    count++;
-                    if(count==diff)break BOB;
+            int diff = lb.size() - la.size();
+            int count = 0;
+            if (diff != 0) {
+                BOB:
+                while (true) {
+                    for (int i = 0; i < la.size(); i++) {
+                        taskList.add(turnInto(la.get(i), lb.get(la.size() + count), steps));
+                        count++;
+                        if (count == diff) break BOB;
+                    }
                 }
             }
+
         }
 
         return new ParalelTask(taskList)

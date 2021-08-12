@@ -25,7 +25,7 @@ import static graphical.basics.presentation.Positioning.Reference.*;
 
 public abstract class Gobject {
 
-    NumberHolder angle = new DoubleHolder(0);
+    public NumberHolder angle = new DoubleHolder(0);
     public NumberHolder scale = new DoubleHolder(1);
 
     public void paint(Graphics g, boolean b) {
@@ -107,6 +107,19 @@ public abstract class Gobject {
 
         return new FollowBehavior(gobject, new SupplierPoint(() -> this.getBorders().midPoint().getX(), () -> this.getBorders().getL2().getY()));
 
+    }
+
+    protected AffineTransform getTranformation() {
+
+        var midpoint = getBorders().midPoint();
+        var af = new AffineTransform();
+
+        af.translate(midpoint.getX(), midpoint.getY());
+        af.rotate(angle.getValue());
+        af.scale(scale.getValue(), scale.getValue());
+        af.translate(-midpoint.getX(), -midpoint.getY());
+
+        return af;
     }
 
 

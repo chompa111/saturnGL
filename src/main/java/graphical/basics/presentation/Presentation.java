@@ -5,6 +5,7 @@ import codec.RawImageCodec;
 import codec.VideoCodec;
 import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
+import graphical.basics.gobject.Camera;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
@@ -13,6 +14,7 @@ import graphical.basics.task.transformation.gobject.ColorTranform;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +30,11 @@ public abstract class Presentation extends JFrame {
     public static int FRAME_RATE = 60;
 
 
-    public BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
-    public Graphics bufferedGraphics = bufferedImage.getGraphics();
+    public BufferedImage bufferedImage;
+    public Graphics bufferedGraphics;
 
     VideoCodec videoCodec;
+
     List<Gobject> gobjects = new ArrayList<>();
     List<Behavior> behaviors = new ArrayList<>();
 
@@ -43,8 +46,8 @@ public abstract class Presentation extends JFrame {
     long lastMesure = System.currentTimeMillis();
 
 
-
-    private BackGround backGround = new BackGround();
+    private final BackGround backGround = new BackGround();
+    private final Camera camera = new Camera();
 
     public Presentation() {
 
@@ -71,9 +74,9 @@ public abstract class Presentation extends JFrame {
 
         //preview window
 
-        setSize(1000, 1000);
+       // setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setUndecorated(true);
+      //  setUndecorated(true);
         setVisible(true);
 
 
@@ -111,6 +114,13 @@ public abstract class Presentation extends JFrame {
             this.videoCodec = new JCodec();
         }
 
+        //preview windowSize
+        this.setUndecorated(presentationConfig.isPreviewWindowBarVisible());
+        this.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
+
+        // framesize
+        this.bufferedImage = new BufferedImage(presentationConfig.getWidth(), presentationConfig.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        bufferedGraphics = bufferedImage.getGraphics();
 
     }
 
@@ -149,10 +159,15 @@ public abstract class Presentation extends JFrame {
     public void paintComponent(Graphics g) {
 
         backGround.paint(g);
+        var g2d = (Graphics2D) g;
+        var oldT = (AffineTransform) g2d.getTransform().clone();
+        camera.applyView(g);
 
         for (int i = 0; i < gobjects.size(); i++) {
             gobjects.get(i).paint(g, true);
         }
+
+        g2d.setTransform(oldT);
     }
 
     public void runBehaviors() {
@@ -210,10 +225,6 @@ public abstract class Presentation extends JFrame {
         return new ColorTranform(gobject, new Color(0, 0, 0, 0), seconds(1));
     }
 
-    public BackGround getBackGround() {
-        return backGround;
-    }
-
     public Task wait(int steps) {
         return new WaitTask(steps);
     }
@@ -227,7 +238,12 @@ public abstract class Presentation extends JFrame {
         switchProcessing = true;
     }
 
-    public void setBackGround(BackGround backGround) {
-        this.backGround = backGround;
+
+    public BackGround getBackGround() {
+        return backGround;
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 }

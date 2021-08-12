@@ -1,19 +1,9 @@
 package graphical.basics.examples;
 
-import graphical.basics.ColorHolder;
-import graphical.basics.gobject.Circle;
-import graphical.basics.gobject.CircleBuilder;
-import graphical.basics.gobject.LatexGobject;
-import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.SVGGobject;
-import graphical.basics.gobject.struct.ShapeGobject2;
-import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
-import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-
-import java.awt.*;
 
 
 public class ShapeT extends Presentation {
@@ -38,7 +28,7 @@ public class ShapeT extends Presentation {
 
         add(logo);
 
-        Animation.peperain(logo,logo2,seconds(1)).execute();
+        Animation.t3b1b(logo,logo2,seconds(1)).execute();
 
         wait(1).execute();
         cut();

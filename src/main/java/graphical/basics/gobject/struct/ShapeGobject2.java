@@ -96,7 +96,10 @@ public class ShapeGobject2 extends FillAndStroke {
     }
 
     public Shape getShape() {
-        return shape;
+        var af=getTranformation();
+        af.translate(location.getX() - shapeOfsetX, location.getY() - shapeOfsetY);
+
+        return af.createTransformedShape(shape);
     }
 
     public static ShapeGobject2 fromSVGStyle(Shape shape, String style) {

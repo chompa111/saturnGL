@@ -89,8 +89,8 @@ public class MorfTransform implements Task {
 //        p1.sort(Comparator.comparingInt(a -> a.colorHolder.getColor().getRGB()));
 //        p2.sort(Comparator.comparingInt(a -> a.colorHolder.getColor().getRGB()));
 
-        p1.sort(Comparator.comparingDouble(a ->Math.random()));
-        p2.sort(Comparator.comparingDouble(a ->Math.random()));
+//        p1.sort(Comparator.comparingDouble(a ->Math.random()));
+//        p2.sort(Comparator.comparingDouble(a ->Math.random()));
 
         aceleration = new double[p1.size()][2];
         delta = new double[p1.size()][2];

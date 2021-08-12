@@ -1,7 +1,6 @@
 package graphical.basics.examples;
 
 import graphical.basics.gobject.LatexGobject;
-import graphical.basics.location.Location;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
@@ -21,13 +20,13 @@ public class Baskara extends Presentation {
 
     @Override
     public void buildPresentation() {
-        getBackGround().getColors().get(0).setColor(Color.white);
-        var initFormula = new LatexGobject("ax^2+bx+c=0", new Point(100, 100), Color.black);
+    //    getBackGround().getColors().get(0).setColor(new Color(120, 20, 20));
+        var initFormula = new LatexGobject("ax^2+bx+c=0", new Point(100, 100), Color.white);
 
         add(initFormula);
         Animation.strokeAndFill(initFormula, seconds(1)).execute();
 
-        var overA = new LatexGobject("\\frac{ax^2}{a}+\\frac{bx}{a}+\\frac{c}{a}=\\frac{0}{a}", new Point(100, 100), Color.black);
+        var overA = new LatexGobject("\\frac{ax^2}{a}+\\frac{bx}{a}+\\frac{c}{a}=\\frac{0}{a}", new Point(100, 100), Color.white);
         var overAExc = overA.subGroupExept(0, 1, 2, 5, 6, 7, 10, 11, 14, 15);
         Positioning.alignAll(initFormula.getGobjects(), overA.subGroup(0, 1, 2, 5, 6, 7, 10, 11, 14, 15).getGobjects())
                 .parallel(new WaitTask(seconds(0.5)).andThen(
@@ -45,7 +44,7 @@ public class Baskara extends Presentation {
 
         //simplifying
 
-        var overASiple = new LatexGobject("x^2+\\frac{bx}{a}+\\frac{c}{a}=0", new Point(100, 100), Color.black);
+        var overASiple = new LatexGobject("x^2+\\frac{bx}{a}+\\frac{c}{a}=0", new Point(100, 100), Color.white);
         var x = overA.subGroup(1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         var xx = overA.subGroupExept(1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 
@@ -61,7 +60,7 @@ public class Baskara extends Presentation {
 
         // send c/a to the other side
 
-        var coverAright = new LatexGobject("x^2+\\frac{bx}{a}=-\\frac{c}{a}", new Point(100, 100), Color.black);
+        var coverAright = new LatexGobject("x^2+\\frac{bx}{a}=-\\frac{c}{a}", new Point(100, 100), Color.white);
         //add(coverAright);
         // LatexGobject.indexsize(coverAright);
 
@@ -73,7 +72,7 @@ public class Baskara extends Presentation {
         var minus = coverAright.subGroup(8);
         Positioning.alignAll(subOvserASimple.getGobjects(), reordered.getGobjects())
                 .parallel(subOvserASimpleExp.changeColor(new Color(0, 0, 0, 0)))
-                .parallel(overASiple.subGroup(7).transform(minus))
+                .parallel(Animation.t3b1b(overASiple.subGroup(7), minus, seconds(1)))
                 .execute();
 
         remove(overASiple);
@@ -81,7 +80,7 @@ public class Baskara extends Presentation {
         add(coverAright);
         new WaitTask(seconds(1)).execute();
 
-        var step3 = new LatexGobject("x^2+\\frac{bx}{a}+(\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.black);
+        var step3 = new LatexGobject("x^2+\\frac{bx}{a}+(\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.white);
 //        add(step3);
 //        LatexGobject.indexsize(step3);
         var partial = step3.subGroup(0, 1, 2, 3, 4, 5, 6, 15, 16, 17, 18, 19);
@@ -95,7 +94,7 @@ public class Baskara extends Presentation {
         add(step3);
         // LatexGobject.indexsize(step3);
 
-        var step4 = new LatexGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.black);
+        var step4 = new LatexGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.white);
 //        add(step4);
 //        LatexGobject.indexsize(step4);
 
@@ -123,7 +122,7 @@ public class Baskara extends Presentation {
         // LatexGobject.indexsize(step4);
         new WaitTask(seconds(1)).execute();
 
-        var step5 = new LatexGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+\\frac{b^2}{4a^2}", new Point(20, 100), Color.black);
+        var step5 = new LatexGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+\\frac{b^2}{4a^2}", new Point(20, 100), Color.white);
 //        add(step5);
 //        LatexGobject.indexsize(step5);
 
@@ -136,7 +135,8 @@ public class Baskara extends Presentation {
         var four = step5.subGroup(18);
         var squares = step5.subGroup(16, 20);
         Positioning.alignAll(step4toMove.getGobjects(), step5M.getGobjects())
-                .parallel(step4.subGroup(21).transform(squares).parallel(step4.subGroup(18).transform(four)))
+                .parallel(Animation.t3b1b(step4.subGroup(21), squares, seconds(1))
+                        .parallel(Animation.t3b1b(step4.subGroup(18), four, seconds(1))))
                 .parallel(step4MtoMoveExp.changeColor(new Color(0, 0, 0, 0)))
                 .execute();
 
@@ -148,7 +148,7 @@ public class Baskara extends Presentation {
         // LatexGobject.indexsize(step5);
         new WaitTask(seconds(1)).execute();
 
-        var step6 = new LatexGobject("(x+\\frac{b}{2a})^2=\\frac{b^2}{4a^2}-\\frac{c}{a}", new Point(20, 100), Color.black);
+        var step6 = new LatexGobject("(x+\\frac{b}{2a})^2=\\frac{b^2}{4a^2}-\\frac{c}{a}", new Point(20, 100), Color.white);
 //        add(step6);
 //        LatexGobject.indexsize(step6);
 
@@ -163,7 +163,7 @@ public class Baskara extends Presentation {
         new WaitTask(seconds(1)).execute();
 
 
-        var step7 = new LatexGobject("(x+\\frac{b}{2a})^2=\\frac{b^2-4ac}{4a^2}", new Point(20, 100), Color.black);
+        var step7 = new LatexGobject("(x+\\frac{b}{2a})^2=\\frac{b^2-4ac}{4a^2}", new Point(20, 100), Color.white);
 //        add(step7);
 //        LatexGobject.indexsize(step7);
 
@@ -175,12 +175,12 @@ public class Baskara extends Presentation {
         var longbarr = step7.subGroup(16);
         var a = step7.subGroup(13, 14);
         Positioning.alignAll(step6M.getGobjects(), step7M.getGobjects())
-                .parallel(step6.subGroup(12).transform(longbarr))
+                .parallel(Animation.t3b1b(step6.subGroup(12),longbarr,seconds(1)))
                 .parallel(step6.subGroup(12).changeColor(new Color(0, 0, 0, 0)))
-                .parallel(step6.subGroup(13, 14).transform(a))
+                .parallel(Animation.t3b1b(step6.subGroup(13, 14),a,seconds(1)))
                 .parallel(step6.subGroup(18, 19).changeColor(new Color(0, 0, 0, 0)))
                 .execute();
-        
+
 
         remove(a);
         remove(longbarr);
@@ -189,7 +189,7 @@ public class Baskara extends Presentation {
         // LatexGobject.indexsize(step7);
         new WaitTask(seconds(1)).execute();
 
-        var step8 = new LatexGobject("x+\\frac{b}{2a}=\\pm\\sqrt{\\frac{b^2-4ac}{4a^2}}", new Point(20, 100), Color.black);
+        var step8 = new LatexGobject("x+\\frac{b}{2a}=\\pm\\sqrt{\\frac{b^2-4ac}{4a^2}}", new Point(20, 100), Color.white);
 //        add(step8);
 //        LatexGobject.indexsize(step8);
 
@@ -201,7 +201,7 @@ public class Baskara extends Presentation {
 
         var root = step8.subGroup(7, 8, 9);
         Positioning.alignAll(step7toMove.getGobjects(), step8toM.getGobjects())
-                .parallel(step7.subGroup(8).transform(root))
+                .parallel(Animation.t3b1b(step7.subGroup(8),root,seconds(1)))
                 .parallel(step7toMoveExp.changeColor(new Color(0, 0, 0, 0)))
                 .execute();
 
@@ -213,7 +213,7 @@ public class Baskara extends Presentation {
 
         //  LatexGobject.indexsize(step8);
 
-        var step9 = new LatexGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{\\sqrt{4a^2}}", new Point(20, 100), Color.black);
+        var step9 = new LatexGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{\\sqrt{4a^2}}", new Point(20, 100), Color.white);
 //        add(step9);
 //        LatexGobject.indexsize(step9);
 
@@ -231,9 +231,9 @@ public class Baskara extends Presentation {
 
 
         Positioning.alignAll(step8M.getGobjects(), step9M.getGobjects())
-                .parallel(root8.transform(root91))
-                .parallel(root8.transform(root92))
-                .parallel(step8.subGroup(16).transform(bar))
+                .parallel(Animation.t3b1b(root8,root91,seconds(1)))
+                .parallel(Animation.t3b1b(root8,root92,seconds(1)))
+                .parallel(Animation.t3b1b(step8.subGroup(16),bar,seconds(1)))
                 .parallel(step8MExp.changeColor(new Color(0, 0, 0, 0)))
                 .execute();
 
@@ -247,7 +247,7 @@ public class Baskara extends Presentation {
 
         // LatexGobject.indexsize(step9);
 
-        var step10 = new LatexGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.black);
+        var step10 = new LatexGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.white);
 //        add(step10);
 //        LatexGobject.indexsize(step10);
 
@@ -259,8 +259,8 @@ public class Baskara extends Presentation {
         //TODO faltou a barra
 
         Positioning.alignAll(step9tomove.getGobjects(), step10M.getGobjects())
-                .parallel(step9.subGroup(19, 21).transform(two))
-                .parallel(step9.subGroup(16).transform(barr2))
+                .parallel(Animation.t3b1b(step9.subGroup(19, 21),two,seconds(1)))
+                .parallel(Animation.t3b1b(step9.subGroup(16),barr2,seconds(1)))
                 .parallel(step9tomoveExp.changeColor(new Color(0, 0, 0, 0)))
                 .execute();
 
@@ -272,10 +272,9 @@ public class Baskara extends Presentation {
         new WaitTask(seconds(1)).execute();
         //LatexGobject.indexsize(step10);
 
-        var step11 = new LatexGobject("x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.black);
+        var step11 = new LatexGobject("x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.white);
 //        add(step11);
 //        LatexGobject.indexsize(step11);
-
 
 
         var step10Mtomove = step10.subGroup(0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18);
@@ -287,8 +286,8 @@ public class Baskara extends Presentation {
         var minus2 = step11.subGroup(2);
 
         Positioning.alignAll(step10Mtomove.getGobjects(), step11M.getGobjects())
-                .parallel(step10.subGroup(1).transform(minus2))
-                .parallel(step10.subGroup(16).transform(barr3))
+                .parallel(Animation.t3b1b(step10.subGroup(1),minus2,seconds(1)))
+                .parallel(Animation.t3b1b(step10.subGroup(16),barr3,seconds(1)))
                 .parallel(step10MtomoveExcpt.changeColor(new Color(0, 0, 0, 0)))
                 .execute();
 
