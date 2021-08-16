@@ -1,11 +1,13 @@
 package graphical.basics.examples;
 
 import graphical.basics.gobject.CircleBuilder;
-import graphical.basics.gobject.Group;
+import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.latex.Rect;
+import graphical.basics.gobject.struct.SVGGobject;
+import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.task.WaitTask;
 
 import java.awt.*;
 
@@ -19,18 +21,22 @@ public class CircleEx extends Presentation {
     @Override
     public void buildPresentation() {
 
-        var circle = CircleBuilder.aCircle().build();
-        var circle2 = CircleBuilder.aCircle().withCenter(200, 200).withColor(Color.magenta).build();
 
-        var group = new Group(circle, circle2);
-        add(group);
-        Animation.strokeAndFill(group, seconds(1)).execute();
+//        var svg=new SVGGobject("C:\\Users\\PICHAU\\Desktop\\azuis.svg");
+//        var balao=svg.getGroup("balao").toGroupGobject();
+       // add(balao);
 
-        group.getAngle().change(3.1415).execute();
-        group.getScale().change(-0.5).execute();
+        var circle= CircleBuilder.aCircle().build();
 
-        new WaitTask(1).execute();
-        cut();
+        var rect = new Rect(new Point(200,200), new Point(300,300),Color.red);
+
+        var quatro=new LatexGobject(new Font("Dialog",Font.PLAIN,350),"4",new Point(500,500),Color.orange);
+        var sh=quatro.getGobjects().get(0);
+
+        //add(balao);
+
+        Animation.t3b1b(rect,circle,seconds(100)).execute();
+
 
     }
 

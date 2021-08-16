@@ -26,4 +26,5 @@ public interface Location {
     static SupplierPoint spyMidPoint(Location a, Location b) {
         return new SupplierPoint(()->((a.getX() + b.getX()) / 2), ()->((a.getY() + b.getY()) / 2));
     }
+
 }

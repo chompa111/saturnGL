@@ -11,8 +11,8 @@ import java.util.List;
 
 public abstract class FillAndStroke extends Gobject {
 
-    ColorHolder fillColorHolder;
-    ColorHolder strokeColorHolder;
+    protected ColorHolder fillColorHolder;
+    protected ColorHolder strokeColorHolder;
 
     NumberHolder strokeThickness= new DoubleHolder(1);
 

@@ -7,6 +7,7 @@ import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Camera;
 import graphical.basics.gobject.struct.Gobject;
+import graphical.basics.task.EndLessParallelTask;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
@@ -49,6 +50,8 @@ public abstract class Presentation extends JFrame {
     private final BackGround backGround = new BackGround();
     private final Camera camera = new Camera();
 
+    public final EndLessParallelTask backGroundTask = new EndLessParallelTask();
+
     public Presentation() {
 
 
@@ -74,9 +77,9 @@ public abstract class Presentation extends JFrame {
 
         //preview window
 
-       // setSize(1000, 1000);
+        // setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-      //  setUndecorated(true);
+        //  setUndecorated(true);
         setVisible(true);
 
 
@@ -193,6 +196,7 @@ public abstract class Presentation extends JFrame {
         task.setup();
         while (!task.isDone()) {
             task.step();
+            backGroundTask.step();
             if (switchProcessing)
                 processFrame();
         }

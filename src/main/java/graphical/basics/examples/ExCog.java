@@ -24,6 +24,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class ExCog extends Presentation {
     @Override
@@ -38,8 +39,7 @@ public class ExCog extends Presentation {
 
         List<Gobject> circles = new ArrayList<>();
 
-
-        int vel = 80_0000;
+        int vel = 180_0000;
 
         double tempo = 3 * 10;
 
@@ -69,7 +69,7 @@ public class ExCog extends Presentation {
          // add(baixo);
         List<Task> tasks = new ArrayList<>();
 
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 1000; i++) {
             var c = CircleBuilder.aCircle().withColor(new Color(255, 255, 255, (int) (Math.random() * 255))).withRadius(3 + Math.random() * 7).build();
 //             var c= new SVGGobject("C:\\Users\\PICHAU\\logao.svg").getGroup("planeta");
 //             c.getScale().setValue(0.08+Math.random()*0.1);
@@ -172,14 +172,14 @@ public class ExCog extends Presentation {
                                 .andThen(l.changeColor(Color.white, 8))
                                 .repeat(3)
                 ).parallel(wait(5).step(() -> {
-                    var qualquer = circles.get(0);
-                   // qualquer.getScale().setValue(10);
-                     Positioning.align(getCamera(), qualquer, Positioning.Reference.CENTER);
-                            add(new FollowBehavior(getCamera(), qualquer.getRefereceLocations().get(0)));
+//                    var qualquer = circles.get(0);
+//                   // qualquer.getScale().setValue(10);
+//                     Positioning.align(getCamera(), qualquer, Positioning.Reference.CENTER);
+//                            add(new FollowBehavior(getCamera(), qualquer.getRefereceLocations().get(0)));
 
                 }
         ))
-                .parallel(wait(10).andThen(getCamera().getScale().change(1.5,seconds(20))))
+             //   .parallel(wait(10).andThen(getCamera().getScale().change(1.5,seconds(20))))
                 .execute();
 
 

@@ -1,9 +1,8 @@
 package graphical.basics.presentation;
 
 import graphical.basics.ColorHolder;
+import graphical.basics.gobject.DynamicPath;
 import graphical.basics.gobject.Group;
-import graphical.basics.gobject.LatexGobject;
-import graphical.basics.gobject.Polygon;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.SVGGobject;
@@ -17,7 +16,6 @@ import graphical.basics.task.transformation.gobject.ColorListTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform2;
 import graphical.basics.task.transformation.gobject.PositionListTransform;
-import org.w3c.dom.ls.LSInput;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -110,6 +108,8 @@ public class Animation {
     }
 
 
+
+
     public static Task turnInto(Gobject a, Gobject b, int steps) {
         ShapeGobject2 sa = null;
         ShapeGobject2 sb = null;
@@ -119,28 +119,28 @@ public class Animation {
         if (b instanceof ShapeGobject2) {
             sb = (ShapeGobject2) b;
         }
-        Polygon pa = new Polygon(sa.getShape(), sa.getFillColorHolder() != null ? sa.getFillColorHolder().copy() : sa.getStrokeColorHolder().copy());
-        Polygon pb = new Polygon(sb.getShape(), sb.getFillColorHolder() != null ? sb.getFillColorHolder().copy() : sb.getStrokeColorHolder().copy());
-        presentation.add(pa);
+        var dpa= new DynamicPath(sa.getShape(),sa.getFillColorHolder()==null?null:sa.getFillColorHolder().copy(),sa.getStrokeColorHolder()==null?null:sa.getStrokeColorHolder().copy());
+        var dpb= new DynamicPath(sb.getShape(),sb.getFillColorHolder()==null?null:sb.getFillColorHolder().copy(),sb.getStrokeColorHolder()==null?null:sb.getStrokeColorHolder().copy());
+
+        presentation.add(dpa);
 
         //equalizing number of vertex;
-        var sizea = pa.getRefereceLocations().size();
-        var sizeb = pb.getRefereceLocations().size();
+        var sizea = dpa.getRefereceLocations().size();
+        var sizeb = dpb.getRefereceLocations().size();
+
         if (sizea < sizeb) {
-            pa.addPoints(sizeb - sizea);
+            dpa.addPoints(sizeb - sizea);
         } else {
-            pb.addPoints(sizea - sizeb);
+            dpb.addPoints(sizea - sizeb);
         }
 
-        var demorf = new PositionListTransform(pa.getRefereceLocations(), pb.getRefereceLocations(), steps);
-        var colorpart = new ColorListTranform(pa.getColors(), pb.getColors().stream().map(ColorHolder::getColor).collect(Collectors.toList()), steps);
-
+        var demorf = new PositionListTransform(dpa.getRefereceLocations(), dpb.getRefereceLocations(), steps);
+        var colorpart = new ColorListTranform(dpa.getColors(), dpb.getColors().stream().map(ColorHolder::getColor).collect(Collectors.toList()), steps);
         return demorf.parallel(colorpart)
-                .andThen(() -> fadeOut(pa, presentation.seconds(0.5)))
-                .step(() -> {
-                    presentation.remove(pa);
-                });
+                .step(() -> presentation.remove(dpa));
+
     }
+
 
 
 
@@ -182,12 +182,9 @@ public class Animation {
 
         }
 
-        return new ParalelTask(taskList)
-                .parallel(new WaitTask(presentation.seconds(0.7)).andThen(() -> {
-                            presentation.add(b);
-                            return fadeIn(b, presentation.seconds(0.5));
-                        }
-                ));
+        return new ParalelTask(taskList).parallel(new WaitTask(steps-1).step(()->presentation.add(b)));
+
+
         // .step(()->presentation.add(b));
 
     }
@@ -207,6 +204,27 @@ public class Animation {
             List<ShapeGobject2> list = new ArrayList<>();
             for (Gobject gobject : ((Group) g).getGobjects()) {
                 list.addAll(asShapeList(gobject));
+            }
+            return list;
+        }
+        throw new RuntimeException("não foi possivel conveter o objeto:" + g.getClass() + ", que não é Shape, ShapeLike ou Coleção/Grupo");
+    }
+
+
+    private static List<Shape> asShapeListV2(Gobject g) {
+
+        if (g instanceof ShapeGobject2) {
+            return Arrays.asList(((ShapeGobject2) g).getShape());
+        }
+
+        if (g instanceof ShapeLike) {
+            var auxShape = ((ShapeLike) g).asShape();
+            return Arrays.asList(auxShape);
+        }
+        if (g instanceof Group) {
+            List<Shape> list = new ArrayList<>();
+            for (Gobject gobject : ((Group) g).getGobjects()) {
+                list.addAll(asShapeListV2(gobject));
             }
             return list;
         }

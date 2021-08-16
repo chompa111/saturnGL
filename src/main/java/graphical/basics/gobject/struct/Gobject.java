@@ -109,7 +109,7 @@ public abstract class Gobject {
 
     }
 
-    protected AffineTransform getTranformation() {
+    public AffineTransform getTranformation() {
 
         var midpoint = getBorders().midPoint();
         var af = new AffineTransform();

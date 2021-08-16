@@ -62,6 +62,10 @@ public interface Task {
         Presentation.staticReference.execute(this);
     }
 
+    default void executeInBackGround(){
+        Presentation.staticReference.backGroundTask.append(this);
+    }
+
 //
 //    public static <T extends Task> Collector<T, ?, ParalelTask> toList() {
 //        return new Collectors.CollectorImpl(ArrayList::new, List::add, (left, right) -> {
