@@ -50,6 +50,8 @@ public class Rect extends Gobject implements ShapeLike {
 
     @Override
     public Shape asShape() {
-        return new Rectangle((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
+       var rect= new Rectangle((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
+
+        return this.getTranformation().createTransformedShape(rect);
     }
 }

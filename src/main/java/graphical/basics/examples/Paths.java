@@ -75,6 +75,7 @@ public class Paths extends Presentation {
 
         var sg = new DynamicPath(shape, new ColorHolder(Color.red), new ColorHolder(Color.red));
         add(sg2);
+
         //Animation.strokeAndFill(sg,seconds(10)).execute();
 
         //sg.move(200,0).execute();
@@ -82,6 +83,7 @@ public class Paths extends Presentation {
         new PositionListTransform(sg2.getRefereceLocations(),sg.getRefereceLocations(),seconds(1)).execute();
 
         wait(1).execute();
+
 
     }
 

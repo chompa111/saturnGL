@@ -21,6 +21,7 @@ public class Line extends FillAndStroke implements ShapeLike {
     ColorHolder colorHolder;
 
     public Line(Location p1, Location p2, Color color, NumberHolder thickness) {
+        super(color,color);
         this.p1 = p1;
         this.p2 = p2;
         this.colorHolder = new ColorHolder(color);
@@ -28,6 +29,7 @@ public class Line extends FillAndStroke implements ShapeLike {
     }
 
     public Line(Location p1, Location p2, Color color) {
+        super(color,color);
         this.p1 = p1;
         this.p2 = p2;
         this.colorHolder = new ColorHolder(color);

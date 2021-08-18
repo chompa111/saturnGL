@@ -71,10 +71,10 @@ public class Group extends Gobject {
     }
 
 
-    public ParalelTask onChildren(Function<Gobject, Task> taskFunction, int delay) {
+    public ParalelTask onChildren(Function<Gobject, Task> taskFunction, double delay) {
         var list = new ArrayList<Task>();
         for (int i = 0; i < gobjects.size(); i++) {
-            list.add(new WaitTask((i * delay) + 1).andThen(taskFunction.apply(gobjects.get(i))));
+            list.add(new WaitTask((int)(i * delay) + 1).andThen(taskFunction.apply(gobjects.get(i))));
         }
         return new ParalelTask(list);
     }

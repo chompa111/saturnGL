@@ -33,6 +33,23 @@ public class LocationPair {
         return new Point((l1.getX() + l2.getX()) / 2, (l1.getY() + l2.getY()) / 2);
     }
 
+    public double getwidth() {
+        return l1.getX() - l2.getX();
+    }
+
+    public double getheight() {
+        return l1.getY() - l2.getY();
+    }
+
+    public Location l1plusWidth(){
+       return new Point(l1.getX()-getwidth(),l1.getY());
+    }
+
+    public Location l2minusWidth(){
+        return new Point(l2.getX()+getwidth(),l2.getY());
+    }
+
+
 
     public LocationPair(List<LocationPair> pairs) {
         double maxX = Double.MIN_VALUE;

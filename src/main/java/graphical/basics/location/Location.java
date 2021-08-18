@@ -24,7 +24,11 @@ public interface Location {
     }
 
     static SupplierPoint spyMidPoint(Location a, Location b) {
-        return new SupplierPoint(()->((a.getX() + b.getX()) / 2), ()->((a.getY() + b.getY()) / 2));
+        return new SupplierPoint(() -> ((a.getX() + b.getX()) / 2), () -> ((a.getY() + b.getY()) / 2));
+    }
+
+    public default double distanceTo(Location location) {
+        return Math.sqrt((this.getX() - location.getX()) * (this.getX() - location.getX()) + (this.getY() - location.getY()) * (this.getY() - location.getY()));
     }
 
 }

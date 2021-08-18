@@ -46,7 +46,9 @@ public class EndLessParallelTask implements Task {
         return false;
     }
 
-    public void append(Task task) {
-        taskList.add(task);
+    public InterruptableTask append(Task task) {
+        var interruptableTask = new InterruptableTask(task);
+        taskList.add(interruptableTask);
+        return interruptableTask;
     }
 }

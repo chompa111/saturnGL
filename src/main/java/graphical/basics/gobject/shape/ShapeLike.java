@@ -15,10 +15,12 @@ public interface ShapeLike {
         var shape = this.asShape();
         if (this instanceof FillAndStroke) {
             var fs = (FillAndStroke) this;
-            return new ShapeGobject2(shape, fs.getFillColorHolder() != null ? new ColorHolder(fs.getFillColorHolder().getColor()) : null, fs.getStrokeColorHolder() != null ? new ColorHolder(fs.getStrokeColorHolder().getColor()) : null);
+            var shapegobject = new ShapeGobject2(shape, fs.getFillColorHolder() != null ? new ColorHolder(fs.getFillColorHolder().getColor()) : null, fs.getStrokeColorHolder() != null ? new ColorHolder(fs.getStrokeColorHolder().getColor()) : null);
+            shapegobject.setStrokeThickness(fs.getStrokeThickness());
+            return shapegobject;
         } else if (this instanceof Gobject) {
             var g = (Gobject) this;
-
+            //caso default
             return new ShapeGobject2(shape, new ColorHolder(g.getColors().get(0).getColor()), null);
         }
         return null;

@@ -29,8 +29,8 @@ import java.util.function.Function;
 public class ExCog extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(true);
-        presentationConfig.setFramerate(32);
+        presentationConfig.setDisableCodec(false);
+        presentationConfig.setFramerate(60);
         presentationConfig.setCodec(CodecType.JCODEC);
     }
 
@@ -69,7 +69,7 @@ public class ExCog extends Presentation {
          // add(baixo);
         List<Task> tasks = new ArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
             var c = CircleBuilder.aCircle().withColor(new Color(255, 255, 255, (int) (Math.random() * 255))).withRadius(3 + Math.random() * 7).build();
 //             var c= new SVGGobject("C:\\Users\\PICHAU\\logao.svg").getGroup("planeta");
 //             c.getScale().setValue(0.08+Math.random()*0.1);
@@ -180,7 +180,13 @@ public class ExCog extends Presentation {
                 }
         ))
              //   .parallel(wait(10).andThen(getCamera().getScale().change(1.5,seconds(20))))
-                .execute();
+                .executeInBackGround();
+
+        wait(seconds(10)).execute();
+        cut();
+        wait(seconds(10)).execute();
+        cut();
+        wait(seconds(10)).execute();
 
 
 //        var engrenagem2 = new SVGGobject("C:\\Users\\PICHAU\\engreno.svg");

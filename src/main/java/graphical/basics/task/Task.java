@@ -62,8 +62,8 @@ public interface Task {
         Presentation.staticReference.execute(this);
     }
 
-    default void executeInBackGround(){
-        Presentation.staticReference.backGroundTask.append(this);
+    default InterruptableTask executeInBackGround(){
+        return Presentation.staticReference.backGroundTask.append(this);
     }
 
 //

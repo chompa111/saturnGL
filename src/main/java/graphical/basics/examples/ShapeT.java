@@ -1,9 +1,18 @@
 package graphical.basics.examples;
 
-import graphical.basics.gobject.struct.SVGGobject;
+import graphical.basics.ColorHolder;
+import graphical.basics.gobject.Fonts;
+import graphical.basics.gobject.LatexGobject;
+import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
+import graphical.basics.presentation.effects.T3b1b;
+import graphical.basics.task.WaitTask;
+
+import java.awt.*;
+
+import static graphical.basics.presentation.effects.T3b1b.TransformationType.BEST_MATCHING;
 
 
 public class ShapeT extends Presentation {
@@ -14,21 +23,20 @@ public class ShapeT extends Presentation {
 
     @Override
     public void buildPresentation() {
-        var logo = new SVGGobject("C:\\Users\\PICHAU\\logao.svg").getGroup("planeta").toGroupGobject();
-
-        //logo.changeSetPosition(0,300);
-
-
-        var logo2 =new SVGGobject("C:\\Users\\PICHAU\\Desktop\\azuis.svg").getGroup("balao").toGroupGobject();
+        var GRAY = ColorHolder.hex2Rgb("#403D39");
+        var ORANGE = ColorHolder.hex2Rgb("#EB5E28");
 
 
-        logo.getGobjects().size();
+        var latex= new LatexGobject("f(x)=x^2", new Point(200,500),Color.WHITE);
+        add(latex);
 
-        logo2.getGobjects().size();
+        Animation.strokeAndFill(latex,seconds(1)).execute();
 
-        add(logo);
+//        getCamera().getScale().setValue(10);
+//        getCamera().changeSetPosition(-280,50);
 
-        Animation.t3b1b(logo,logo2,seconds(1)).execute();
+        Animation.t3b1b(latex,new LatexGobject("f(x+1)=x^2+2x+1", new Point(200,500),Color.WHITE),BEST_MATCHING,seconds(1)).execute();
+
 
         wait(1).execute();
         cut();

@@ -29,6 +29,7 @@ public class StrokeGobject extends ShapeGobject2 {
         this.location = shapeGobject2.location;
         this.angle = shapeGobject2.getAngle();
         this.scale = shapeGobject2.getScale();
+        this.strokeThickness=shapeGobject2.getStrokeThickness();
 
         len = new PathLength(shape).lengthOfPath();
     }
@@ -39,6 +40,7 @@ public class StrokeGobject extends ShapeGobject2 {
         this.shapeOfsetY = shapeGobject2.shapeOfsetY;
         this.shape = shapeGobject2.shape;
         this.location = shapeGobject2.location;
+        this.strokeThickness=shapeGobject2.getStrokeThickness();
 
         len = new PathLength(shape).lengthOfPath();
     }
