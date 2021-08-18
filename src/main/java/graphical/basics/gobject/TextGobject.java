@@ -1,20 +1,14 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.latex.Char;
-import graphical.basics.gobject.latex.lixao.Latex;
-import graphical.basics.gobject.struct.Char2;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
-import graphical.basics.location.Point;
 import graphical.basics.presentation.Presentation;
-import graphical.basics.task.Task;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +16,14 @@ import java.util.stream.Collectors;
 
 import static graphical.basics.gobject.latex.lixao.Latex.generateExp;
 
-public class LatexGobject extends Group {
+public class TextGobject extends Group {
 
-    public LatexGobject(String latex, Location location, Color color) {
+    public TextGobject(String latex, Location location, Color color) {
         var list = generateExp(latex, location, color);
         this.addAll(list);
     }
 
-    public LatexGobject(Font font, String s, Location location, Color color) {
+    public TextGobject(Font font, String s, Location location, Color color) {
         var list = generateText(font, s, location, color);
         this.addAll(list);
     }
@@ -58,7 +52,7 @@ public class LatexGobject extends Group {
         int index = 0;
         for (Gobject gobject : group.getGobjects()) {
 
-            var number = new LatexGobject(new Font("Consolas", Font.BOLD, 15), index + "", gobject.getBorders().midPoint(), Color.green);
+            var number = new TextGobject(new Font("Consolas", Font.BOLD, 15), index + "", gobject.getBorders().midPoint(), Color.green);
             Presentation.staticReference.add(number);
             index++;
         }

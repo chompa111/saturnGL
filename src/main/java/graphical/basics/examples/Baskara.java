@@ -1,6 +1,6 @@
 package graphical.basics.examples;
 
-import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
@@ -14,19 +14,19 @@ import java.awt.*;
 public class Baskara extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
         presentationConfig.setFramerate(30);
     }
 
     @Override
     public void buildPresentation() {
     //    getBackGround().getColors().get(0).setColor(new Color(120, 20, 20));
-        var initFormula = new LatexGobject("ax^2+bx+c=0", new Point(100, 100), Color.white);
+        var initFormula = new TextGobject("ax^2+bx+c=0", new Point(100, 100), Color.white);
 
         add(initFormula);
         Animation.strokeAndFill(initFormula, seconds(1)).execute();
 
-        var overA = new LatexGobject("\\frac{ax^2}{a}+\\frac{bx}{a}+\\frac{c}{a}=\\frac{0}{a}", new Point(100, 100), Color.white);
+        var overA = new TextGobject("\\frac{ax^2}{a}+\\frac{bx}{a}+\\frac{c}{a}=\\frac{0}{a}", new Point(100, 100), Color.white);
         var overAExc = overA.subGroupExept(0, 1, 2, 5, 6, 7, 10, 11, 14, 15);
         Positioning.alignAll(initFormula.getGobjects(), overA.subGroup(0, 1, 2, 5, 6, 7, 10, 11, 14, 15).getGobjects())
                 .parallel(new WaitTask(seconds(0.5)).andThen(
@@ -44,7 +44,7 @@ public class Baskara extends Presentation {
 
         //simplifying
 
-        var overASiple = new LatexGobject("x^2+\\frac{bx}{a}+\\frac{c}{a}=0", new Point(100, 100), Color.white);
+        var overASiple = new TextGobject("x^2+\\frac{bx}{a}+\\frac{c}{a}=0", new Point(100, 100), Color.white);
         var x = overA.subGroup(1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         var xx = overA.subGroupExept(1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 
@@ -60,7 +60,7 @@ public class Baskara extends Presentation {
 
         // send c/a to the other side
 
-        var coverAright = new LatexGobject("x^2+\\frac{bx}{a}=-\\frac{c}{a}", new Point(100, 100), Color.white);
+        var coverAright = new TextGobject("x^2+\\frac{bx}{a}=-\\frac{c}{a}", new Point(100, 100), Color.white);
         //add(coverAright);
         // LatexGobject.indexsize(coverAright);
 
@@ -80,7 +80,7 @@ public class Baskara extends Presentation {
         add(coverAright);
         new WaitTask(seconds(1)).execute();
 
-        var step3 = new LatexGobject("x^2+\\frac{bx}{a}+(\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.white);
+        var step3 = new TextGobject("x^2+\\frac{bx}{a}+(\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.white);
 //        add(step3);
 //        LatexGobject.indexsize(step3);
         var partial = step3.subGroup(0, 1, 2, 3, 4, 5, 6, 15, 16, 17, 18, 19);
@@ -94,7 +94,7 @@ public class Baskara extends Presentation {
         add(step3);
         // LatexGobject.indexsize(step3);
 
-        var step4 = new LatexGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.white);
+        var step4 = new TextGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+(\\frac{b}{2a})^2", new Point(20, 100), Color.white);
 //        add(step4);
 //        LatexGobject.indexsize(step4);
 
@@ -122,7 +122,7 @@ public class Baskara extends Presentation {
         // LatexGobject.indexsize(step4);
         new WaitTask(seconds(1)).execute();
 
-        var step5 = new LatexGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+\\frac{b^2}{4a^2}", new Point(20, 100), Color.white);
+        var step5 = new TextGobject("(x+\\frac{b}{2a})^2=-\\frac{c}{a}+\\frac{b^2}{4a^2}", new Point(20, 100), Color.white);
 //        add(step5);
 //        LatexGobject.indexsize(step5);
 
@@ -148,7 +148,7 @@ public class Baskara extends Presentation {
         // LatexGobject.indexsize(step5);
         new WaitTask(seconds(1)).execute();
 
-        var step6 = new LatexGobject("(x+\\frac{b}{2a})^2=\\frac{b^2}{4a^2}-\\frac{c}{a}", new Point(20, 100), Color.white);
+        var step6 = new TextGobject("(x+\\frac{b}{2a})^2=\\frac{b^2}{4a^2}-\\frac{c}{a}", new Point(20, 100), Color.white);
 //        add(step6);
 //        LatexGobject.indexsize(step6);
 
@@ -163,7 +163,7 @@ public class Baskara extends Presentation {
         new WaitTask(seconds(1)).execute();
 
 
-        var step7 = new LatexGobject("(x+\\frac{b}{2a})^2=\\frac{b^2-4ac}{4a^2}", new Point(20, 100), Color.white);
+        var step7 = new TextGobject("(x+\\frac{b}{2a})^2=\\frac{b^2-4ac}{4a^2}", new Point(20, 100), Color.white);
 //        add(step7);
 //        LatexGobject.indexsize(step7);
 
@@ -189,7 +189,7 @@ public class Baskara extends Presentation {
         // LatexGobject.indexsize(step7);
         new WaitTask(seconds(1)).execute();
 
-        var step8 = new LatexGobject("x+\\frac{b}{2a}=\\pm\\sqrt{\\frac{b^2-4ac}{4a^2}}", new Point(20, 100), Color.white);
+        var step8 = new TextGobject("x+\\frac{b}{2a}=\\pm\\sqrt{\\frac{b^2-4ac}{4a^2}}", new Point(20, 100), Color.white);
 //        add(step8);
 //        LatexGobject.indexsize(step8);
 
@@ -213,7 +213,7 @@ public class Baskara extends Presentation {
 
         //  LatexGobject.indexsize(step8);
 
-        var step9 = new LatexGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{\\sqrt{4a^2}}", new Point(20, 100), Color.white);
+        var step9 = new TextGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{\\sqrt{4a^2}}", new Point(20, 100), Color.white);
 //        add(step9);
 //        LatexGobject.indexsize(step9);
 
@@ -247,7 +247,7 @@ public class Baskara extends Presentation {
 
         // LatexGobject.indexsize(step9);
 
-        var step10 = new LatexGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.white);
+        var step10 = new TextGobject("x+\\frac{b}{2a}=\\pm{\\frac{\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.white);
 //        add(step10);
 //        LatexGobject.indexsize(step10);
 
@@ -272,7 +272,7 @@ public class Baskara extends Presentation {
         new WaitTask(seconds(1)).execute();
         //LatexGobject.indexsize(step10);
 
-        var step11 = new LatexGobject("x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.white);
+        var step11 = new TextGobject("x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", new Point(20, 100), Color.white);
 //        add(step11);
 //        LatexGobject.indexsize(step11);
 

@@ -1,6 +1,6 @@
 package graphical.basics.examples;
 
-import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
@@ -26,7 +26,7 @@ public class Gauss extends Presentation {
     public void buildPresentation() {
 
         //switchOff();
-        var step1 = new LatexGobject("1+2+3+4+5+6+...+n", new Point(0, 0),Color.white);
+        var step1 = new TextGobject("1+2+3+4+5+6+...+n", new Point(0, 0),Color.white);
 
 
         var um = step1.subGroup(0);
@@ -49,11 +49,11 @@ public class Gauss extends Presentation {
 
         execute(new ParalelTask(taskList));
 
-        LatexGobject.indexsize(step1);
+        TextGobject.indexsize(step1);
 
         //switchOn();
 
-        var step12 = new LatexGobject("1+2+3+4+5+6+...+(n-1)+n", new Point(0, 0),Color.white);
+        var step12 = new TextGobject("1+2+3+4+5+6+...+(n-1)+n", new Point(0, 0),Color.white);
 //        add(step12);
 //        LatexGobject.indexsize(step12);
 
@@ -65,7 +65,7 @@ public class Gauss extends Presentation {
         add(step12Except);
         Animation.fadeInGrow(step12Except,seconds(1)).execute();
 
-        var step2=new LatexGobject("1+n", new Point(0, 100),Color.white);
+        var step2=new TextGobject("1+n", new Point(0, 100),Color.white);
 
 //       Positioning.alignAll( step1.subGroup(0,19,20).getGobjects(), step2.getGobjects()).execute();
 //

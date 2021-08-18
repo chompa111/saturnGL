@@ -1,17 +1,15 @@
 package graphical.basics.examples;
 
-import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.task.ContextSetupTask;
 import graphical.basics.task.WaitTask;
 import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
-import java.lang.reflect.AnnotatedArrayType;
 
 public class FormulaEx extends Presentation {
     @Override
@@ -26,9 +24,9 @@ public class FormulaEx extends Presentation {
 
         DoubleHolder vh = new DoubleHolder(2);
 
-        var plainFormula = new LatexGobject("ax^2+bx+c=0", new Point(200, 500), new Color(187, 174, 100));
+        var plainFormula = new TextGobject("ax^2+bx+c=0", new Point(200, 500), new Color(187, 174, 100));
 
-        var plainFormula2 = new LatexGobject("ax^2+b(y-z)+c=0", new Point(200, 500), new Color(187, 174, 100));
+        var plainFormula2 = new TextGobject("ax^2+b(y-z)+c=0", new Point(200, 500), new Color(187, 174, 100));
        // add(plainFormula2);
         //LatexGobject.indexsize(plainFormula2);
         var yminuszExcept=plainFormula2.subGroupExept(5,6,7,8,9);
@@ -49,7 +47,7 @@ public class FormulaEx extends Presentation {
         remove(yminusz);
         remove(plainFormula);
 
-        var plainFormula3 = new LatexGobject("ax^2+c=-b(y-z)", new Point(200, 500), new Color(187, 174, 100));
+        var plainFormula3 = new TextGobject("ax^2+c=-b(y-z)", new Point(200, 500), new Color(187, 174, 100));
 //        add(plainFormula3);
 //
 //        LatexGobject.indexsize(plainFormula3);

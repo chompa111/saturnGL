@@ -1,24 +1,17 @@
 package graphical.basics.examples;
 
-import graphical.basics.ColorHolder;
 import graphical.basics.behavior.FollowBehavior;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.Group;
-import graphical.basics.gobject.LatexGobject;
-import graphical.basics.gobject.StringGobject;
-import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.SVGGobject;
-import graphical.basics.location.Point;
 import graphical.basics.location.SupplierPoint;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.task.transformation.value.ConstantSpeedValueTranform;
 import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
-import java.util.Arrays;
 
 public class CircleEx extends Presentation {
     @Override

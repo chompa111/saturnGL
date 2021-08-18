@@ -1,14 +1,11 @@
 package graphical.basics.examples;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.Fonts;
-import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.presentation.effects.T3b1b;
-import graphical.basics.task.WaitTask;
 
 import java.awt.*;
 
@@ -18,7 +15,7 @@ import static graphical.basics.presentation.effects.T3b1b.TransformationType.BES
 public class ShapeT extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(true).setFramerate(30);
+        presentationConfig.setDisableCodec(true).setFramerate(32);
     }
 
     @Override
@@ -27,15 +24,22 @@ public class ShapeT extends Presentation {
         var ORANGE = ColorHolder.hex2Rgb("#EB5E28");
 
 
-        var latex= new LatexGobject("f(x)=x^2", new Point(200,500),Color.WHITE);
+        var latex = new TextGobject("g(x)", new Point(200, 500), Color.WHITE);
         add(latex);
 
-        Animation.strokeAndFill(latex,seconds(1)).execute();
+        Animation.strokeAndFill(latex, seconds(1)).execute();
 
 //        getCamera().getScale().setValue(10);
 //        getCamera().changeSetPosition(-280,50);
-
-        Animation.t3b1b(latex,new LatexGobject("f(x+1)=x^2+2x+1", new Point(200,500),Color.WHITE),BEST_MATCHING,seconds(1)).execute();
+        var latex2 = new TextGobject("ax_i+b_i", new Point(200, 500), Color.WHITE);
+        wait(seconds(0.5))
+                .andThen(() -> Animation.t3b1b(latex, latex2, BEST_MATCHING, seconds(1)))
+                .step(this::cut)
+                .andThen(wait(seconds(0.5)))
+                .andThen(() -> Animation.t3b1b(latex2, latex, BEST_MATCHING, seconds(1)))
+                .step(this::cut)
+                .repeat(3)
+                .execute();
 
 
         wait(1).execute();

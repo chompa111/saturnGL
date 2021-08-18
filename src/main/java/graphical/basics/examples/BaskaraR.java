@@ -1,7 +1,7 @@
 package graphical.basics.examples;
 
 import codec.CodecType;
-import graphical.basics.gobject.LatexGobject;
+import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
@@ -23,15 +23,15 @@ public class BaskaraR extends Presentation {
     @Override
     public void buildPresentation() {
 
-        var mainFormula = new LatexGobject("x^2+2x+1=0", new Point(100, 100), Color.white);
+        var mainFormula = new TextGobject("x^2+2x+1=0", new Point(100, 100), Color.white);
 
 
         add(mainFormula);
         //LatexGobject.indexsize(mainFormula);
         Animation.strokeAndFill(mainFormula, seconds(1)).execute();
 
-        var mainFormulaCopy = new LatexGobject("x^2+2x+1=0", new Point(100, 100), Color.white);
-        var simplificada = new LatexGobject("(x+1)^2=0", new Point(100, 200), Color.white);
+        var mainFormulaCopy = new TextGobject("x^2+2x+1=0", new Point(100, 100), Color.white);
+        var simplificada = new TextGobject("(x+1)^2=0", new Point(100, 200), Color.white);
 
 //        add(simplificada);
 //        LatexGobject.indexsize(simplificada);
@@ -49,7 +49,7 @@ public class BaskaraR extends Presentation {
         remove(restoSimplificada);
         add(simplificada);
 
-        var mainSimplificada = new LatexGobject("x+1=0", new Point(114, 208), Color.white);
+        var mainSimplificada = new TextGobject("x+1=0", new Point(114, 208), Color.white);
 
       //  add(mainSimplificada);
         Positioning.alignAll(simplificada.subGroup(1,2,3,6,7).getGobjects(),mainSimplificada.getGobjects())
@@ -59,7 +59,7 @@ public class BaskaraR extends Presentation {
         remove(simplificada);
         add(mainSimplificada);
 
-        var fim= new LatexGobject("x=-1", new Point(114, 208), Color.white);
+        var fim= new TextGobject("x=-1", new Point(114, 208), Color.white);
 
         //add(fim);
 
