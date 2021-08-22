@@ -51,6 +51,7 @@ public class StrokeGobject extends ShapeGobject2 {
         var g2d = ((Graphics2D) g);
 
         if (len == 0) return;
+        if(perc.getValue()==0)return;
         if (strokeColorHolder != null)
             g.setColor(strokeColorHolder.getColor());
         Stroke s = new BasicStroke((float) this.strokeThickness.getValue(),                      // Width

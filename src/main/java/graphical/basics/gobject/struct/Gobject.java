@@ -87,6 +87,18 @@ public abstract class Gobject {
         return move(x, y, Presentation.staticReference.seconds(1));
     }
 
+    public Task moveTo(Location location, int steps){
+        var mylocation=getBorders().midPoint();
+        var diffx=location.getX()-mylocation.getX();
+        var diffy=location.getY()-mylocation.getY();
+
+        return this.move(diffx,diffy,steps);
+    }
+    public Task moveTo(Location location){
+        return this.moveTo(location,Presentation.staticReference.seconds(1));
+    }
+
+
     public void changeSetPosition(double x, double y) {
         for (Location location : this.getRefereceLocations()) {
             location.incrementX(x);

@@ -17,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,14 @@ public abstract class Presentation extends JFrame {
         setup(presentationConfig);
         applyConfigs(presentationConfig);
 
+
+        //dirs
+        File videoDir= new File("video");
+        videoDir.mkdir();
+
+        File rawDir= new File("video\\raw");
+        rawDir.mkdir();
+
         videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
 
 
@@ -77,9 +86,7 @@ public abstract class Presentation extends JFrame {
 
         //preview window
 
-        // setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //  setUndecorated(true);
         setVisible(true);
 
 
@@ -127,7 +134,12 @@ public abstract class Presentation extends JFrame {
 
     }
 
-    public abstract void buildPresentation();
+    protected abstract void buildPresentation();
+
+    public void build(){
+        buildPresentation();
+        execute(wait(1));
+    }
 
     @Override
     public void paint(Graphics g) {
