@@ -7,6 +7,7 @@ import graphical.basics.location.LocationPair;
 import org.apache.batik.parser.AWTPathProducer;
 import org.apache.batik.parser.PathParser;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,6 +17,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.*;
 
@@ -46,13 +48,24 @@ public class SVGGobject extends Gobject {
             NodeList svgPathsG = (NodeList) expressionG.evaluate(document, XPathConstants.NODESET);
 
             HashMap<String, List<ShapeGobject2>> groupAux = new HashMap<>();
-             for (int i = 0; i < svgPathsG.getLength(); i++) {
+            for (int i = 0; i < svgPathsG.getLength(); i++) {
                 var item = svgPathsG.item(i);
 
                 var d = item.getAttributes().getNamedItem("d").getNodeValue();
+                var transform = Optional.ofNullable(item.getAttributes().getNamedItem("transform"))
+                        .map(Node::getNodeValue).orElse(null);
                 var style = item.getAttributes().getNamedItem("style").getNodeValue();
                 var group = item.getParentNode().getAttributes().getNamedItem("id").getNodeValue();
+                var groupTransform = Optional.ofNullable(item.getParentNode().getAttributes().getNamedItem("transform"))
+                        .map(Node::getNodeValue).orElse(null);
 
+                if(transform!=null){
+                    System.out.println("pepe");
+                }
+
+                if (groupTransform != null) {
+                    getTransformFromSVG(groupTransform);
+                }
 
                 PathParser p = new PathParser();
                 AWTPathProducer ph = new AWTPathProducer();
@@ -61,6 +74,9 @@ public class SVGGobject extends Gobject {
                 p.parse(d);
 
                 var shape = ph.getShape();
+                if (groupTransform != null) {
+                    shape=getTransformFromSVG(groupTransform).createTransformedShape(shape);
+                }
                 var shapegobject = ShapeGobject2.fromSVGStyle(shape, style);
                 shapeList.add(shape);
                 shapeGobjects.add(shapegobject);
@@ -78,7 +94,6 @@ public class SVGGobject extends Gobject {
             });
 
 
-
         } catch (Exception e) {
             System.out.println(2);
         }
@@ -88,7 +103,7 @@ public class SVGGobject extends Gobject {
     @Override
     public void paint(Graphics g) {
         for (ShapeGobject2 shape : shapeGobjects) {
-            shape.paint(g,true);
+            shape.paint(g, true);
         }
     }
 
@@ -167,4 +182,28 @@ public class SVGGobject extends Gobject {
         return new Group((ArrayList) shapeGobjects);
     }
 
+    public AffineTransform getTransformFromSVG(String svgStringValue) {
+        var af = new AffineTransform();
+        var method = svgStringValue.substring(0, svgStringValue.lastIndexOf("("));
+        var values = svgStringValue.substring(svgStringValue.lastIndexOf("(") + 1, svgStringValue.lastIndexOf(")")).split(",");
+
+        switch (method) {
+            case "translate":
+                af.translate(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
+                break;
+
+            case "rotate":
+                if (values.length == 3) {
+                    af.rotate(Math.toRadians(Double.parseDouble(values[0])), Double.parseDouble(values[1]), Double.parseDouble(values[2]));
+                } else {
+                    af.rotate(Math.toRadians(Double.parseDouble(values[0])));
+                }
+                break;
+            case "scale":
+                af.scale(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
+                break;
+        }
+
+        return af;
+    }
 }

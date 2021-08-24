@@ -37,6 +37,7 @@ public class Example extends Presentation {
         rect.setPositionTo(circle.getBorders().midPoint());
         rect2.setPositionTo(circle.getBorders().midPoint());
 
+        rect.getScale().change(0.1,seconds(10), ChangeType.ACELERATED).executeInBackGround();
         rect.getAngle().change(0.1,seconds(100), ChangeType.CONSTANT_SPEED).executeInBackGround();
         rect2.getAngle().change(-0.1,seconds(100), ChangeType.CONSTANT_SPEED).executeInBackGround();
 

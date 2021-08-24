@@ -7,32 +7,24 @@ import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.task.WaitTask;
+import graphical.basics.value.ChangeType;
 
 import java.awt.*;
 
 public class SVG2EXp extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setFramerate(10);
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setFramerate(30);
+        presentationConfig.setDisableCodec(true);
     }
 
     @Override
     public void buildPresentation() {
-        //getBackGround().getColors().get(0).setColor(Color.white);
-        var svg=new SVGGobject("C:\\Users\\PICHAU\\Desktop\\azuis.svg");
-        var balao=svg.getGroup("balao");
-        add(balao);
 
-        Animation.strokeAndFill(balao,seconds(4)).execute();
-
-
-        new WaitTask(1).execute();
-        cut();
 
     }
 
     public static void main(String[] args) {
-        new SVG2EXp().buildPresentation();
+        new SVG2EXp().build();
     }
 }
