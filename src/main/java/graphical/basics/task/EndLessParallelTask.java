@@ -51,4 +51,24 @@ public class EndLessParallelTask implements Task {
         taskList.add(interruptableTask);
         return interruptableTask;
     }
+
+    public Task getResumedTask() {
+        var list = new ArrayList<Task>();
+        for (Task task : taskList) {
+            if (!setedUpTasks.contains(task)) {
+                setedUpTasks.add(task);
+                task.setup();
+            }
+            list.add(task);
+        }
+        return new ParalelTask(list);
+    }
+
+    public boolean hasTasks() {
+        return !taskList.isEmpty();
+    }
+
+    public void clear(){
+        taskList= new ArrayList<>();
+    }
 }

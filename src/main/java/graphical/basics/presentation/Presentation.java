@@ -138,6 +138,12 @@ public abstract class Presentation extends JFrame {
 
     public void build(){
         buildPresentation();
+        if(backGroundTask.hasTasks()){
+            // consome as coisas que estejam ainda em background
+            var remainingTaks=backGroundTask.getResumedTask();
+            backGroundTask.clear();
+            remainingTaks.execute();
+        }
         execute(wait(1));
     }
 

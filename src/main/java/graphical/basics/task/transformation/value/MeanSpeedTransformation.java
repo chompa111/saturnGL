@@ -5,14 +5,14 @@ import graphical.basics.value.NumberHolder;
 
 import java.util.List;
 
-public class ConstantSpeedValueTranform implements Task {
+public class MeanSpeedTransformation implements Task {
     double change;
     List<NumberHolder> numberHolders;
     private int stepCount;
     private final int steps;
     private final double stepAmount;
 
-    public ConstantSpeedValueTranform(List<NumberHolder> numberHolders, double change, int steps) {
+    public MeanSpeedTransformation(List<NumberHolder> numberHolders, double change, int steps) {
         this.steps = steps;
         this.numberHolders = numberHolders;
         this.change = change;
@@ -21,7 +21,7 @@ public class ConstantSpeedValueTranform implements Task {
 
     @Override
     public void setup() {
-        //nothing
+        stepCount = 0;
     }
 
     @Override

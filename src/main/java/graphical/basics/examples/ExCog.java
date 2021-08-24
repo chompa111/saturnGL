@@ -17,20 +17,19 @@ import graphical.basics.task.ContextSetupTask;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
-import graphical.basics.task.transformation.value.ConstantSpeedValueTranform;
+import graphical.basics.task.transformation.value.MeanSpeedTransformation;
 import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 public class ExCog extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(false);
-        presentationConfig.setFramerate(60);
+        presentationConfig.setDisableCodec(true);
+        presentationConfig.setFramerate(30);
         presentationConfig.setCodec(CodecType.JCODEC);
     }
 
@@ -94,7 +93,7 @@ public class ExCog extends Presentation {
                 return wait(1).andThen(Animation.fadeIn(c, seconds(3))
                         // .parallel(new ConstantSpeedValueTranform(Arrays.asList(c.getAngle()),(0.5-Math.random())*50,seconds(20)))
                         .parallel(c.changeColor(Color.white,15+(int)(Math.random()*16)).andThen((c.changeColor(new Color(0,0,0,0),15+(int)(Math.random()*16)))).repeat(30))
-                        .parallel(new ConstantSpeedValueTranform(Arrays.asList(progress), (vel / (radius * radius)), seconds(tempo))));
+                        .parallel(new MeanSpeedTransformation(Arrays.asList(progress), (vel / (radius * radius)), seconds(tempo))));
             }));
 
         }
@@ -122,7 +121,7 @@ public class ExCog extends Presentation {
 
                 var color = c.getColors().get(0).getColor();
 
-                return wait(finalI + 1).andThen(Animation.fadeIn(c, seconds(3)).parallel(new ConstantSpeedValueTranform(Arrays.asList(progress), (vel / (radius * radius)), seconds(tempo))));
+                return wait(finalI + 1).andThen(Animation.fadeIn(c, seconds(3)).parallel(new MeanSpeedTransformation(Arrays.asList(progress), (vel / (radius * radius)), seconds(tempo))));
                 //.parallel(wait(finalI +1).andThen(c.move(0,-400,seconds(5)).andThen(wait(seconds(5))).andThen(c.move(0,400,seconds(5))).repeat(1)));
             }));
 
@@ -149,7 +148,7 @@ public class ExCog extends Presentation {
 
 
                 circles.add(c);
-                return wait(finalI + 1).andThen(Animation.fadeIn(c, seconds(3)).parallel(new ConstantSpeedValueTranform(Arrays.asList(progress), (vel / (radius * radius)), seconds(tempo))));
+                return wait(finalI + 1).andThen(Animation.fadeIn(c, seconds(3)).parallel(new MeanSpeedTransformation(Arrays.asList(progress), (vel / (radius * radius)), seconds(tempo))));
             }));
 
         }

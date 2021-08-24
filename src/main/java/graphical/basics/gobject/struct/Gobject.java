@@ -87,15 +87,16 @@ public abstract class Gobject {
         return move(x, y, Presentation.staticReference.seconds(1));
     }
 
-    public Task moveTo(Location location, int steps){
-        var mylocation=getBorders().midPoint();
-        var diffx=location.getX()-mylocation.getX();
-        var diffy=location.getY()-mylocation.getY();
+    public Task moveTo(Location location, int steps) {
+        var mylocation = getBorders().midPoint();
+        var diffx = location.getX() - mylocation.getX();
+        var diffy = location.getY() - mylocation.getY();
 
-        return this.move(diffx,diffy,steps);
+        return this.move(diffx, diffy, steps);
     }
-    public Task moveTo(Location location){
-        return this.moveTo(location,Presentation.staticReference.seconds(1));
+
+    public Task moveTo(Location location) {
+        return this.moveTo(location, Presentation.staticReference.seconds(1));
     }
 
 
@@ -104,6 +105,13 @@ public abstract class Gobject {
             location.incrementX(x);
             location.incrementY(y);
         }
+    }
+
+    public void setPositionTo(Location location) {
+        var myLocation = this.getBorders().midPoint();
+        var diffx = location.getX() - myLocation.getX();
+        var diffy = location.getY() - myLocation.getX();
+        changeSetPosition(diffx,diffy);
     }
 
     public Behavior asSubtitle(Gobject gobject, Positioning.Reference reference) {
