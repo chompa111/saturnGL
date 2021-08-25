@@ -84,6 +84,10 @@ public class Animation {
         return fadeIn(gobject, steps);
     }
 
+    public static Task strokeAndFill(Gobject gobject){
+        return strokeAndFill(gobject, presentation.seconds(1));
+    }
+
 
     public static Task fadeInGrow(Gobject gobject, int steps) {
         return new ContextSetupTask(() -> {

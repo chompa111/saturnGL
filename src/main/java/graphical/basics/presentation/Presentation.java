@@ -62,10 +62,10 @@ public abstract class Presentation extends JFrame {
 
 
         //dirs
-        File videoDir= new File("video");
+        File videoDir = new File("video");
         videoDir.mkdir();
 
-        File rawDir= new File("video\\raw");
+        File rawDir = new File("video\\raw");
         rawDir.mkdir();
 
         videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
@@ -136,15 +136,19 @@ public abstract class Presentation extends JFrame {
 
     protected abstract void buildPresentation();
 
-    public void build(){
+    public void build() {
         buildPresentation();
-        if(backGroundTask.hasTasks()){
+        joinBackGroundTaks();
+        execute(wait(1));
+    }
+
+    public void joinBackGroundTaks() {
+        if (backGroundTask.hasTasks()) {
             // consome as coisas que estejam ainda em background
-            var remainingTaks=backGroundTask.getResumedTask();
+            var remainingTaks = backGroundTask.getResumedTask();
             backGroundTask.clear();
             remainingTaks.execute();
         }
-        execute(wait(1));
     }
 
     @Override

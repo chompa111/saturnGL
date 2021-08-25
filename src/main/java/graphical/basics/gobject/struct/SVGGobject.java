@@ -18,6 +18,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.util.List;
 import java.util.*;
 
@@ -38,7 +39,7 @@ public class SVGGobject extends Gobject {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(path);
 
-            String xpathExpressionG = "//g/path";
+            String xpathExpressionG = "//g/path|//circle|//rect";//"/path";
 
             XPathFactory xpf = XPathFactory.newInstance();
             XPath xpath = xpf.newXPath();
@@ -51,7 +52,27 @@ public class SVGGobject extends Gobject {
             for (int i = 0; i < svgPathsG.getLength(); i++) {
                 var item = svgPathsG.item(i);
 
-                var d = item.getAttributes().getNamedItem("d").getNodeValue();
+                var shapeType=item.getNodeName();
+
+                Shape shape= null;
+
+                if(shapeType.equals("rect")){
+                    var width = Double.parseDouble(item.getAttributes().getNamedItem("width").getNodeValue());
+                    var height = Double.parseDouble(item.getAttributes().getNamedItem("height").getNodeValue());
+                    var x = Double.parseDouble(item.getAttributes().getNamedItem("x").getNodeValue());
+                    var y = Double.parseDouble(item.getAttributes().getNamedItem("y").getNodeValue());
+                    shape= new Rectangle((int)x,(int)y,(int)width,(int)height);
+                }
+
+                if(shapeType.equals("circle")){
+                    var cx = Double.parseDouble(item.getAttributes().getNamedItem("cx").getNodeValue());
+                    var cy = Double.parseDouble(item.getAttributes().getNamedItem("cy").getNodeValue());
+                    var r = Double.parseDouble(item.getAttributes().getNamedItem("r").getNodeValue());
+                    shape= new Ellipse2D.Double(cx-r,cy-r,2*r,2*r);
+                }
+
+
+
                 var transform = Optional.ofNullable(item.getAttributes().getNamedItem("transform"))
                         .map(Node::getNodeValue).orElse(null);
                 var style = item.getAttributes().getNamedItem("style").getNodeValue();
@@ -59,24 +80,27 @@ public class SVGGobject extends Gobject {
                 var groupTransform = Optional.ofNullable(item.getParentNode().getAttributes().getNamedItem("transform"))
                         .map(Node::getNodeValue).orElse(null);
 
-                if(transform!=null){
-                    System.out.println("pepe");
+
+                if(shapeType.equals("path")){
+                    var d = item.getAttributes().getNamedItem("d").getNodeValue();
+                    PathParser p = new PathParser();
+                    AWTPathProducer ph = new AWTPathProducer();
+                    ph.setWindingRule(1);
+                    p.setPathHandler(ph);
+                    p.parse(d);
+                    shape = ph.getShape();
                 }
 
-                if (groupTransform != null) {
-                    getTransformFromSVG(groupTransform);
-                }
 
-                PathParser p = new PathParser();
-                AWTPathProducer ph = new AWTPathProducer();
-                ph.setWindingRule(1);
-                p.setPathHandler(ph);
-                p.parse(d);
 
-                var shape = ph.getShape();
+
                 if (groupTransform != null) {
                     shape=getTransformFromSVG(groupTransform).createTransformedShape(shape);
                 }
+                if(transform!=null){
+                    shape=getTransformFromSVG(transform).createTransformedShape(shape);
+                }
+
                 var shapegobject = ShapeGobject2.fromSVGStyle(shape, style);
                 shapeList.add(shape);
                 shapeGobjects.add(shapegobject);
@@ -200,7 +224,11 @@ public class SVGGobject extends Gobject {
                 }
                 break;
             case "scale":
-                af.scale(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
+                if(values.length==1){
+                    af.scale(Double.parseDouble(values[0]),Double.parseDouble(values[0]));
+                }else{
+                    af.scale(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
+                }
                 break;
         }
 
