@@ -30,7 +30,7 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 to create your first animation on Saturn, you need to:
 - create a class that extends Presentation
 - create a new instace of its class 
-- on the main function: call the method `buildPresentation()`, this is where you will create your _animation code_ properly:
+- on the main function: call the method `build()`
 
 
 ```java
@@ -51,7 +51,7 @@ public class Example extends Presentation {
 }
 ```
 
-> the method `buildPresentation()` will contain all your instructions to build the animation, and the method `setup()` those to config preferences about de video codec, fps and so on
+> ✔️ the method `buildPresentation()` will contain all your instructions to build the animation, and the method `setup()` those to config preferences about de video codec, fps and so on
 
 
 ## 2) First Animation
