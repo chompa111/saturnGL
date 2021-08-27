@@ -43,7 +43,7 @@ public class Example extends Presentation {
     }
 
     public static void main(String[] args) {
-        new Example().buildPresentation();
+        new Example().build();
     }
 }
 ```
