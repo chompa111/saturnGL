@@ -3,7 +3,7 @@
 
 
 # SaturnGL
-### *Graphic Library to build animations with Java*
+ *Graphic Library to build animations with Java*
 
 ## Short example:
 
