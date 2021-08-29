@@ -59,7 +59,7 @@ public class EndLessParallelTask implements Task {
                 setedUpTasks.add(task);
                 task.setup();
             }
-            list.add(task);
+            list.add(new StartedTask(task));
         }
         return new ParalelTask(list);
     }

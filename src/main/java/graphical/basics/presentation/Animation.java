@@ -45,7 +45,8 @@ public class Animation {
         var colorHolders = gobject.getColors();
         var beforeColors = ColorHolder.toColorList(colorHolders);
         for (ColorHolder colorHolder : colorHolders) {
-            colorHolder.setColor(new Color(0, 0, 0, 0));
+            var color=colorHolder.getColor();
+            colorHolder.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
         }
 
         return new ColorListTranform(colorHolders, beforeColors, steps);
@@ -108,6 +109,20 @@ public class Animation {
                     .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
         });
     }
+
+    public static Task emphasize(Gobject gobject,Color color) {
+        return new ContextSetupTask(() -> {
+            var colorHolders = gobject.getColors();
+            var beforeColors = ColorHolder.toColorList(colorHolders);
+
+            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, presentation.seconds(0.5));
+
+            return new ColorTranform2(gobject, color, 1.5, presentation.seconds(0.5))
+                    .parallel(gobject.getScale().change(0.1, presentation.seconds(0.5)))
+                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
+        });
+    }
+
 
     public static Task wooble(Gobject gobject) {
         return gobject.getAngle().change(0.5, presentation.seconds(0.5))

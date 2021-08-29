@@ -1,6 +1,7 @@
 package graphical.basics.gobject.struct;
 
 import graphical.basics.ColorHolder;
+import graphical.basics.gobject.DynamicPath;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.value.DoubleHolder;
@@ -8,6 +9,7 @@ import graphical.basics.value.NumberHolder;
 import org.apache.batik.ext.awt.geom.PathLength;
 
 import java.awt.*;
+import java.util.Comparator;
 import java.util.List;
 
 public class StrokeGobject extends ShapeGobject2 {
@@ -31,7 +33,13 @@ public class StrokeGobject extends ShapeGobject2 {
         this.scale = shapeGobject2.getScale();
         this.strokeThickness=shapeGobject2.getStrokeThickness();
 
-        len = new PathLength(shape).lengthOfPath();
+        // funciona bem pra figuras
+
+        len= DynamicPath.subshapes(shape).stream().map(si-> new PathLength(si).lengthOfPath()).mapToDouble(x->(double) x).max().orElse(0);
+
+       // len = new PathLength(shape).lengthOfPath();
+
+
     }
 
     public StrokeGobject(ShapeGobject2 shapeGobject2, Color color) {

@@ -51,9 +51,9 @@ public class DynamicPath extends FillAndStroke {
 //        g.setColor(Color.green);
 //        for(int i=0;i<vertices.size();i++){
 //            var l= vertices.get(i);
-//            g.setFont(new Font("Dialog",Font.PLAIN,1));
+//            g.setFont(new Font("Dialog",Font.PLAIN,3));
 //            g.drawString(i+"",(int)l.getX(),(int)l.getY());
-//            double radius=0.5;
+//            double radius=2;
 //            g2d.fill(new Ellipse2D.Double(l.getX()-radius/2,l.getY()-radius/2, radius,radius));
 //        }
 
@@ -79,6 +79,7 @@ public class DynamicPath extends FillAndStroke {
         Set<Location> visitedPositions = new HashSet<>();
         boolean next = false;
         generalPath.moveTo(vertices.get(0).getX(), vertices.get(0).getY());
+        visitedPositions.add(vertices.get(0));
         for (int i = 1; i < vertices.size(); i++) {
             var vertex = vertices.get(i);
             if (visitedPositions.contains(vertex)) {
@@ -87,6 +88,7 @@ public class DynamicPath extends FillAndStroke {
             } else {
                 if (next) {
                     generalPath.moveTo(vertex.getX(), vertex.getY());
+
                     next = false;
                 } else {
                     generalPath.lineTo(vertex.getX(), vertex.getY());
@@ -132,8 +134,11 @@ public class DynamicPath extends FillAndStroke {
 
             // Make the lines
             if (currentElement[0] == PathIterator.SEG_MOVETO) {
-                start = currentElement; // Record where the polygon started to close it later
+//                if(!(start[0]==0 && start[1]==0 && start[2]==0)){
+//                    locations.add(new Point(start[1], start[2]));
+//                }
                 locations.add(new Point(currentElement[1], currentElement[2]));
+                start = currentElement; // Record where the polygon started to close it later
             }
 
             if (nextElement[0] == PathIterator.SEG_LINETO) {
@@ -149,6 +154,61 @@ public class DynamicPath extends FillAndStroke {
 
         return locations;
     }
+
+    public static List<Shape> subshapes(Shape shape) {
+        var shapes = new ArrayList<Shape>();
+        ArrayList<double[]> areaPoints = new ArrayList<double[]>();
+        double[] coords = new double[6];
+
+        for (PathIterator pi = new FlatteningPathIterator(shape.getPathIterator(null), 0.5); !pi.isDone(); pi.next()) {
+            // The type will be SEG_LINETO, SEG_MOVETO, or SEG_CLOSE
+            // Because the Area is composed of straight lines
+            int type = pi.currentSegment(coords);
+            // We record a double array of {segment type, x coord, y coord}
+            double[] pathIteratorCoords = {type, coords[0], coords[1]};
+            areaPoints.add(pathIteratorCoords);
+        }
+        GeneralPath generalPath= new GeneralPath();
+
+        double[] start = new double[3]; // To record where each polygon starts
+
+        for (int i = 0; i < areaPoints.size(); i++) {
+            // If we're not on the last point, return a line from this point to the next
+            double[] currentElement = areaPoints.get(i);
+
+            // We need a default value in case we've reached the end of the ArrayList
+            double[] nextElement = {-1, -1, -1};
+            if (i < areaPoints.size() - 1) {
+                nextElement = areaPoints.get(i + 1);
+            }
+
+            // Make the lines
+            if (currentElement[0] == PathIterator.SEG_MOVETO) {
+                if(!(start[0]==0 && start[1]==0 && start[2]==0)){
+                    generalPath.closePath();
+                    shapes.add(generalPath);
+                    generalPath=new GeneralPath();
+                }
+                generalPath.moveTo(currentElement[1], currentElement[2]);
+                start = currentElement; // Record where the polygon started to close it later
+            }
+
+            if (nextElement[0] == PathIterator.SEG_LINETO) {
+                generalPath.lineTo(nextElement[1], nextElement[2]);
+
+            } else if (nextElement[0] == PathIterator.SEG_CLOSE) {
+                generalPath.closePath();
+            }
+
+        }
+        shapes.add(generalPath);
+        //  locations.remove(locations.size()-1);
+
+        return shapes;
+    }
+
+
+
 
     public void addPoints(int amount) {
 

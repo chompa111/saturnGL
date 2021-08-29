@@ -52,25 +52,24 @@ public class SVGGobject extends Gobject {
             for (int i = 0; i < svgPathsG.getLength(); i++) {
                 var item = svgPathsG.item(i);
 
-                var shapeType=item.getNodeName();
+                var shapeType = item.getNodeName();
 
-                Shape shape= null;
+                Shape shape = null;
 
-                if(shapeType.equals("rect")){
+                if (shapeType.equals("rect")) {
                     var width = Double.parseDouble(item.getAttributes().getNamedItem("width").getNodeValue());
                     var height = Double.parseDouble(item.getAttributes().getNamedItem("height").getNodeValue());
                     var x = Double.parseDouble(item.getAttributes().getNamedItem("x").getNodeValue());
                     var y = Double.parseDouble(item.getAttributes().getNamedItem("y").getNodeValue());
-                    shape= new Rectangle((int)x,(int)y,(int)width,(int)height);
+                    shape = new Rectangle((int) x, (int) y, (int) width, (int) height);
                 }
 
-                if(shapeType.equals("circle")){
+                if (shapeType.equals("circle")) {
                     var cx = Double.parseDouble(item.getAttributes().getNamedItem("cx").getNodeValue());
                     var cy = Double.parseDouble(item.getAttributes().getNamedItem("cy").getNodeValue());
                     var r = Double.parseDouble(item.getAttributes().getNamedItem("r").getNodeValue());
-                    shape= new Ellipse2D.Double(cx-r,cy-r,2*r,2*r);
+                    shape = new Ellipse2D.Double(cx - r, cy - r, 2 * r, 2 * r);
                 }
-
 
 
                 var transform = Optional.ofNullable(item.getAttributes().getNamedItem("transform"))
@@ -80,8 +79,14 @@ public class SVGGobject extends Gobject {
                 var groupTransform = Optional.ofNullable(item.getParentNode().getAttributes().getNamedItem("transform"))
                         .map(Node::getNodeValue).orElse(null);
 
+                var fill= Optional.ofNullable(item.getAttributes().getNamedItem("fill")).map(Node::getNodeValue).orElse(null);
+                if(fill!=null){
+                    fill="fill:"+fill;
+                    style=fill+";"+style;
+                }
 
-                if(shapeType.equals("path")){
+
+                if (shapeType.equals("path")) {
                     var d = item.getAttributes().getNamedItem("d").getNodeValue();
                     PathParser p = new PathParser();
                     AWTPathProducer ph = new AWTPathProducer();
@@ -91,15 +96,13 @@ public class SVGGobject extends Gobject {
                     shape = ph.getShape();
                 }
 
-
-
-
+                if (transform != null) {
+                    shape = getTransformFromSVG(transform).createTransformedShape(shape);
+                }
                 if (groupTransform != null) {
-                    shape=getTransformFromSVG(groupTransform).createTransformedShape(shape);
+                    shape = getTransformFromSVG(groupTransform).createTransformedShape(shape);
                 }
-                if(transform!=null){
-                    shape=getTransformFromSVG(transform).createTransformedShape(shape);
-                }
+
 
                 var shapegobject = ShapeGobject2.fromSVGStyle(shape, style);
                 shapeList.add(shape);
@@ -119,7 +122,7 @@ public class SVGGobject extends Gobject {
 
 
         } catch (Exception e) {
-            System.out.println(2);
+            e.printStackTrace();
         }
 
     }
@@ -224,12 +227,17 @@ public class SVGGobject extends Gobject {
                 }
                 break;
             case "scale":
-                if(values.length==1){
-                    af.scale(Double.parseDouble(values[0]),Double.parseDouble(values[0]));
-                }else{
+                if (values.length == 1) {
+                    af.scale(Double.parseDouble(values[0]), Double.parseDouble(values[0]));
+                } else {
                     af.scale(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
                 }
                 break;
+
+            case "matrix":
+
+                af = new AffineTransform(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]),
+                        Float.parseFloat(values[4]), Float.parseFloat(values[5]));
         }
 
         return af;

@@ -68,7 +68,7 @@ public class ExCog extends Presentation {
          // add(baixo);
         List<Task> tasks = new ArrayList<>();
 
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 7000; i++) {
             var c = CircleBuilder.aCircle().withColor(new Color(255, 255, 255, (int) (Math.random() * 255))).withRadius(3 + Math.random() * 7).build();
 //             var c= new SVGGobject("C:\\Users\\PICHAU\\logao.svg").getGroup("planeta");
 //             c.getScale().setValue(0.08+Math.random()*0.1);

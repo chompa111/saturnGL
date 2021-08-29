@@ -11,17 +11,18 @@ import java.util.List;
 
 public class ShapeGobject2 extends FillAndStroke {
 
-    protected  Location location;
+    protected Location location;
     protected Shape shape;
 
-    protected  double shapeOfsetX;
+    protected double shapeOfsetX;
     protected double shapeOfsetY;
 
-    public ShapeGobject2(){}
+    public ShapeGobject2() {
+    }
 
     public ShapeGobject2(Shape shape, Color fillColor, Color strokeColor) {
         super(fillColor, strokeColor);
-        this.shape=shape;
+        this.shape = shape;
         var bounds = shape.getBounds();
         shapeOfsetX = (bounds.x + bounds.width) / 2.0;
         shapeOfsetY = (bounds.y + bounds.height) / 2.0;
@@ -31,7 +32,7 @@ public class ShapeGobject2 extends FillAndStroke {
 
     public ShapeGobject2(Shape shape, Location location, Color fillColor, Color strokeColor) {
         super(fillColor, strokeColor);
-        this.shape=shape;
+        this.shape = shape;
         this.location = location;
         var bounds = shape.getBounds();
         shapeOfsetX = (bounds.x + bounds.width) / 2.0;
@@ -42,7 +43,7 @@ public class ShapeGobject2 extends FillAndStroke {
 
     public ShapeGobject2(Shape shape, Location location, ColorHolder fillColorHolder, ColorHolder strokeColorHolder) {
         super(fillColorHolder, strokeColorHolder);
-        this.shape=shape;
+        this.shape = shape;
         this.location = location;
         var bounds = shape.getBounds();
         shapeOfsetX = (bounds.x + bounds.width) / 2.0;
@@ -52,7 +53,7 @@ public class ShapeGobject2 extends FillAndStroke {
 
     public ShapeGobject2(Shape shape, ColorHolder fillColorHolder, ColorHolder strokeColorHolder) {
         super(fillColorHolder, strokeColorHolder);
-        this.shape=shape;
+        this.shape = shape;
         var bounds = shape.getBounds();
         shapeOfsetX = (bounds.x + bounds.width) / 2.0;
         shapeOfsetY = (bounds.y + bounds.height) / 2.0;
@@ -85,8 +86,8 @@ public class ShapeGobject2 extends FillAndStroke {
     @Override
     public LocationPair getBorders() {
         var bounds = shape.getBounds();
-        double x = bounds.getBounds().getX() + location.getX()-shapeOfsetX;
-        double y = bounds.getY() + location.getY()-shapeOfsetY;
+        double x = bounds.getBounds().getX() + location.getX() - shapeOfsetX;
+        double y = bounds.getY() + location.getY() - shapeOfsetY;
         return new LocationPair(new graphical.basics.location.Point(x, y), new Point(x + bounds.getWidth(), y + bounds.getHeight()));
     }
 
@@ -96,7 +97,7 @@ public class ShapeGobject2 extends FillAndStroke {
     }
 
     public Shape getShape() {
-        var af=getTranformation();
+        var af = getTranformation();
         af.translate(location.getX() - shapeOfsetX, location.getY() - shapeOfsetY);
 
         return af.createTransformedShape(shape);
@@ -110,12 +111,19 @@ public class ShapeGobject2 extends FillAndStroke {
             var value = stylePart.split(":")[1];
             switch (stylePart.split(":")[0]) {
                 case "fill":
-                    if (!value.equals("none"))
-                        fillColorHolder = new ColorHolder(ColorHolder.hex2Rgb(stylePart.split(":")[1]));
+                    if (!value.equals("none")) {
+                        if (!value.contains("url"))
+                            fillColorHolder = new ColorHolder(ColorHolder.hex2Rgb(stylePart.split(":")[1]));
+                    }
+
                     break;
                 case "stroke":
-                    if (!value.equals("none"))
-                        strokeColorHolder = new ColorHolder(ColorHolder.hex2Rgb(stylePart.split(":")[1]));
+                    if (!value.equals("none")) {
+                        if (!value.contains("url"))
+                            strokeColorHolder = new ColorHolder(ColorHolder.hex2Rgb(stylePart.split(":")[1]));
+
+                    }
+
                     break;
 
             }

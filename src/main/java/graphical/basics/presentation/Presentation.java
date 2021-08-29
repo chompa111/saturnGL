@@ -19,6 +19,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -138,11 +139,12 @@ public abstract class Presentation extends JFrame {
 
     public void build() {
         buildPresentation();
-        joinBackGroundTaks();
+        joinBackGroundTasks();
         execute(wait(1));
+        cut();
     }
 
-    public void joinBackGroundTaks() {
+    public void joinBackGroundTasks() {
         if (backGroundTask.hasTasks()) {
             // consome as coisas que estejam ainda em background
             var remainingTaks = backGroundTask.getResumedTask();
@@ -150,6 +152,7 @@ public abstract class Presentation extends JFrame {
             remainingTaks.execute();
         }
     }
+
 
     @Override
     public void paint(Graphics g) {
@@ -183,7 +186,17 @@ public abstract class Presentation extends JFrame {
 
     public void paintComponent(Graphics g) {
 
-        backGround.paint(g);
+         backGround.paint(g);
+
+
+
+//        {
+//            int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
+//
+//            Arrays.fill(pixels, 0);
+//            bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), pixels, 0, bufferedImage.getWidth());
+//        }
+//
         var g2d = (Graphics2D) g;
         var oldT = (AffineTransform) g2d.getTransform().clone();
         camera.applyView(g);
