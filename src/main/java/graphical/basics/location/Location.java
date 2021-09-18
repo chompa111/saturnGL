@@ -31,8 +31,12 @@ public interface Location {
         return Math.sqrt((this.getX() - location.getX()) * (this.getX() - location.getX()) + (this.getY() - location.getY()) * (this.getY() - location.getY()));
     }
 
-    static Location at(double x,double y){
-        return new Point(x,y);
+    static Location at(double x, double y) {
+        return new Point(x, y);
+    }
+
+    default Location copy() {
+        return Location.at(this.getX(), this.getY());
     }
 
 }

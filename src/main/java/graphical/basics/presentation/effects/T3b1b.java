@@ -13,6 +13,7 @@ import graphical.basics.task.WaitTask;
 import graphical.basics.task.transformation.gobject.ColorListTranform;
 import graphical.basics.task.transformation.gobject.PositionListTransform;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -37,8 +38,14 @@ public class T3b1b {
         if (b instanceof ShapeGobject2) {
             sb = (ShapeGobject2) b;
         }
-        var dpa = new DynamicPath(sa.getShape(), sa.getFillColorHolder() == null ? null : sa.getFillColorHolder().copy(), sa.getStrokeColorHolder() == null ? null : sa.getStrokeColorHolder().copy());
-        var dpb = new DynamicPath(sb.getShape(), sb.getFillColorHolder() == null ? null : sb.getFillColorHolder().copy(), sb.getStrokeColorHolder() == null ? null : sb.getStrokeColorHolder().copy());
+
+        //todos os objetos são stroke and fill então vale o caso de colocar cores transparestes para fazer o stroke aparecer ou sumir caso um dos objetos não tenha stroke
+
+        var dpa = new DynamicPath(sa.getShape(), sa.getFillColorHolder() == null ? new ColorHolder(new Color(0,0,0,0)) : sa.getFillColorHolder().copy(), sa.getStrokeColorHolder() == null ?  new ColorHolder(new Color(0,0,0,0)) : sa.getStrokeColorHolder().copy());
+        var dpb = new DynamicPath(sb.getShape(), sb.getFillColorHolder() == null ?  new ColorHolder(new Color(0,0,0,0)) : sb.getFillColorHolder().copy(), sb.getStrokeColorHolder() == null ? new ColorHolder(new Color(0,0,0,0)) : sb.getStrokeColorHolder().copy());
+
+        dpa.setStrokeThickness(sa.getStrokeThickness());
+        dpb.setStrokeThickness(sb.getStrokeThickness());
 
         presentation.add(dpa);
 
@@ -52,9 +59,13 @@ public class T3b1b {
             dpb.addPoints(sizea - sizeb);
         }
 
+        var thicknessDiff= dpb.getStrokeThickness().getValue()-dpa.getStrokeThickness().getValue();
+        var strokeTask=dpa.getStrokeThickness().change(thicknessDiff,steps);
+
         var demorf = new PositionListTransform(dpa.getRefereceLocations(), dpb.getRefereceLocations(), steps);
         var colorpart = new ColorListTranform(dpa.getColors(), dpb.getColors().stream().map(ColorHolder::getColor).collect(Collectors.toList()), steps);
         return demorf.parallel(colorpart)
+                .parallel(strokeTask)
                 .step(() -> presentation.remove(dpa));
 
     }
@@ -79,12 +90,21 @@ public class T3b1b {
                 for (int i = 0; i < lb.size(); i++) {
                     taskList.add(turnInto(la.get(i), lb.get(i), steps));
                 }
-                for (int i = lb.size(); i < la.size(); i++) {
 
-                    int randomIndexB = (int) (Math.random() * lb.size());
 
-                    taskList.add(turnInto(la.get(i), lb.get(randomIndexB), steps));
+                int diff = la.size() - lb.size();
+                int count = 0;
+                if (diff != 0) {
+                    LBB:while (true){
+                        for (int i = 0; i < lb.size(); i++) {
+                            taskList.add(turnInto(la.get((lb.size()-1)+count), lb.get(i), steps));
+                            count++;
+                            if(count==diff)break LBB;
+                        }
+                    }
+
                 }
+
 
 
             } else {

@@ -2,6 +2,7 @@ package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.FillAndStroke;
+import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
@@ -31,6 +32,8 @@ public class DynamicPath extends FillAndStroke {
         widingRule = shape.getPathIterator(null).getWindingRule();
     }
 
+
+
     @Override
     public void paint(Graphics g) {
 
@@ -44,6 +47,7 @@ public class DynamicPath extends FillAndStroke {
             g2d.fill(shape);
         }
         if (strokeColorHolder != null) {
+            ((Graphics2D)g).setStroke(new BasicStroke((float)getStrokeThickness().getValue()));
             g.setColor(strokeColorHolder.getColor());
             g2d.draw(shape);
         }

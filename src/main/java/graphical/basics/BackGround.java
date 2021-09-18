@@ -12,10 +12,18 @@ public class BackGround extends Gobject {
 
     ColorHolder backGroundColor = new ColorHolder(Color.black);
 
+    int width;
+    int height;
+
+    public BackGround(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
     @Override
     public void paint(Graphics g) {
         g.setColor(backGroundColor.getColor());
-        g.fillRect(0, 0, 1000, 1000);
+        g.fillRect(0, 0, width, height);
     }
 
     @Override

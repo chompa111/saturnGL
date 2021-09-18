@@ -2,8 +2,11 @@ package graphical.basics.examples;
 
 import graphical.basics.behavior.FollowBehavior;
 import graphical.basics.gobject.CircleBuilder;
+import graphical.basics.gobject.Fonts;
 import graphical.basics.gobject.Group;
+import graphical.basics.gobject.TextGobject;
 import graphical.basics.gobject.struct.SVGGobject;
+import graphical.basics.location.Location;
 import graphical.basics.location.SupplierPoint;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Positioning;
@@ -23,6 +26,10 @@ public class CircleEx extends Presentation {
     @Override
     public void buildPresentation() {
 
+
+        var text= new TextGobject(Fonts.COMPUTER_MODERN_I.deriveFont(200f),"pepe", Location.at(500,500),Color.red);
+
+        add(text);
 
 
       //  getBackGround().getColors().get(0).setColor(new Color(0,0,0,80));
@@ -146,6 +153,6 @@ public class CircleEx extends Presentation {
         for (int i = 0; i < fonts.length; i++) {
             System.out.println(fonts[i]);
         }
-        new CircleEx().buildPresentation();
+        new CircleEx().build();
     }
 }

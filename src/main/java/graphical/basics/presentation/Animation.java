@@ -75,7 +75,7 @@ public class Animation {
         }
 
         if (gobject instanceof Group) {
-            return ((Group) gobject).onChildren(x -> Animation.strokeAndFill(x, steps),0.5);
+            return ((Group) gobject).onChildren(x -> Animation.strokeAndFill(x, steps),0.7);
         }
 
         if (gobject instanceof SVGGobject) {

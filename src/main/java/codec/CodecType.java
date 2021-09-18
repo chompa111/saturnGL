@@ -1,5 +1,5 @@
 package codec;
 
 public enum CodecType {
-    JCODEC,RAW_IMAGE
+    JCODEC,RAW_IMAGE,XUGGLE
 }

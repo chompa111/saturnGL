@@ -110,7 +110,7 @@ public abstract class Gobject {
     public void setPositionTo(Location location) {
         var myLocation = this.getBorders().midPoint();
         var diffx = location.getX() - myLocation.getX();
-        var diffy = location.getY() - myLocation.getX();
+        var diffy = location.getY() - myLocation.getY();
         changeSetPosition(diffx,diffy);
     }
 

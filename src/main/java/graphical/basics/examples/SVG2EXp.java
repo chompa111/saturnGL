@@ -21,8 +21,8 @@ import java.awt.*;
 public class SVG2EXp extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setFramerate(30);
-        presentationConfig.setDisableCodec(true);
+        presentationConfig.setFramerate(60);
+//        presentationConfig.setDisableCodec(true);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class SVG2EXp extends Presentation {
 
 
         //trator.setPositionTo(Location.at(0,0));
-        trator.changeSetPosition(-300,0);
-        //Animation.strokeAndFill(trator, seconds(1)).execute();
+       // trator.changeSetPosition(-300,0);
+        Animation.strokeAndFill(trator, seconds(1)).execute();
         // chassi.changeColor(new Color(64, 156, 31)).execute();
 
         // Animation.t3b1b(trator, CircleBuilder.aCircle().build(), seconds(2)).execute();

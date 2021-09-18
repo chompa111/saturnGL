@@ -14,8 +14,10 @@ public class Example extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
         presentationConfig
-                .setFramerate(30)
-                .setDisableCodec(true);
+                .setFramerate(60)
+                .setDisableCodec(false);
+        presentationConfig.setHeight(1080);
+        presentationConfig.setWidth(1920);
 
 
     }

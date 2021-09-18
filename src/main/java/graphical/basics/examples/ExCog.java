@@ -28,9 +28,10 @@ import java.util.List;
 public class ExCog extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(true);
-        presentationConfig.setFramerate(30);
-        presentationConfig.setCodec(CodecType.JCODEC);
+        presentationConfig.setHeight(1080);
+        presentationConfig.setWidth(1920);
+        presentationConfig.setDisableCodec(false);
+        presentationConfig.setFramerate(60);
     }
 
     @Override

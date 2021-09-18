@@ -3,6 +3,7 @@ package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.shape.ShapeLike;
+import graphical.basics.gobject.struct.FillAndStroke;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
@@ -14,23 +15,31 @@ import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
 import java.util.List;
 
-public class Circle extends Gobject implements ShapeLike {
+public class Circle extends FillAndStroke implements ShapeLike {
 
     Location center;
     NumberHolder radius;
-    ColorHolder colorHolder;
 
     public Circle(Location center, NumberHolder radius, Color color) {
         this.center = center;
         this.radius = radius;
-        this.colorHolder = new ColorHolder(color);
+        this.fillColorHolder = new ColorHolder(color);
     }
 
     @Override
     public void paint(Graphics g) {
+
         int r = (int) radius.getValue();
-        g.setColor(colorHolder.getColor());
-        g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+        if(fillColorHolder!=null){
+            g.setColor(fillColorHolder.getColor());
+            g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+        }
+        if(strokeColorHolder!=null){
+            ((Graphics2D)g).setStroke(new BasicStroke((float)getStrokeThickness().getValue()));
+            g.setColor(strokeColorHolder.getColor());
+            g.drawOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+        }
+
 
 //        try {
 //            var border = getBorders();
@@ -48,11 +57,6 @@ public class Circle extends Gobject implements ShapeLike {
     public LocationPair getBorders() {
         return new LocationPair(new Point(center.getX() - radius.getValue() / 2, center.getY() - radius.getValue() / 2),
                 new Point(center.getX() + radius.getValue() / 2, center.getY() + radius.getValue() / 2));
-    }
-
-    @Override
-    public List<ColorHolder> getColors() {
-        return Arrays.asList(colorHolder);
     }
 
     @Override
@@ -75,15 +79,6 @@ public class Circle extends Gobject implements ShapeLike {
     public void setCenter(Location center) {
         this.center = center;
     }
-
-    public ColorHolder getColorHolder() {
-        return colorHolder;
-    }
-
-    public void setColorHolder(ColorHolder colorHolder) {
-        this.colorHolder = colorHolder;
-    }
-
 
     @Override
     public Shape asShape() {

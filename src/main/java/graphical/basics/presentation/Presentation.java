@@ -3,6 +3,7 @@ package graphical.basics.presentation;
 import codec.JCodec;
 import codec.RawImageCodec;
 import codec.VideoCodec;
+import codec.XugglerCodec;
 import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Camera;
@@ -12,6 +13,7 @@ import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
+import org.jfree.fx.FXGraphics2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +51,7 @@ public abstract class Presentation extends JFrame {
     long lastMesure = System.currentTimeMillis();
 
 
-    private final BackGround backGround = new BackGround();
+    private BackGround backGround;
     private final Camera camera = new Camera();
 
     public final EndLessParallelTask backGroundTask = new EndLessParallelTask();
@@ -57,9 +59,12 @@ public abstract class Presentation extends JFrame {
     public Presentation() {
 
 
+
         PresentationConfig presentationConfig = new PresentationConfig();
         setup(presentationConfig);
         applyConfigs(presentationConfig);
+
+        backGround = new BackGround(presentationConfig.getWidth(), presentationConfig.getHeight());
 
 
         //dirs
@@ -119,10 +124,12 @@ public abstract class Presentation extends JFrame {
                 case RAW_IMAGE:
                     this.videoCodec = new RawImageCodec();
                     break;
+                case XUGGLE:
+                    this.videoCodec = new XugglerCodec(presentationConfig);
             }
 
         } else {
-            this.videoCodec = new JCodec();
+            this.videoCodec = new XugglerCodec(presentationConfig);//default
         }
 
         //preview windowSize
@@ -186,8 +193,7 @@ public abstract class Presentation extends JFrame {
 
     public void paintComponent(Graphics g) {
 
-         backGround.paint(g);
-
+        backGround.paint(g);
 
 
 //        {

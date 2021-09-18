@@ -100,6 +100,10 @@ public class Polygon extends Gobject implements ShapeLike {
         this.ys = new int[locations.size()];
     }
 
+    public void addPoint(Location location) {
+        locations.add(location);
+    }
+
     public Polygon(List<Location> locations, Color color) {
         colorHolder = new ColorHolder(color);
         this.locations = locations;

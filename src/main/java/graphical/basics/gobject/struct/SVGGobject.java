@@ -75,7 +75,7 @@ public class SVGGobject extends Gobject {
                 var transform = Optional.ofNullable(item.getAttributes().getNamedItem("transform"))
                         .map(Node::getNodeValue).orElse(null);
                 var style = item.getAttributes().getNamedItem("style").getNodeValue();
-                var group = item.getParentNode().getAttributes().getNamedItem("id").getNodeValue();
+                var group = Optional.ofNullable(item.getParentNode().getAttributes().getNamedItem("id")).map(Node::getNodeValue).orElse("pepe");
                 var groupTransform = Optional.ofNullable(item.getParentNode().getAttributes().getNamedItem("transform"))
                         .map(Node::getNodeValue).orElse(null);
 
