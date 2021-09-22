@@ -21,8 +21,10 @@ import java.awt.*;
 public class SVG2EXp extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
+        presentationConfig.setDisableCodec(true);
+        presentationConfig.setHeight(1080);
+        presentationConfig.setWidth(1920);
         presentationConfig.setFramerate(60);
-//        presentationConfig.setDisableCodec(true);
     }
 
     @Override

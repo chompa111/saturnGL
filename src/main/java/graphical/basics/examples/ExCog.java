@@ -1,6 +1,7 @@
 package graphical.basics.examples;
 
 import codec.CodecType;
+import codec.engine.EngineType;
 import graphical.basics.ColorHolder;
 import graphical.basics.Pivot;
 import graphical.basics.behavior.FollowBehavior;
@@ -31,6 +32,7 @@ public class ExCog extends Presentation {
         presentationConfig.setHeight(1080);
         presentationConfig.setWidth(1920);
         presentationConfig.setDisableCodec(false);
+        presentationConfig.setEngine(EngineType.JAVAFX);
         presentationConfig.setFramerate(60);
     }
 

@@ -1,5 +1,6 @@
 package graphical.basics.examples;
 
+import codec.engine.EngineType;
 import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
@@ -14,10 +15,11 @@ import java.awt.*;
 public class Baskara extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-//        presentationConfig.setDisableCodec(true);
+        presentationConfig.setDisableCodec(false);
         presentationConfig.setHeight(1080);
         presentationConfig.setWidth(1920);
         presentationConfig.setFramerate(60);
+        presentationConfig.setEngine(EngineType.JAVAFX);
     }
 
     @Override

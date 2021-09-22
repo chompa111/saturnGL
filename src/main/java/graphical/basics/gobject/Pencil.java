@@ -15,15 +15,17 @@ import java.util.List;
 public class Pencil extends Gobject implements ShapeLike {
 
     Location previusLocation;
+    Location ppLocation;
     Location location;
     Color color;
-    GeneralPath generalPath= new GeneralPath();
+    GeneralPath generalPath = new GeneralPath();
 
     public Pencil(Location location, Color color) {
         this.location = location;
-        this.previusLocation=location.copy();
+        this.previusLocation = location.copy();
+        this.ppLocation = location.copy();
         this.color = color;
-        generalPath.moveTo(location.getX(),location.getY());
+        generalPath.moveTo(location.getX(), location.getY());
     }
 
 
@@ -35,12 +37,20 @@ public class Pencil extends Gobject implements ShapeLike {
     @Override
     public void paint(Graphics g) {
         if (!previusLocation.equals(location)) {
-            generalPath.lineTo(location.getX(),location.getY());
+            generalPath.quadTo(ppLocation.getX(), ppLocation.getY(), location.getX(), location.getY());
+         //   generalPath.curveTo(ppLocation.getX(), ppLocation.getY(),previusLocation.getX(),previusLocation.getY(), location.getX(), location.getY());
+            ppLocation.setX(previusLocation.getX());
+            ppLocation.setY(previusLocation.getY());
             previusLocation.setX(location.getX());
             previusLocation.setY(location.getY());
         }
+        ((Graphics2D) g).setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
         g.setColor(color);
-        ((Graphics2D)g).draw(generalPath);
+        ((Graphics2D) g).draw(generalPath);
+        ((Graphics2D) g).setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+        g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 80));
+        ((Graphics2D) g).draw(generalPath);
+
     }
 
     @Override
@@ -58,6 +68,6 @@ public class Pencil extends Gobject implements ShapeLike {
 
     @Override
     public List<Location> getRefereceLocations() {
-        return Arrays.asList(Location.at(500,500));
+        return Arrays.asList(Location.at(500, 500));
     }
 }

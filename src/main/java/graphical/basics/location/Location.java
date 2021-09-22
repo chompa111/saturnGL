@@ -1,5 +1,10 @@
 package graphical.basics.location;
 
+import graphical.basics.gobject.struct.Gobject;
+
+import java.awt.geom.Point2D;
+import java.util.function.Supplier;
+
 public interface Location {
 
 
@@ -37,6 +42,16 @@ public interface Location {
 
     default Location copy() {
         return Location.at(this.getX(), this.getY());
+    }
+
+    static Location getTransformedObservedLocation(Location location, Gobject gobject) {
+
+        Supplier<Point2D> point2dGetter = () -> {
+            var af = gobject.getTranformation();
+            return af.transform(new Point2D.Double(location.getX(), location.getY()), null);
+        };
+
+        return new SupplierPoint(() -> point2dGetter.get().getX(), () -> point2dGetter.get().getY());
     }
 
 }

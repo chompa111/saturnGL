@@ -4,6 +4,9 @@ import codec.JCodec;
 import codec.RawImageCodec;
 import codec.VideoCodec;
 import codec.XugglerCodec;
+import codec.engine.JavaFXEngine;
+import codec.engine.JavaGraphicEngine;
+import codec.engine.JavaNativeEngine;
 import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Camera;
@@ -13,7 +16,6 @@ import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
-import org.jfree.fx.FXGraphics2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +23,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class Presentation extends JFrame {
@@ -35,10 +35,11 @@ public abstract class Presentation extends JFrame {
     public static int FRAME_RATE = 60;
 
 
-    public BufferedImage bufferedImage;
+  //  public BufferedImage bufferedImage;
     public Graphics bufferedGraphics;
 
     VideoCodec videoCodec;
+    JavaGraphicEngine graphicEngine;
 
     List<Gobject> gobjects = new ArrayList<>();
     List<Behavior> behaviors = new ArrayList<>();
@@ -59,7 +60,6 @@ public abstract class Presentation extends JFrame {
     public Presentation() {
 
 
-
         PresentationConfig presentationConfig = new PresentationConfig();
         setup(presentationConfig);
         applyConfigs(presentationConfig);
@@ -77,27 +77,12 @@ public abstract class Presentation extends JFrame {
         videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
 
 
-        Graphics2D g2 = (Graphics2D) bufferedGraphics;
-
-        RenderingHints rh = new RenderingHints(
-
-                new HashMap<>() {
-                    {
-                        put(RenderingHints.KEY_ANTIALIASING,
-                                RenderingHints.VALUE_ANTIALIAS_ON);
-                    }
-                });
-
-        g2.setRenderingHints(rh);
-
         //preview window
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
 
         staticReference = this;
-
 
     }
 
@@ -136,9 +121,21 @@ public abstract class Presentation extends JFrame {
         this.setUndecorated(presentationConfig.isPreviewWindowBarVisible());
         this.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
 
-        // framesize
-        this.bufferedImage = new BufferedImage(presentationConfig.getWidth(), presentationConfig.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        bufferedGraphics = bufferedImage.getGraphics();
+        if(presentationConfig.getEngine()!=null){
+            switch (presentationConfig.getEngine()){
+                case NATIVE_JAVA:
+                    graphicEngine = new JavaNativeEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
+                    break;
+                case JAVAFX:
+                    graphicEngine = new JavaFXEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
+                    break;
+            }
+        }else{
+            graphicEngine = new JavaNativeEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
+
+        }
+       // this.bufferedImage = graphicEngine.getActualFrame();
+        bufferedGraphics = graphicEngine.getGraphics();
 
     }
 
@@ -163,7 +160,7 @@ public abstract class Presentation extends JFrame {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(bufferedImage, 0, 0, null);
+        g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
         g.setColor(Color.green);
         g.drawString("" + frameCounter, 900, 100);
         g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
@@ -179,7 +176,7 @@ public abstract class Presentation extends JFrame {
         repaint();
         System.out.println((System.currentTimeMillis() - before1) + "ms processando quadro");
         var before2 = System.currentTimeMillis();
-        if (!disableCodec) videoCodec.addFrame(bufferedImage);
+        if (!disableCodec) videoCodec.addFrame(graphicEngine.getActualFrame());
         System.out.println((System.currentTimeMillis() - before1) + "ms de codec");
 
         if (disableCodec) {

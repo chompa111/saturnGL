@@ -1,6 +1,7 @@
 package graphical.basics.presentation;
 
 import codec.CodecType;
+import codec.engine.EngineType;
 
 public class PresentationConfig {
 
@@ -13,6 +14,7 @@ public class PresentationConfig {
     private boolean previewWindowBarVisible = false;
 
     private CodecType codecType;
+    private EngineType engineType;
     private Boolean disableCodec;
     private Integer framerate;
 
@@ -65,5 +67,13 @@ public class PresentationConfig {
 
     public void setPreviewWindowBarVisible(boolean previewWindowBarr) {
         this.previewWindowBarVisible = previewWindowBarr;
+    }
+
+    public EngineType getEngine() {
+        return engineType;
+    }
+
+    public void setEngine(EngineType engineType) {
+        this.engineType = engineType;
     }
 }
