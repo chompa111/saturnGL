@@ -1,10 +1,12 @@
 package graphical.basics.examples;
 
 import codec.CodecType;
+import codec.engine.EngineType;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.Pencil;
 import graphical.basics.gobject.TextGobject;
+import graphical.basics.gobject.Video;
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.SVGGobject;
 import graphical.basics.location.Location;
@@ -21,55 +23,76 @@ public class Quadrado extends Presentation {
     public void setup(PresentationConfig presentationConfig) {
 
         presentationConfig.setDisableCodec(false);
-        presentationConfig.setHeight(1080);
-        presentationConfig.setWidth(1920);
-        presentationConfig.setFramerate(60);
+        presentationConfig.setHeight(1000);
+        presentationConfig.setWidth(1000);
+        presentationConfig.setFramerate(30);
+        presentationConfig.setEngine(EngineType.JAVAFX);
     }
 
     @Override
     protected void buildPresentation() {
-        var rect = new Rect(Location.at(100,100),Location.at(300,300), Color.red);
 
 
-        //add(rect);
+        var moco= new SVGGobject("C:\\Users\\PICHAU\\Desktop\\urso.svg").toGroupGobject();
+        moco.setPositionTo(Location.at(500,500));
+        add(moco);
+
+
+        Animation.strokeAndFill(moco,seconds(3)).execute();
+
+////
+//
+//     //   getBackGround().changeColor(Color.red).execute();
+
+//        //video.setPositionTo(Location.at(500,500));
+//      //  video.getScale().setValue(0.3);
+//        video.setPositionTo(Location.at(500,500));
+
+
+
+        //Animation.fadeInGrow(video,seconds(2)).execute();
+//        video.play(seconds(15)).executeInBackGround();
+//        video.getScale().change(-0.8,seconds(2)).execute();
+//
+//        video.moveTo(Location.at(200,200)).execute();
+
+
+
 
 //
-//        var pencil = new Pencil(Location.getTransformedObservedLocation(rect.getP1(),rect),Color.magenta);
-//        var pencil2 = new Pencil(Location.getTransformedObservedLocation(rect.getP2(),rect),Color.yellow);
-//        add(pencil);
-//        add(pencil2);
+//        video.getScale().change(-0.8).andThen(  video.getScale().change(0.8)).repeat(3).executeInBackGround();
+//        video.play(seconds(300)).executeInBackGround();
 //
-//        rect.move(1000,0,seconds(10))
-//                .andThen(rect.move(0,500,seconds(10)))
-//                .andThen(rect.move(-1000,0,seconds(10)))
-//                .andThen(rect.move(0,-500,seconds(10)))
-//                .executeInBackGround();
-//        rect.getAngle().change(0.1,seconds(40),ChangeType.CONSTANT_SPEED).execute();
-
-
-        rect.setStrokeColorHolder(new ColorHolder(Color.white));
-
-
-        rect.getAngle().setValue(Math.toRadians(90));
-
-        var circle= CircleBuilder.aCircle().withColor(Color.green).build();
-        rect.setPositionTo(circle.getBorders().midPoint());
-        add(circle);
-        Animation.strokeAndFill(circle,seconds(1)).execute();
-
-        Animation.t3b1b(circle,rect,seconds(1)).execute();
-        var text=new TextGobject("L^2+1",Location.at(500,500),Color.white);
-        wait(seconds(1)).execute();
-       rect.transform(text,seconds(1)).execute();
 //
-//        var tratorSvg = new SVGGobject("C:\\Users\\PICHAU\\trato.svg").toGroupGobject();
-//        tratorSvg.setPositionTo(Location.at(500,500));
+////
+//        var video2 = new Video(Location.at(100,100),"C:\\Users\\PICHAU\\Desktop\\repos\\Saturn\\my_videos\\maquina.mp4");
+//        add(video2);
+//
+//        video2.getScale().setValue(0.5);
+//        video2.changeSetPosition(-200,0);
+//        video2.play(seconds(300)).executeInBackGround();
+//        video.getAngle().change(0.003,seconds(300),ChangeType.CONSTANT_SPEED).execute();
+
+        //video.getAngle().change(0.1,seconds(10),ChangeType.CONSTANT_SPEED).execute();
+//        var rect = new Rect(Location.at(100,100),Location.at(300,300), Color.red);
+//
+//
+//        rect.setStrokeColorHolder(new ColorHolder(Color.white));
+//
+//
+//        rect.getAngle().setValue(Math.toRadians(90));
+//
+//        var circle= CircleBuilder.aCircle().withColor(Color.green).build();
+//        rect.setPositionTo(circle.getBorders().midPoint());
+//        add(circle);
+//        Animation.strokeAndFill(circle,seconds(1)).execute();
+//
+//
+//        Animation.t3b1b(circle,rect,seconds(1)).execute();
+//        var text=new TextGobject("L^2+1",Location.at(500,500),Color.white);
 //        wait(seconds(1)).execute();
-//        Animation.t3b1b(text,tratorSvg,seconds(1)).execute();
+//       rect.transform(text,seconds(1)).execute();
 
-       // rect.transform(text).execute();
-
-        //circle.transform(rect).execute();
 
 
     }

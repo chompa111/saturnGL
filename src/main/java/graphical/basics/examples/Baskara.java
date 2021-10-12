@@ -15,7 +15,7 @@ import java.awt.*;
 public class Baskara extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
         presentationConfig.setHeight(1080);
         presentationConfig.setWidth(1920);
         presentationConfig.setFramerate(60);

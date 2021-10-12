@@ -22,6 +22,8 @@ repositories {
     maven{
         url "https://www.dcm4che.org/maven2/"
     }
+
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -42,7 +44,7 @@ dependencies {
     implementation group: 'xuggle', name: 'xuggle-xuggler', version: '5.4'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
     implementation 'org.jfree:org.jfree.fxgraphics2d:2.1.2'
-
+    implementation 'com.github.sealedtx:java-youtube-downloader:3.0.1'
 
 
 }

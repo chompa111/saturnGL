@@ -147,7 +147,7 @@ public class MorfTransform implements Task {
 
 
             }
-            System.out.println("soma:" + stepCount);
+            //System.out.println("soma:" + stepCount);
 
         } else {
             for (int i = 0; i < p1.size(); i++) {
@@ -170,7 +170,7 @@ public class MorfTransform implements Task {
                 delta[i][1] -= aceleration[i][1];
             }
 
-            System.out.println("sub:" + stepCount);
+        //    System.out.println("sub:" + stepCount);
 
         }
         for (int i = 0; i < acelerationcolor.length; i++) {

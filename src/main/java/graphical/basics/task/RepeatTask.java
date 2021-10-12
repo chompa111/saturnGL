@@ -29,6 +29,6 @@ public class RepeatTask implements Task {
 
     @Override
     public boolean isDone() {
-        return task.isDone();
+        return task.isDone() && countTimes==times;
     }
 }

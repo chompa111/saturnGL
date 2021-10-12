@@ -1,5 +1,8 @@
 package graphical.basics.examples;
 
+import codec.CodecType;
+import codec.engine.EngineType;
+import graphical.basics.ColorHolder;
 import graphical.basics.behavior.FollowBehavior;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.Group;
@@ -21,10 +24,11 @@ import java.awt.*;
 public class SVG2EXp extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(true);
+        presentationConfig.setDisableCodec(false);
         presentationConfig.setHeight(1080);
         presentationConfig.setWidth(1920);
         presentationConfig.setFramerate(60);
+        presentationConfig.setEngine(EngineType.JAVAFX);
     }
 
     @Override
@@ -44,6 +48,7 @@ public class SVG2EXp extends Presentation {
 
         //trator.setPositionTo(Location.at(0,0));
        // trator.changeSetPosition(-300,0);
+
         Animation.strokeAndFill(trator, seconds(1)).execute();
         // chassi.changeColor(new Color(64, 156, 31)).execute();
 
@@ -64,12 +69,17 @@ public class SVG2EXp extends Presentation {
 
         frente.repeat(10).executeInBackGround();
 
-       for(int i=0;i<270;i++){
-            var location=rodaF.getBorders().midPoint();
-            fumo(Location.at(location.getX(),location.getY()-200)).executeInBackGround();
-            wait(1).execute();
-        }
-        backGroundTask.clear();
+       while (true){
+           for(int i=0;i<27;i++){
+               var location=rodaF.getBorders().midPoint();
+               for(int j=0;j<10;j++){
+
+                   fumo(Location.at(location.getX(),location.getY()-200)).executeInBackGround();
+               }
+               wait(1).execute();
+           }
+           wait(seconds(0.2)).execute();
+       }
 
 
     }
@@ -80,10 +90,13 @@ public class SVG2EXp extends Presentation {
                     .withRadius(5+Math.random()*20)
                     .withCenter(Location.at(location.getX(), location.getY()))
                     .withColor(new Color(180, 180, 180, (int) (Math.random() * 255)))
+                    //.withColor(ColorHolder.randomColor())
                     .build();
 
             add(bolinha);
-            return bolinha.move(-(30+Math.random() * 200), Math.random() * 100 - 50).parallel(Animation.fadeOut(bolinha)).step(() -> {
+            return bolinha.move(-(30+Math.random() * 200), Math.random() * 100 - 50)
+                    .parallel(Animation.fadeOut(bolinha))
+                    .step(() -> {
                 remove(bolinha);
             });
         });

@@ -1,5 +1,6 @@
 package graphical.basics.examples;
 
+import codec.CodecType;
 import codec.engine.EngineType;
 import graphical.basics.ColorHolder;
 import graphical.basics.behavior.FollowBehavior;
@@ -52,11 +53,6 @@ public class Circles extends Presentation {
 
        c1.getAngle().change(0.05/10,seconds(10), ChangeType.CONSTANT_SPEED).executeInBackGround();
        c2.getAngle().change(0.3/10,seconds(10), ChangeType.CONSTANT_SPEED).executeInBackGround();
-
-
-
-
-
 
     }
 

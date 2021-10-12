@@ -1,5 +1,6 @@
 package graphical.basics.examples;
 
+import codec.engine.EngineType;
 import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.Animation;
@@ -20,6 +21,7 @@ public class Gauss extends Presentation {
     public void setup(PresentationConfig presentationConfig) {
         presentationConfig.setDisableCodec(true);
         presentationConfig.setFramerate(30);
+        presentationConfig.setEngine(EngineType.JAVAFX);
     }
 
     @Override
