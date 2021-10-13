@@ -32,7 +32,7 @@ repositories {
 ```
 ```groovy
 dependencies {
-    implementation 'com.github.chompa111:saturnGL:Tag'
+    implementation 'com.github.chompa111:saturnGL:1.0.2'
 }
 ```
 
