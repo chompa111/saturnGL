@@ -10,6 +10,9 @@ import codec.engine.JavaNativeEngine;
 import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Camera;
+import graphical.basics.gobject.Circle;
+import graphical.basics.gobject.CircleBuilder;
+import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.task.EndLessParallelTask;
 import graphical.basics.task.ParalelTask;
@@ -25,7 +28,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Presentation extends JFrame {
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
+public abstract class Presentation {
 
     public static Presentation staticReference;
 
@@ -34,8 +39,19 @@ public abstract class Presentation extends JFrame {
 
     public static int FRAME_RATE = 60;
 
+    private JFrame frame = new JFrame() {
+        @Override
+        public void paint(Graphics g) {
+            g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
+            g.setColor(Color.green);
+            g.drawString("" + frameCounter, 900, 100);
+            g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
+            lastMesure = System.currentTimeMillis();
+        }
+    };
 
-  //  public BufferedImage bufferedImage;
+
+    //  public BufferedImage bufferedImage;
     public Graphics bufferedGraphics;
 
     VideoCodec videoCodec;
@@ -52,7 +68,7 @@ public abstract class Presentation extends JFrame {
     long lastMesure = System.currentTimeMillis();
 
 
-    private BackGround backGround;
+    private final BackGround backGround;
     private final Camera camera = new Camera();
 
     public final EndLessParallelTask backGroundTask = new EndLessParallelTask();
@@ -78,8 +94,9 @@ public abstract class Presentation extends JFrame {
 
 
         //preview window
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setTitle(" Saturn preview window");
 
 
         staticReference = this;
@@ -118,11 +135,11 @@ public abstract class Presentation extends JFrame {
         }
 
         //preview windowSize
-        this.setUndecorated(presentationConfig.isPreviewWindowBarVisible());
-        this.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
+        frame.setUndecorated(presentationConfig.isPreviewWindowBarVisible());
+        frame.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
 
-        if(presentationConfig.getEngine()!=null){
-            switch (presentationConfig.getEngine()){
+        if (presentationConfig.getEngine() != null) {
+            switch (presentationConfig.getEngine()) {
                 case NATIVE_JAVA:
                     graphicEngine = new JavaNativeEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
                     break;
@@ -130,11 +147,11 @@ public abstract class Presentation extends JFrame {
                     graphicEngine = new JavaFXEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
                     break;
             }
-        }else{
+        } else {
             graphicEngine = new JavaNativeEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
 
         }
-       // this.bufferedImage = graphicEngine.getActualFrame();
+        // this.bufferedImage = graphicEngine.getActualFrame();
         bufferedGraphics = graphicEngine.getGraphics();
 
     }
@@ -158,22 +175,13 @@ public abstract class Presentation extends JFrame {
     }
 
 
-    @Override
-    public void paint(Graphics g) {
-        g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
-        g.setColor(Color.green);
-        g.drawString("" + frameCounter, 900, 100);
-        g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
-        lastMesure = System.currentTimeMillis();
-    }
-
     public void processFrame() {
         runBehaviors();
         frameCounter++;
         System.out.println("COUNTER(" + frameCounter + ")");
         var before1 = System.currentTimeMillis();
         paintComponent(bufferedGraphics);
-        repaint();
+        frame.repaint();
         System.out.println((System.currentTimeMillis() - before1) + "ms processando quadro");
         var before2 = System.currentTimeMillis();
         if (!disableCodec) videoCodec.addFrame(graphicEngine.getActualFrame());
@@ -288,4 +296,5 @@ public abstract class Presentation extends JFrame {
     public Camera getCamera() {
         return camera;
     }
+
 }
