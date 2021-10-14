@@ -1,4 +1,4 @@
-
+[![](https://jitpack.io/v/chompa111/saturnGL.svg)](https://jitpack.io/#chompa111/saturnGL)
 ![baner7](https://user-images.githubusercontent.com/43425971/131168286-6077a2c9-7572-4c39-97e1-6da6636addd2.png)
 
 
@@ -21,6 +21,45 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 ## Saturn suports [Latex](https://en.wikipedia.org/wiki/LaTeX)
 
 ![latex](https://user-images.githubusercontent.com/43425971/128233754-3aa6fa40-8ff8-402c-8cc7-07d7610c6fcb.gif)
+
+# Import Saturn as `Maven`/`Gradle` dependency
+### Gradle
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+    maven { url "https://www.dcm4che.org/maven2/"}
+}
+```
+```groovy
+dependencies {
+    implementation 'com.github.chompa111:saturnGL:1.0.2'
+}
+```
+
+### Maven
+``` xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+        <id>dcm4che.org</id>
+        <url>https://www.dcm4che.org/maven2/</url>
+    </repository>
+</repositories>
+```
+``` xml
+<dependency>
+    <groupId>com.github.chompa111</groupId>
+    <artifactId>saturnGL</artifactId>
+    <version>1.0.2</version>
+</dependency>
+```
+
+
+
+
 
 
 # First Steps 🪐
