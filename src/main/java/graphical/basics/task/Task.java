@@ -22,7 +22,7 @@ public interface Task {
         }
     }
 
-    default Task andThen(Supplier<Task> supplier){
+    default Task andThen(Supplier<Task> supplier) {
         return andThen(new ContextSetupTask(supplier));
     }
 
@@ -62,9 +62,10 @@ public interface Task {
         Presentation.staticReference.execute(this);
     }
 
-    default InterruptableTask executeInBackGround(){
+    default InterruptableTask executeInBackGround() {
         return Presentation.staticReference.backGroundTask.append(this);
     }
+
 
 //
 //    public static <T extends Task> Collector<T, ?, ParalelTask> toList() {

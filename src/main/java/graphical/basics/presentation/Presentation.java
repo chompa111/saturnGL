@@ -20,11 +20,13 @@ import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,9 +96,8 @@ public abstract class Presentation {
 
 
         //preview window
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.setTitle(" Saturn preview window");
+
+
 
 
         staticReference = this;
@@ -137,6 +138,19 @@ public abstract class Presentation {
         //preview windowSize
         frame.setUndecorated(presentationConfig.isPreviewWindowBarVisible());
         frame.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
+        //eable preview
+
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setVisible(!presentationConfig.isDisablePreview());
+        frame.setTitle(" Saturn-preview ");
+        try {
+            var icn=ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
+            frame.setIconImage(icn);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         if (presentationConfig.getEngine() != null) {
             switch (presentationConfig.getEngine()) {

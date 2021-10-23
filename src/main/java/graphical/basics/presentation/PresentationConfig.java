@@ -13,6 +13,8 @@ public class PresentationConfig {
 
     private boolean previewWindowBarVisible = false;
 
+    private boolean disablePreview = false;
+
     private CodecType codecType;
     private EngineType engineType;
     private Boolean disableCodec;
@@ -75,5 +77,13 @@ public class PresentationConfig {
 
     public void setEngine(EngineType engineType) {
         this.engineType = engineType;
+    }
+
+    public boolean isDisablePreview() {
+        return disablePreview;
+    }
+
+    public void setDisablePreview(boolean disablePreview) {
+        this.disablePreview = disablePreview;
     }
 }
