@@ -44,7 +44,8 @@ public abstract class Presentation {
     private JFrame frame = new JFrame() {
         @Override
         public void paint(Graphics g) {
-            g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
+            if (graphicEngine != null)
+                g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
             g.setColor(Color.green);
             g.drawString("" + frameCounter, 900, 100);
             g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
@@ -98,8 +99,6 @@ public abstract class Presentation {
         //preview window
 
 
-
-
         staticReference = this;
 
     }
@@ -144,12 +143,11 @@ public abstract class Presentation {
         frame.setVisible(!presentationConfig.isDisablePreview());
         frame.setTitle(" Saturn-preview ");
         try {
-            var icn=ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
+            var icn = ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
             frame.setIconImage(icn);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         if (presentationConfig.getEngine() != null) {

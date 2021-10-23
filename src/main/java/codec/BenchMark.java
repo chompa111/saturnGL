@@ -23,8 +23,6 @@ public class BenchMark {
 
     public static void runBenchMark() {
 
-        var resultsNative = doBenchMark(EngineType.NATIVE_JAVA);
-        var resultasJFX = doBenchMark(EngineType.JAVAFX);
 
         var presenatation = new Presentation() {
 
@@ -40,38 +38,51 @@ public class BenchMark {
             }
         };
 
-        presenatation.add(new TextGobject("Native",Location.at(20,100),Color.white));
+        try {
+            var resultsNative = doBenchMark(EngineType.NATIVE_JAVA);
+            presenatation.add(new TextGobject(new Font(Font.DIALOG, Font.PLAIN, 30), "Engine: Java-Native", Location.at(20, 150), Color.white));
 
-        for(int i=0;i<resultsNative.size();i++){
-            var rect= new Rect(Location.at(50,200+i*110),Location.at(50+(resultsNative.get(i)/10),(200+i*110)+50), Color.orange);
-            var text= new TextGobject(resultsNative.get(i)+":ms",Location.at(500,500),Color.white);
-            Positioning.align(text,rect, Positioning.Reference.LEFT);
+            for (int i = 0; i < resultsNative.size(); i++) {
+                var rect = new Rect(Location.at(50, 200 + i * 110), Location.at(50 + (resultsNative.get(i) / 10), (200 + i * 110) + 50), Color.orange);
+                var text = new TextGobject(resultsNative.get(i) + ":ms", Location.at(500, 500), Color.white);
+                Positioning.align(text, rect, Positioning.Reference.LEFT);
 
-            presenatation.add(text);
-            presenatation.add(rect);
+                presenatation.add(text);
+                presenatation.add(rect);
 
+            }
+
+        } catch (Exception e) {
+            presenatation.add(new TextGobject(new Font(Font.DIALOG, Font.ITALIC, 40), "Not able to run beanchmark with Engine: Native-Java", Location.at(20, 150), Color.red));
         }
-        presenatation.add(new TextGobject("JavaFx",Location.at(20,500),Color.white));
 
-        for(int i=0;i<resultsNative.size();i++){
-            var rect= new Rect(Location.at(50,600+i*110),Location.at(50+(resultasJFX.get(i)/10),(600+i*110)+50), Color.BLUE);
-            var text= new TextGobject(resultasJFX.get(i)+":ms",Location.at(500,500),Color.white);
-            Positioning.align(text,rect, Positioning.Reference.LEFT);
+        try {
+            var resultasJFX = doBenchMark(EngineType.JAVAFX);
 
-            presenatation.add(text);
-            presenatation.add(rect);
+            presenatation.add(new TextGobject(new Font(Font.DIALOG, Font.PLAIN, 30), "Engine: JavaFx", Location.at(20, 550), Color.white));
 
+            for (int i = 0; i < resultasJFX.size(); i++) {
+                var rect = new Rect(Location.at(50, 600 + i * 110), Location.at(50 + (resultasJFX.get(i) / 10), (600 + i * 110) + 50), Color.BLUE);
+                var text = new TextGobject(resultasJFX.get(i) + ":ms", Location.at(500, 500), Color.white);
+                Positioning.align(text, rect, Positioning.Reference.LEFT);
+
+                presenatation.add(text);
+                presenatation.add(rect);
+
+            }
+        } catch (Exception e) {
+            presenatation.add(new TextGobject(new Font(Font.DIALOG, Font.ITALIC, 40), "Not able to run beanchmark with Engine: JavaFX", Location.at(20, 550), Color.red));
         }
+
+
         presenatation.build();
-
-
-
 
 
     }
 
 
     private static List<Long> doBenchMark(EngineType engineType) {
+
 
         var results = new ArrayList<Long>();
 
@@ -122,6 +133,8 @@ public class BenchMark {
         results.add(System.currentTimeMillis() - before);
 
         return results;
+
+
     }
 
     private static Field getGobjectField() {

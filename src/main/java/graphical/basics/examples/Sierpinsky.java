@@ -16,7 +16,7 @@ public class Sierpinsky extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
 
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
         presentationConfig.setEngine(EngineType.NATIVE_JAVA);
     }
 
