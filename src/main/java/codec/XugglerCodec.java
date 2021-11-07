@@ -67,4 +67,11 @@ public class XugglerCodec implements VideoCodec {
         if (framesGenerated)
             this.writer.close();
     }
+
+    @Override
+    public String getFileFormat() {
+        return ".mov";
+    }
+
+
 }

@@ -1,9 +1,6 @@
 package graphical.basics.presentation;
 
-import codec.JCodec;
-import codec.RawImageCodec;
-import codec.VideoCodec;
-import codec.XugglerCodec;
+import codec.*;
 import codec.engine.JavaFXEngine;
 import codec.engine.JavaGraphicEngine;
 import codec.engine.JavaNativeEngine;
@@ -93,7 +90,8 @@ public abstract class Presentation {
         File rawDir = new File("video\\raw");
         rawDir.mkdir();
 
-        videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
+        if (!disableCodec)
+            videoCodec.startNewVideo("video/", "mv" + clipCounter + videoCodec.getFileFormat(), FRAME_RATE);
 
 
         //preview window
@@ -128,6 +126,8 @@ public abstract class Presentation {
                     break;
                 case XUGGLE:
                     this.videoCodec = new XugglerCodec(presentationConfig);
+                case GIF:
+                    this.videoCodec = new GIFCodec();
             }
 
         } else {
@@ -268,7 +268,8 @@ public abstract class Presentation {
     public void cut() {
         videoCodec.saveVideo();
         clipCounter++;
-        videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
+        if (!disableCodec)
+            videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
     }
 
     public int seconds(double seconds) {

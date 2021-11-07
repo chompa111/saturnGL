@@ -45,4 +45,9 @@ public class JCodec implements VideoCodec {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String getFileFormat() {
+        return ".mov";
+    }
 }

@@ -37,4 +37,9 @@ public class RawImageCodec implements VideoCodec{
     public void saveVideo() {
 
     }
+
+    @Override
+    public String getFileFormat() {
+        return ".png";
+    }
 }

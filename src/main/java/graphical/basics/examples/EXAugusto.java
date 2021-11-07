@@ -1,5 +1,6 @@
 package graphical.basics.examples;
 
+import codec.CodecType;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.location.Point;
@@ -12,7 +13,9 @@ import java.awt.*;
 public class EXAugusto extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
+      //  presentationConfig.setCodec(CodecType.GIF);
+        presentationConfig.setFramerate(12);
     }
 
     @Override
