@@ -20,7 +20,15 @@ public class PresentationConfig {
     private Boolean disableCodec;
     private Integer framerate;
     private boolean enableTransparency;
+    private double scale = 1.0d;
 
+    public double getScale() {
+        return scale;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
 
     public boolean isEnableTransparency() {
         return enableTransparency;

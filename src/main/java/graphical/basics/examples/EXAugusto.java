@@ -16,47 +16,69 @@ import java.awt.*;
 
 public class EXAugusto extends Presentation {
 
-    public static final int size = 500;
+
 
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        // presentationConfig.setDisableCodec(true);
+         presentationConfig.setDisableCodec(true);
         presentationConfig.setCodec(CodecType.GIF);
         presentationConfig.setFramerate(12);
-        presentationConfig.setDisablePreview(true);
-        presentationConfig.setHeight(size);
-        presentationConfig.setWidth(size);
+        presentationConfig.setDisablePreview(false);
+        presentationConfig.setHeight(1000);
+        presentationConfig.setWidth(1000);
         presentationConfig.setEngine(EngineType.NATIVE_JAVA);
+        presentationConfig.setPreviewWindowBarVisible(false);
+        presentationConfig.setScale(1);
     }
 
     @Override
     protected void buildPresentation() {
+                //aqui vai o codigo
 
-        getBackGround().getBackGroundColor().setColor(new Color(0,0,0,0));
 
-        //aqui vai o codigo
-        getCamera().getScale().setValue(size / 1000.0);
-        //  getCamera().setPositionTo(Location.at(500,500));
 
         Circle circle1 = CircleBuilder.aCircle()
-                .withCenter(100, 250)
+                .withCenter(500, 500)
                 .withColor(Color.red)
                 .build();
 
         Circle circle2 = CircleBuilder.aCircle()
-                .withCenter(400, 100)
-                .withColor(Color.blue)
+                .withCenter(1000, 500)
+                .withColor(Color.orange)
                 .build();
 
         add(circle1);
         add(circle2);
 
-        Animation.strokeAndFill(circle1).parallel(Animation.strokeAndFill(circle2)).execute();
+        getCamera().getAngle().change(Math.toRadians(90),seconds(2)).execute();
 
-        var task1 = circle1.move(300, 0).andThen(circle1.move(-300, 0)).repeat(5);
-        var task2 = circle2.move(0, 300).andThen(circle2.move(0, -300)).repeat(5);
 
-        task1.parallel(task2).execute();
+
+
+//        getBackGround().getBackGroundColor().setColor(new Color(0,0,0,0));
+//
+
+//        //  getCamera().setPositionTo(Location.at(500,500));
+//
+//        Circle circle1 = CircleBuilder.aCircle()
+//                .withCenter(100, 250)
+//                .withColor(Color.red)
+//                .build();
+//
+//        Circle circle2 = CircleBuilder.aCircle()
+//                .withCenter(400, 100)
+//                .withColor(Color.blue)
+//                .build();
+//
+//        add(circle1);
+//        add(circle2);
+//
+//        Animation.strokeAndFill(circle1).parallel(Animation.strokeAndFill(circle2)).execute();
+//
+//        var task1 = circle1.move(300, 0).andThen(circle1.move(-300, 0)).repeat(5);
+//        var task2 = circle2.move(0, 300).andThen(circle2.move(0, -300)).repeat(5);
+//
+//        task1.parallel(task2).execute();
 
         //
     }

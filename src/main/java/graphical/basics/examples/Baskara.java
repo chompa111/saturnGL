@@ -1,5 +1,6 @@
 package graphical.basics.examples;
 
+import codec.CodecType;
 import codec.engine.EngineType;
 import graphical.basics.gobject.TextGobject;
 import graphical.basics.location.Point;
@@ -15,11 +16,14 @@ import java.awt.*;
 public class Baskara extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(true);
-        presentationConfig.setHeight(1080);
-        presentationConfig.setWidth(1920);
-        presentationConfig.setFramerate(60);
+        //presentationConfig.setCodec(CodecType.GIF);
+       // presentationConfig.setDisableCodec(true);
+        presentationConfig.setHeight(300);
+        presentationConfig.setWidth(600);
+        presentationConfig.setFramerate(30);
         presentationConfig.setEngine(EngineType.JAVAFX);
+        presentationConfig.setCodec(CodecType.XUGGLE);
+        presentationConfig.setScale(0.75);
     }
 
     @Override

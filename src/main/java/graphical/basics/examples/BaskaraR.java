@@ -15,7 +15,7 @@ import java.awt.*;
 public class BaskaraR extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
         presentationConfig.setFramerate(30);
         presentationConfig.setCodec(CodecType.JCODEC);
     }

@@ -73,15 +73,15 @@ public abstract class Presentation {
 
 
         //dirs
-        var executionPath=System.getProperty("user.dir");
-        File videoDir = new File(executionPath+"/video");
+        var executionPath = System.getProperty("user.dir");
+        File videoDir = new File(executionPath + "/video");
         videoDir.mkdir();
 
-        File rawDir = new File(executionPath+"/video/raw");
+        File rawDir = new File(executionPath + "/video/raw");
         rawDir.mkdir();
 
         if (!disableCodec)
-            videoCodec.startNewVideo(executionPath+"/video", "mv" + clipCounter + videoCodec.getFileFormat(), FRAME_RATE);
+            videoCodec.startNewVideo(executionPath + "/video/", "mv" + clipCounter + videoCodec.getFileFormat(), FRAME_RATE);
 
 
         //preview window
@@ -116,6 +116,7 @@ public abstract class Presentation {
                     break;
                 case XUGGLE:
                     this.videoCodec = new XugglerCodec(presentationConfig);
+                    break;
                 case GIF:
                     this.videoCodec = new GIFCodec();
             }
@@ -125,7 +126,7 @@ public abstract class Presentation {
         }
 
 
-        this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2), presentationConfig.getWidth() / 2));
+        this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2), presentationConfig.getWidth() / 2), presentationConfig.getScale());
 
         if (!presentationConfig.isDisablePreview()) {
 
@@ -143,7 +144,7 @@ public abstract class Presentation {
 
             //preview windowSize
             frame.setUndecorated(!presentationConfig.isPreviewWindowBarVisible());
-            frame.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
+            frame.setSize((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
             //eable preview
 
             frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -156,7 +157,7 @@ public abstract class Presentation {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             isDisablePreview = true;
         }
 
@@ -274,10 +275,11 @@ public abstract class Presentation {
     }
 
     public void cut() {
-        videoCodec.saveVideo();
-        clipCounter++;
-        if (!disableCodec)
+        if (!disableCodec) {
+            videoCodec.saveVideo();
+            clipCounter++;
             videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
+        }
     }
 
 

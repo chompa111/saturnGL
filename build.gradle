@@ -2,6 +2,7 @@
 plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.9'
+   // id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
 javafx {
@@ -10,7 +11,7 @@ javafx {
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+version '1.0.11'
 
 repositories {
     mavenCentral()
@@ -24,6 +25,10 @@ repositories {
     }
 
     maven { url 'https://jitpack.io' }
+
+//    maven {
+//        url "https://plugins.gradle.org/m2/"
+//    }
 }
 
 dependencies {
@@ -33,23 +38,22 @@ dependencies {
     implementation group: 'org.jcodec', name: 'jcodec-javase', version: '0.2.5'
 
     implementation 'org.scilab.forge:jlatexmath:1.0.7'
-//    implementation group: 'cglib', name: 'cglib', version: '3.3.0'
-//    implementation group: 'org.objenesis', name: 'objenesis', version: '3.2'
 
-  //  implementation 'org.jfree:org.jfree.svg:5.0'
 
-    //implementation 'com.kitfox.svg:svg-salamander:1.0'
+
+
     implementation group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.14'
     implementation group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.14'
     implementation group: 'xuggle', name: 'xuggle-xuggler', version: '5.4'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
     implementation 'org.jfree:org.jfree.fxgraphics2d:2.1.2'
+   // implementation "gradle.plugin.com.github.johnrengelman:shadow:5.2.0"
   //  implementation 'com.github.sealedtx:java-youtube-downloader:3.0.1'
 
 
 }
 
-
+//apply plugin: "com.github.johnrengelman.shadow"
 test {
     useJUnitPlatform()
 }
