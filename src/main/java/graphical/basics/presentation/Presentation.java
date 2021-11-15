@@ -73,10 +73,11 @@ public abstract class Presentation {
 
 
         //dirs
-        File videoDir = new File("video");
+        var executionPath=System.getProperty("user.dir");
+        File videoDir = new File(executionPath+"\\video");
         videoDir.mkdir();
 
-        File rawDir = new File("video\\raw");
+        File rawDir = new File(executionPath+"\\video\\raw");
         rawDir.mkdir();
 
         if (!disableCodec)
