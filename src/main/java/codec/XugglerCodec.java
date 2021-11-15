@@ -31,7 +31,7 @@ public class XugglerCodec implements VideoCodec {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_H264, presentationConfig.getWidth(), presentationConfig.getHeight());
+        this.writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_H264, (int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
         this.fps = frameRate;
         frameCount = 0;
 

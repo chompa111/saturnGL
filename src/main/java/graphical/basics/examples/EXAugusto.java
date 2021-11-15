@@ -20,15 +20,15 @@ public class EXAugusto extends Presentation {
 
     @Override
     public void setup(PresentationConfig presentationConfig) {
-         presentationConfig.setDisableCodec(true);
-        presentationConfig.setCodec(CodecType.GIF);
+       //  presentationConfig.setDisableCodec(true);
+        presentationConfig.setCodec(CodecType.RAW_IMAGE);
         presentationConfig.setFramerate(12);
         presentationConfig.setDisablePreview(false);
         presentationConfig.setHeight(1000);
         presentationConfig.setWidth(1000);
         presentationConfig.setEngine(EngineType.NATIVE_JAVA);
         presentationConfig.setPreviewWindowBarVisible(false);
-        presentationConfig.setScale(1);
+        presentationConfig.setScale(0.5);
     }
 
     @Override

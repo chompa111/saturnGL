@@ -165,14 +165,14 @@ public abstract class Presentation {
         if (presentationConfig.getEngine() != null) {
             switch (presentationConfig.getEngine()) {
                 case NATIVE_JAVA:
-                    graphicEngine = new JavaNativeEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
+                    graphicEngine = new JavaNativeEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
                     break;
                 case JAVAFX:
-                    graphicEngine = new JavaFXEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
+                    graphicEngine = new JavaFXEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getWidth() * presentationConfig.getScale()));
                     break;
             }
         } else {
-            graphicEngine = new JavaNativeEngine(presentationConfig.getWidth(), presentationConfig.getHeight());
+            graphicEngine = new JavaNativeEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
 
         }
         // this.bufferedImage = graphicEngine.getActualFrame();
