@@ -11,7 +11,7 @@ public class PresentationConfig {
     private int width = 1000;//default value
     private int height = 1000;// defaultvalue;
 
-    private boolean previewWindowBarVisible = false;
+    private boolean previewWindowBarVisible = true;
 
     private boolean disablePreview = false;
 
@@ -19,6 +19,16 @@ public class PresentationConfig {
     private EngineType engineType;
     private Boolean disableCodec;
     private Integer framerate;
+    private boolean enableTransparency;
+
+
+    public boolean isEnableTransparency() {
+        return enableTransparency;
+    }
+
+    public void setEnableTransparency(boolean enableTransparency) {
+        this.enableTransparency = enableTransparency;
+    }
 
     public Boolean isDisableCodec() {
         return disableCodec;

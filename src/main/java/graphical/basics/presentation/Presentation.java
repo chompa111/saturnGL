@@ -7,10 +7,8 @@ import codec.engine.JavaNativeEngine;
 import graphical.basics.BackGround;
 import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Camera;
-import graphical.basics.gobject.Circle;
-import graphical.basics.gobject.CircleBuilder;
-import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.Gobject;
+import graphical.basics.location.Location;
 import graphical.basics.task.EndLessParallelTask;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
@@ -21,7 +19,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,20 +32,12 @@ public abstract class Presentation {
 
     private boolean switchProcessing = true;
     private boolean disableCodec;
+    private boolean isDisablePreview;
+    private boolean isEnableTransparency;
 
     public static int FRAME_RATE = 60;
 
-    private JFrame frame = new JFrame() {
-        @Override
-        public void paint(Graphics g) {
-            if (graphicEngine != null)
-                g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
-            g.setColor(Color.green);
-            g.drawString("" + frameCounter, 900, 100);
-            g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
-            lastMesure = System.currentTimeMillis();
-        }
-    };
+    private JFrame frame;
 
 
     //  public BufferedImage bufferedImage;
@@ -69,7 +58,7 @@ public abstract class Presentation {
 
 
     private final BackGround backGround;
-    private final Camera camera = new Camera();
+    private Camera camera;
 
     public final EndLessParallelTask backGroundTask = new EndLessParallelTask();
 
@@ -134,19 +123,40 @@ public abstract class Presentation {
             this.videoCodec = new XugglerCodec(presentationConfig);//default
         }
 
-        //preview windowSize
-        frame.setUndecorated(presentationConfig.isPreviewWindowBarVisible());
-        frame.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
-        //eable preview
 
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setVisible(!presentationConfig.isDisablePreview());
-        frame.setTitle(" Saturn-preview ");
-        try {
-            var icn = ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
-            frame.setIconImage(icn);
-        } catch (IOException e) {
-            e.printStackTrace();
+        this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2), presentationConfig.getWidth() / 2));
+
+        if (!presentationConfig.isDisablePreview()) {
+
+            frame = new JFrame() {
+                @Override
+                public void paint(Graphics g) {
+                    if (graphicEngine != null)
+                        g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
+                    g.setColor(Color.green);
+                    g.drawString("" + frameCounter, 900, 100);
+                    g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
+                    lastMesure = System.currentTimeMillis();
+                }
+            };
+
+            //preview windowSize
+            frame.setUndecorated(!presentationConfig.isPreviewWindowBarVisible());
+            frame.setSize(presentationConfig.getWidth(), presentationConfig.getHeight());
+            //eable preview
+
+            frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            frame.setVisible(true);
+            frame.setTitle(" Saturn-preview ");
+
+            try {
+                var icn = ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
+                frame.setIconImage(icn);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            isDisablePreview = true;
         }
 
 
@@ -165,6 +175,8 @@ public abstract class Presentation {
         }
         // this.bufferedImage = graphicEngine.getActualFrame();
         bufferedGraphics = graphicEngine.getGraphics();
+
+        isEnableTransparency = presentationConfig.isEnableTransparency();
 
     }
 
@@ -193,7 +205,8 @@ public abstract class Presentation {
         System.out.println("COUNTER(" + frameCounter + ")");
         var before1 = System.currentTimeMillis();
         paintComponent(bufferedGraphics);
-        frame.repaint();
+        if (!isDisablePreview)
+            frame.repaint();
         System.out.println((System.currentTimeMillis() - before1) + "ms processando quadro");
         var before2 = System.currentTimeMillis();
         if (!disableCodec) videoCodec.addFrame(graphicEngine.getActualFrame());
@@ -209,17 +222,11 @@ public abstract class Presentation {
     }
 
     public void paintComponent(Graphics g) {
-
+        if (isEnableTransparency)
+            graphicEngine.clear();
         backGround.paint(g);
 
 
-//        {
-//            int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
-//
-//            Arrays.fill(pixels, 0);
-//            bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), pixels, 0, bufferedImage.getWidth());
-//        }
-//
         var g2d = (Graphics2D) g;
         var oldT = (AffineTransform) g2d.getTransform().clone();
         camera.applyView(g);
@@ -271,6 +278,7 @@ public abstract class Presentation {
         if (!disableCodec)
             videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
     }
+
 
     public int seconds(double seconds) {
         return (int) (seconds * FRAME_RATE);

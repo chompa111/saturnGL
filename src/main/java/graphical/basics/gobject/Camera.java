@@ -13,7 +13,12 @@ import java.util.List;
 
 public class Camera extends Gobject {
 
-    private Location location = new Point(500, 500);
+    private Location location = new Point(100, 100);
+    private Location centerRef;
+
+    public Camera(Location centerRef) {
+        this.centerRef = centerRef;
+    }
 
     @Override
     public void paint(Graphics g) {
@@ -23,7 +28,7 @@ public class Camera extends Gobject {
     public void applyView(Graphics g) {
         var g2d = (Graphics2D) g;
         g2d.translate(location.getX(), location.getY());
-        g2d.translate(500 - location.getX(), 500 - location.getY());
+        g2d.translate(centerRef.getX() - location.getX(), centerRef.getY() - location.getY());
         g2d.rotate(angle.getValue());
         g2d.scale(scale.getValue(), scale.getValue());
         g2d.translate(-location.getX(), -location.getY());

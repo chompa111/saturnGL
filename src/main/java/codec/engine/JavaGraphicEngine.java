@@ -6,4 +6,5 @@ import java.awt.image.BufferedImage;
 public interface JavaGraphicEngine {
     BufferedImage getActualFrame();
     Graphics getGraphics();
+    void clear();
 }
