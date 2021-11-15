@@ -81,7 +81,7 @@ public abstract class Presentation {
         rawDir.mkdir();
 
         if (!disableCodec)
-            videoCodec.startNewVideo("video/", "mv" + clipCounter + videoCodec.getFileFormat(), FRAME_RATE);
+            videoCodec.startNewVideo(executionPath+"\\video", "mv" + clipCounter + videoCodec.getFileFormat(), FRAME_RATE);
 
 
         //preview window
