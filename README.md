@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/chompa111/saturnGL.svg)](https://jitpack.io/#chompa111/saturnGL)
-[![](https://raw.githubusercontent.com/gist/chompa111/1e9efe93340cd8fff7b52116641e1dcd/raw/f3ee54adaea75f37af89f72be759ac9bfe6d1fa2/docptbr.svg)](https://chompa111.github.io/saturn-doc/pt/docpages/task/task/)
-[![](https://raw.githubusercontent.com/gist/chompa111/c1258cab438c026b591cae561a631c2e/raw/050bab952ab5494ba101cd7bbe64683da483d6a4/docen.svg)](https://chompa111.github.io/saturn-doc/docpages/task/task/)
+[![](https://raw.githubusercontent.com/gist/chompa111/1e9efe93340cd8fff7b52116641e1dcd/raw/f3ee54adaea75f37af89f72be759ac9bfe6d1fa2/docptbr.svg)](https://chompa111.github.io/saturn-doc/pt)
+[![](https://raw.githubusercontent.com/gist/chompa111/c1258cab438c026b591cae561a631c2e/raw/050bab952ab5494ba101cd7bbe64683da483d6a4/docen.svg)](https://chompa111.github.io/saturn-doc)
 
 ![baner7](https://user-images.githubusercontent.com/43425971/131168286-6077a2c9-7572-4c39-97e1-6da6636addd2.png)
 
