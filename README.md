@@ -17,7 +17,11 @@
 
 ![latex](https://user-images.githubusercontent.com/43425971/128233754-3aa6fa40-8ff8-402c-8cc7-07d7610c6fcb.gif)
 
-# Import Saturn as `Maven`/`Gradle` dependency
+
+
+# Import Saturn as `Maven`/`Gradle` dependency or Jar
+### Dowload the .jar (_fat jar_)
+[![](https://raw.githubusercontent.com/gist/chompa111/7b82bd9b3e08d473575b9a1b799a6d6b/raw/3b4e0918ce8f69d0049dbe966f9ba80eaab1befe/jarbutton.svg)](https://github.com/chompa111/saturnGL/releases/download/1.0.12/Saturn-1.0.12-all.jar)
 ### Gradle
 ```groovy
 repositories {
