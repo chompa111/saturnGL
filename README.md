@@ -20,6 +20,8 @@
 
 
 # Import Saturn as `Maven`/`Gradle` dependency or Jar
+you can choose one of these options:
+
 ### JAR - dowload the .jar (_fat jar_)
 [![](https://raw.githubusercontent.com/gist/chompa111/7b82bd9b3e08d473575b9a1b799a6d6b/raw/3b4e0918ce8f69d0049dbe966f9ba80eaab1befe/jarbutton.svg)](https://github.com/chompa111/saturnGL/releases/download/1.0.12/Saturn-1.0.12-all.jar)
 ### Gradle
@@ -31,7 +33,7 @@ repositories {
 ```
 ```groovy
 dependencies {
-    implementation 'com.github.chompa111:saturnGL:1.0.2'
+    implementation 'com.github.chompa111:saturnGL:1.0.12'
 }
 ```
 
