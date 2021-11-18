@@ -52,7 +52,7 @@ dependencies {
 <dependency>
     <groupId>com.github.chompa111</groupId>
     <artifactId>saturnGL</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.12</version>
 </dependency>
 ```
 
