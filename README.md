@@ -6,7 +6,7 @@
 
 
 # SaturnGL
- *Graphic Library to build animations with Java* [Wiki here!](https://chompa111.github.io/saturn-doc/pt)
+ *Graphic Library to build animations with Java* [Wiki here!](https://chompa111.github.io/saturn-doc)
 
 ## Saturn suports [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
 <img src="https://user-images.githubusercontent.com/43425971/128118638-3a0f8d75-f596-4949-946f-1fdb032268bc.gif" alt="drawing" width="550"/>
