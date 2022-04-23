@@ -1,22 +1,14 @@
 [![](https://jitpack.io/v/chompa111/saturnGL.svg)](https://jitpack.io/#chompa111/saturnGL)
-[![](https://raw.githubusercontent.com/gist/chompa111/1e9efe93340cd8fff7b52116641e1dcd/raw/f3ee54adaea75f37af89f72be759ac9bfe6d1fa2/docptbr.svg)](https://chompa111.github.io/saturn-doc/pt/docpages/task/task/)
-[![](https://raw.githubusercontent.com/gist/chompa111/c1258cab438c026b591cae561a631c2e/raw/050bab952ab5494ba101cd7bbe64683da483d6a4/docen.svg)](https://chompa111.github.io/saturn-doc/docpages/task/task/)
+[![](https://raw.githubusercontent.com/gist/chompa111/1e9efe93340cd8fff7b52116641e1dcd/raw/f3ee54adaea75f37af89f72be759ac9bfe6d1fa2/docptbr.svg)](https://chompa111.github.io/saturn-doc)
+[![](https://raw.githubusercontent.com/gist/chompa111/c1258cab438c026b591cae561a631c2e/raw/050bab952ab5494ba101cd7bbe64683da483d6a4/docen.svg)](https://chompa111.github.io/saturn-doc)
 
 ![baner7](https://user-images.githubusercontent.com/43425971/131168286-6077a2c9-7572-4c39-97e1-6da6636addd2.png)
 
 
 # SaturnGL
- *Graphic Library to build animations with Java*
+ *Graphic Library to build animations with Java* [Wiki here!](https://chompa111.github.io/saturn-doc)
 
-## Short example:
-
-``` java
-
-var svg =  new SVG("svgPath.svg");
-add(svg);
-Animation.strokeAndFill(svg,seconds(4)).execute()
-
-```
+## Saturn suports [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
 <img src="https://user-images.githubusercontent.com/43425971/128118638-3a0f8d75-f596-4949-946f-1fdb032268bc.gif" alt="drawing" width="550"/>
 
 
@@ -25,7 +17,13 @@ Animation.strokeAndFill(svg,seconds(4)).execute()
 
 ![latex](https://user-images.githubusercontent.com/43425971/128233754-3aa6fa40-8ff8-402c-8cc7-07d7610c6fcb.gif)
 
-# Import Saturn as `Maven`/`Gradle` dependency
+
+
+# Import Saturn as `Maven`/`Gradle` dependency or Jar
+you can choose one of these options:
+
+### JAR - dowload the .jar (_fat jar_)
+[![](https://raw.githubusercontent.com/gist/chompa111/7b82bd9b3e08d473575b9a1b799a6d6b/raw/3b4e0918ce8f69d0049dbe966f9ba80eaab1befe/jarbutton.svg)](https://github.com/chompa111/saturnGL/releases/download/1.0.12/Saturn-1.0.12-all.jar)
 ### Gradle
 ```groovy
 repositories {
@@ -35,7 +33,7 @@ repositories {
 ```
 ```groovy
 dependencies {
-    implementation 'com.github.chompa111:saturnGL:1.0.2'
+    implementation 'com.github.chompa111:saturnGL:1.0.12'
 }
 ```
 
@@ -56,7 +54,7 @@ dependencies {
 <dependency>
     <groupId>com.github.chompa111</groupId>
     <artifactId>saturnGL</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.12</version>
 </dependency>
 ```
 
