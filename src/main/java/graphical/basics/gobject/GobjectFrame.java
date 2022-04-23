@@ -4,6 +4,7 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
+import graphical.basics.presentation.Presentation;
 import graphical.basics.task.transformation.gobject.Pixel;
 
 import java.awt.*;
@@ -21,16 +22,20 @@ public class GobjectFrame extends Gobject {
     List<Pixel> pixels;
 
     public GobjectFrame(Gobject gobject) {
-        bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+
+        int w = Presentation.staticReference.getPresentationConfig().getWidth();
+        int h = Presentation.staticReference.getPresentationConfig().getHeight();
+
+        bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         this.gobject = gobject;
 
         pixels = new ArrayList<>();
         gobject.paint(bufferedImage.getGraphics());
-        for (int i = 0; i < 1000; i++) {
-            for (int j = 0; j < 1000; j++) {
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
                 var value = bufferedImage.getRGB(i, j);
                 if (value != 0) {
-                    pixels.add(new Pixel(new Color(value,true), i, j));
+                    pixels.add(new Pixel(new Color(value, true), i, j));
                 }
             }
         }
@@ -38,7 +43,7 @@ public class GobjectFrame extends Gobject {
 
     @Override
     public void paint(Graphics g) {
-        for(int i=0;i<pixels.size();i++){
+        for (int i = 0; i < pixels.size(); i++) {
             pixels.get(i).paint(g);
         }
     }

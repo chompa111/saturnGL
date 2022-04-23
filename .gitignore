@@ -4,6 +4,7 @@
 !src/**/build/
 .idea
 /video
+/my_videos
 # Ignore Gradle GUI config
 gradle-app.setting
 

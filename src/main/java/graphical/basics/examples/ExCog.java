@@ -31,7 +31,7 @@ public class ExCog extends Presentation {
     public void setup(PresentationConfig presentationConfig) {
         presentationConfig.setHeight(1080);
         presentationConfig.setWidth(1920);
-        presentationConfig.setDisableCodec(false);
+        presentationConfig.setDisableCodec(true);
         presentationConfig.setEngine(EngineType.JAVAFX);
         presentationConfig.setFramerate(60);
     }

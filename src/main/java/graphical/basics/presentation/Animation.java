@@ -5,16 +5,10 @@ import graphical.basics.gobject.DynamicPath;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.Line;
 import graphical.basics.gobject.shape.ShapeLike;
-import graphical.basics.gobject.struct.Gobject;
-import graphical.basics.gobject.struct.SVGGobject;
-import graphical.basics.gobject.struct.ShapeGobject2;
-import graphical.basics.gobject.struct.StrokeGobject;
+import graphical.basics.gobject.struct.*;
 import graphical.basics.location.Point;
 import graphical.basics.presentation.effects.T3b1b;
-import graphical.basics.task.ContextSetupTask;
-import graphical.basics.task.ParalelTask;
-import graphical.basics.task.Task;
-import graphical.basics.task.WaitTask;
+import graphical.basics.task.*;
 import graphical.basics.task.transformation.gobject.ColorListTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform2;
@@ -45,7 +39,7 @@ public class Animation {
         var colorHolders = gobject.getColors();
         var beforeColors = ColorHolder.toColorList(colorHolders);
         for (ColorHolder colorHolder : colorHolders) {
-            var color=colorHolder.getColor();
+            var color = colorHolder.getColor();
             colorHolder.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
         }
 
@@ -75,7 +69,7 @@ public class Animation {
         }
 
         if (gobject instanceof Group) {
-            return ((Group) gobject).onChildren(x -> Animation.strokeAndFill(x, steps),0.7);
+            return ((Group) gobject).onChildren(x -> Animation.strokeAndFill(x, steps), 0.7);
         }
 
         if (gobject instanceof SVGGobject) {
@@ -85,16 +79,21 @@ public class Animation {
         return fadeIn(gobject, steps);
     }
 
-    public static Task strokeAndFill(Gobject gobject){
+    public static Task strokeAndFill(Gobject gobject) {
         return strokeAndFill(gobject, presentation.seconds(1));
     }
 
 
     public static Task fadeInGrow(Gobject gobject, int steps) {
         return new ContextSetupTask(() -> {
+            var scale = gobject.scale.getValue();
             gobject.getScale().setValue(0);
-            return fadeIn(gobject, steps).parallel(gobject.getScale().change(1, steps));
+            return fadeIn(gobject, steps).parallel(gobject.getScale().change(scale, steps));
         });
+    }
+
+    public static Task fadeoutGrow(Gobject gobject, int steps) {
+        return fadeOut(gobject, steps).parallel(gobject.getScale().change(gobject.getScale().getValue() * -1, steps));
     }
 
     public static Task emphasize(Gobject gobject) {
@@ -110,7 +109,7 @@ public class Animation {
         });
     }
 
-    public static Task emphasize(Gobject gobject,Color color) {
+    public static Task emphasize(Gobject gobject, Color color) {
         return new ContextSetupTask(() -> {
             var colorHolders = gobject.getColors();
             var beforeColors = ColorHolder.toColorList(colorHolders);
@@ -131,12 +130,12 @@ public class Animation {
     }
 
 
-    public static Task t3b1b(Gobject a, Gobject b, int steps){
-        return T3b1b.t3b1b(a,b,steps);
+    public static Task t3b1b(Gobject a, Gobject b, int steps) {
+        return T3b1b.t3b1b(a, b, steps);
     }
 
-    public static Task t3b1b(Gobject a, Gobject b, T3b1b.TransformationType transformationType, int steps){
-        return T3b1b.t3b1b(a,b,transformationType,steps);
+    public static Task t3b1b(Gobject a, Gobject b, T3b1b.TransformationType transformationType, int steps) {
+        return T3b1b.t3b1b(a, b, transformationType, steps);
     }
 
     public static Task redBarr(Gobject g, int steps) {
@@ -146,15 +145,30 @@ public class Animation {
         return strokeAndFill(line, steps);
     }
 
-    public static Task redX(Gobject g, int steps){
+    public static Task redX(Gobject g, int steps) {
         var bounds = g.getBorders();
 
-        var line1 = new Line(bounds.getL1(), bounds.getL2(), new Color(180,20,0));
+        var line1 = new Line(bounds.getL1(), bounds.getL2(), new Color(180, 20, 0));
         line1.setStrokeThickness(new DoubleHolder(3));
 
-        var line2 = new Line(bounds.l1plusWidth(), bounds.l2minusWidth(), new Color(180,20,0));
+        var line2 = new Line(bounds.l1plusWidth(), bounds.l2minusWidth(), new Color(180, 20, 0));
         line2.setStrokeThickness(new DoubleHolder(3));
 
         return strokeAndFill(line1, steps).parallel(new WaitTask(presentation.seconds(0.10)).andThen(strokeAndFill(line2, steps)));
     }
+
+    public static Task clipInit(Gobject gobject) {
+        var borders = gobject.getBorders();
+        var clipBox = new ClipBox(borders.getL1().copy(), borders.getL2().copy());
+        presentation.remove(gobject);
+        presentation.add(clipBox);
+        clipBox.add(gobject);
+        gobject.changeSetPosition(0, -borders.getheight());
+
+        return gobject.move(0, borders.getheight()).andThen(new SingleStepTask(() -> {
+            presentation.remove(clipBox);
+            presentation.add(gobject);
+        })).parallel(fadeIn(gobject));
+    }
+
 }

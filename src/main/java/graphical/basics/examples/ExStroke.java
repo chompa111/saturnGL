@@ -3,7 +3,6 @@ package graphical.basics.examples;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.CircleBuilder;
 import graphical.basics.gobject.Fonts;
-import graphical.basics.gobject.Text;
 import graphical.basics.gobject.TextGobject;
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.ShapeGobject2;

@@ -1,8 +1,11 @@
 package graphical.basics.location;
 
 import graphical.basics.gobject.struct.Gobject;
+import graphical.basics.task.Task;
+import graphical.basics.task.transformation.gobject.PositionListTransform;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.function.Supplier;
 
 public interface Location {
@@ -52,6 +55,14 @@ public interface Location {
         };
 
         return new SupplierPoint(() -> point2dGetter.get().getX(), () -> point2dGetter.get().getY());
+    }
+
+    default Location plus(double x, double y) {
+        return new Point(this.getX() + x, this.getY() + y);
+    }
+
+    default Task move(double x, double y, int steps) {
+        return new PositionListTransform(List.of(this), List.of(this.plus(x, y)), steps);
     }
 
 }

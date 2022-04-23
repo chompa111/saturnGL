@@ -1,6 +1,7 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
+import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
@@ -34,7 +35,7 @@ public class Group extends Gobject {
     @Override
     public void paint(Graphics g) {
         for (Gobject gobject : gobjects) {
-            gobject.paint(g,true);
+            gobject.paint(g, true);
         }
     }
 
@@ -45,7 +46,7 @@ public class Group extends Gobject {
             borders.add(gobject.getBorders());
         }
 
-        return new LocationPair(borders);
+        return new LocationPair(borders, scale.getValue());
     }
 
     @Override
@@ -70,11 +71,14 @@ public class Group extends Gobject {
         return gobjects;
     }
 
+    public void setGobjects(List<Gobject> gobjects) {
+        this.gobjects = gobjects;
+    }
 
     public ParalelTask onChildren(Function<Gobject, Task> taskFunction, double delay) {
         var list = new ArrayList<Task>();
         for (int i = 0; i < gobjects.size(); i++) {
-            list.add(new WaitTask((int)(i * delay) + 1).andThen(taskFunction.apply(gobjects.get(i))));
+            list.add(new WaitTask((int) (i * delay) + 1).andThen(taskFunction.apply(gobjects.get(i))));
         }
         return new ParalelTask(list);
     }
@@ -93,6 +97,10 @@ public class Group extends Gobject {
         gobjects.add(g);
     }
 
+    public void add(int index, Gobject g) {
+        gobjects.add(index, g);
+    }
+
     public void addAll(List<Gobject> gobjectList) {
         this.gobjects.addAll(gobjectList);
     }
@@ -109,11 +117,20 @@ public class Group extends Gobject {
     public Group subGroupExept(Integer... index) {
         var list = new ArrayList<Gobject>();
         var set = new HashSet<>(Arrays.asList(index));
-        for (int i=0;i<gobjects.size();i++) {
-            if(!set.contains(i)){
+        for (int i = 0; i < gobjects.size(); i++) {
+            if (!set.contains(i)) {
                 list.add(gobjects.get(i));
             }
         }
         return new Group(list);
     }
+
+    public void remove(Group group) {
+        gobjects.removeAll(group.getGobjects());
+    }
+
+    public void remove(int index) {
+        gobjects.remove(index);
+    }
+
 }

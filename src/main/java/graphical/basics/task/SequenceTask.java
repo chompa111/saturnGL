@@ -11,6 +11,10 @@ public class SequenceTask implements Task {
         this.tasks = new ArrayList<>(Arrays.asList(tasks));
     }
 
+    public SequenceTask(List<Task> tasks) {
+        this.tasks = new ArrayList<>(tasks);
+    }
+
     @Override
     public void setup() {
         taskList = new ArrayList<>(tasks);
@@ -26,7 +30,7 @@ public class SequenceTask implements Task {
             if (taskList.size() != 0)
                 taskList.get(0).setup();
         } else {
-          //  taskList.get(0).step();
+            //  taskList.get(0).step();
         }
     }
 

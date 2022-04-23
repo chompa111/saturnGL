@@ -1,55 +1,103 @@
 package graphical.basics.gobject;
 
-import graphical.basics.ColorHolder;
-import graphical.basics.gobject.latex.Char;
-import graphical.basics.gobject.struct.Char2;
-import graphical.basics.gobject.struct.Gobject;
-import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
-import graphical.basics.location.LocationPair;
-import graphical.basics.location.Point;
+import graphical.basics.presentation.Presentation;
+import graphical.basics.task.ParalelTask;
+import graphical.basics.task.SequenceTask;
+import graphical.basics.task.Task;
+import graphical.basics.task.WaitTask;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Text extends Gobject {
+public class Text extends Group {
 
-    List<Char2> charList;
+    Color color;
 
-    public static List<Gobject> generateText(Font font, String s, Location location, Color color) {
+    Font font;
 
-        List<Gobject> gobjects= new ArrayList<>();
-        var gv = font.createGlyphVector(new FontRenderContext(null, true, true), s);
+    Location location;
 
-        for (int i = 0; i < s.length(); i++) {
-            var sh = gv.getGlyphOutline(i);
-            var c = s.charAt(i);
-            gobjects.add(new Char2(font, new Point(sh.getBounds().x, sh.getBounds().y), new char[]{c}, 2, color));
+    List<StringGobject> lines;
+
+    public Text(Color color, Font font, Location location) {
+        this.color = color;
+        this.font = font;
+        this.location = location;
+        lines = new ArrayList<>();
+    }
+
+    public void newLine(String line) {
+        var newLine = new StringGobject(line, font, location.plus(0, lines.size() * font.getSize() * 1.15), color);
+        lines.add(newLine);
+        if (!line.isBlank()) {
+            add(newLine);
+        }
+    }
+
+    public void newLine(int index, String line) {
+        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
+
+        for (int i = index; i < lines.size(); i++) {
+            lines.get(i).changeSetPosition(0, font.getSize());
+
         }
 
-        return gobjects;
-
+        lines.add(index, newLine);
+        add(index, newLine);
     }
 
-    @Override
-    public void paint(Graphics g) {
+    public StringGobject replaceLine(int index, String line) {
+        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
+        var removedLine = lines.remove(index);
+        lines.add(index, newLine);
+        remove(index);
+        add(index, newLine);
 
+        return removedLine;
     }
 
-    @Override
-    public LocationPair getBorders() {
-        return null;
+    public Task newLineAnimated(int index, String line) {
+
+        var list = new ArrayList<Task>();
+        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
+
+        for (int i = index; i < lines.size(); i++) {
+            list.add(lines.get(i).move(0, font.getSize() * 1.15));
+
+        }
+
+        return new ParalelTask(list).afterConclusion(() -> {
+            lines.add(index, newLine);
+            add(index, newLine);
+        });
     }
 
-    @Override
-    public List<ColorHolder> getColors() {
-        return null;
+    public List<StringGobject> getLines() {
+        return lines;
+    }
+
+    public StringGobject getLine(int index) {
+        return lines.get(index);
+    }
+
+    public Task typeEffect() {
+        var taskList = new ArrayList<Task>();
+        for (StringGobject s : lines) {
+            taskList.add(s.typeEffect());
+//            if(s.getGobjects().size()<4){
+//                // to short
+//                taskList.add(new WaitTask(7));
+//            }
+        }
+        return new SequenceTask(taskList);
     }
 
     @Override
     public List<Location> getRefereceLocations() {
-        return null;
+        var locations = super.getRefereceLocations();
+        locations.add(location);
+        return locations;
     }
 }

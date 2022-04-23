@@ -14,9 +14,13 @@ public class Latex {
 
 
     public static List<Gobject> generateExp(String s, Location location, Color color) {
+        return generateExp(s, location, color, 50);
+    }
+
+    public static List<Gobject> generateExp(String s, Location location, Color color, double size) {
 
         TeXFormula a = new TeXFormula(s);
-        var icon2 = a.createTeXIcon(TeXConstants.STYLE_TEXT, 50);
+        var icon2 = a.createTeXIcon(TeXConstants.STYLE_DISPLAY, (float) size);
         var img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         var fakeGraphics = new GraphicsdrawCharProxy((Graphics2D) img.getGraphics(), color);
         icon2.paintIcon(null, fakeGraphics, (int) location.getX(), (int) location.getY());

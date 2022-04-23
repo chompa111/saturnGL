@@ -1,6 +1,7 @@
 package graphical.basics.gobject.struct;
 
 
+import graphical.basics.gobject.Group;
 import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
@@ -74,6 +75,12 @@ public abstract class Gobject {
         return new ColorTranform(this, color, steps);
     }
 
+    public void setColor(Color color) {
+        for (ColorHolder ch : this.getColors()) {
+            ch.setColor(color);
+        }
+    }
+
     public Task changeColor(Color color) {
         return changeColor(color, Presentation.staticReference.seconds(1));
     }
@@ -111,7 +118,7 @@ public abstract class Gobject {
         var myLocation = this.getBorders().midPoint();
         var diffx = location.getX() - myLocation.getX();
         var diffy = location.getY() - myLocation.getY();
-        changeSetPosition(diffx,diffy);
+        changeSetPosition(diffx, diffy);
     }
 
     public Behavior asSubtitle(Gobject gobject, Positioning.Reference reference) {

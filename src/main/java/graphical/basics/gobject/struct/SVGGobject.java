@@ -140,7 +140,7 @@ public class SVGGobject extends Gobject {
         for (ShapeGobject2 shapeGobject : shapeGobjects) {
             list.add(shapeGobject.getBorders());
         }
-        return new LocationPair(list);
+        return new LocationPair(list,scale.getValue());
     }
 
     @Override

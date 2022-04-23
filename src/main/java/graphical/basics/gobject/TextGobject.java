@@ -4,7 +4,9 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
+import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
+import graphical.basics.task.Task;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -35,8 +37,9 @@ public class TextGobject extends Group {
         var gv = font.createGlyphVector(new FontRenderContext(null, true, true), s);
 
         for (int i = 0; i < s.length(); i++) {
-            var sh = gv.getGlyphOutline(i);
             var c = s.charAt(i);
+            if(c==' ')continue;
+            var sh = gv.getGlyphOutline(i);
             var t = new AffineTransform();
             t.translate(location.getX(), location.getY());
             sh = t.createTransformedShape(sh);
@@ -75,5 +78,12 @@ public class TextGobject extends Group {
             path.append(shape, false);
         }
         return path;
+    }
+
+    public Task write(){
+        return this.onChildren(Animation::strokeAndFill,3);
+    }
+    public Task write(int frames, double delay){
+        return this.onChildren(c->Animation.strokeAndFill(c,frames),delay);
     }
 }

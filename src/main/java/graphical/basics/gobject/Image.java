@@ -6,6 +6,8 @@ import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.task.SingleStepTask;
 import graphical.basics.task.Task;
+import graphical.basics.value.DoubleHolder;
+import graphical.basics.value.NumberHolder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -17,6 +19,8 @@ import java.util.List;
 public class Image extends Gobject {
 
     Location location;
+
+    NumberHolder opacity= new DoubleHolder(1);
 
     int width;
     int heith;
@@ -34,6 +38,8 @@ public class Image extends Gobject {
         this.location=location;
         try {
             image = ImageIO.read(new File(path));
+            width=image.getWidth(null);
+            heith=image.getHeight(null);
         } catch (IOException e) {
             throw  new RuntimeException("não foi possivel carregar a imagem :"+path);
         }
@@ -50,11 +56,15 @@ public class Image extends Gobject {
 
     @Override
     public void paint(Graphics g) {
+        var beforeComposite=  ((Graphics2D) g).getComposite();
+        ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity.getValue()));
+
         g.drawImage(image, (int) location.getX() - (width / 2), (int) location.getY() - (heith / 2), null);
+        ((Graphics2D) g).setComposite(beforeComposite);
     }
 
     public LocationPair getBorders() {
-        return new LocationPair(Location.at(location.getX() - (width * scale.getValue()), location.getY() - (heith * scale.getValue())), Location.at(location.getX() + (width * scale.getValue()), location.getY() + (heith * scale.getValue())));
+        return new LocationPair(Location.at(location.getX() - (width * scale.getValue()*0.5), location.getY() - (heith * scale.getValue()*0.5)), Location.at(location.getX() + (width * scale.getValue()*0.5), location.getY() + (heith * scale.getValue()*0.5)));
     }
 
     @Override
@@ -67,5 +77,11 @@ public class Image extends Gobject {
         return Arrays.asList(location);
     }
 
+    public NumberHolder getOpacity() {
+        return opacity;
+    }
 
+    public void setOpacity(NumberHolder opacity) {
+        this.opacity = opacity;
+    }
 }

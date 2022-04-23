@@ -34,24 +34,26 @@ public class LocationPair {
     }
 
     public double getwidth() {
-        return l1.getX() - l2.getX();
+        return Math.abs(l1.getX() - l2.getX());
     }
 
     public double getheight() {
-        return l1.getY() - l2.getY();
+        return Math.abs(l1.getX() - l2.getX());
     }
 
-    public Location l1plusWidth(){
-       return new Point(l1.getX()-getwidth(),l1.getY());
+    public Location l1plusWidth() {
+        return new Point(l1.getX() - getwidth(), l1.getY());
     }
 
-    public Location l2minusWidth(){
-        return new Point(l2.getX()+getwidth(),l2.getY());
+    public Location l2minusWidth() {
+        return new Point(l2.getX() + getwidth(), l2.getY());
     }
-
-
 
     public LocationPair(List<LocationPair> pairs) {
+        this(pairs, 1);
+    }
+
+    public LocationPair(List<LocationPair> pairs, double scale) {
         double maxX = Double.MIN_VALUE;
         double maxY = Double.MIN_VALUE;
 
@@ -92,7 +94,13 @@ public class LocationPair {
             }
         }
 
-        l1 = new Point(minX, minY);
-        l2 = new Point(maxX, maxY);
+        var l1aux = new Point(minX, minY);
+        var l2aux = new Point(maxX, maxY);
+        var mid = new Point((l1aux.getX() + l2aux.getX()) / 2, (l1aux.getY() + l2aux.getY()) / 2);
+        var width = Math.abs(l1aux.getX() - l2aux.getX());
+        var heith = Math.abs(l1aux.getY() - l2aux.getY());
+
+        l1 = Location.at(mid.getX() - (width * scale * 0.5), mid.getY() - (heith * scale * 0.5));
+        l2 = Location.at(mid.getX() + (width * scale * 0.5), mid.getY() + (heith * scale * 0.5));
     }
 }

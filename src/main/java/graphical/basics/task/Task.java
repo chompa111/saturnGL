@@ -13,6 +13,7 @@ public interface Task {
 
     boolean isDone();
 
+
     default Task andThen(Task t2) {
         if (this instanceof SequenceTask) {
             ((SequenceTask) this).addTask(t2);
@@ -51,6 +52,10 @@ public interface Task {
         return this.andThen(new SingleStepTask(runnable));
     }
 
+    default Task afterConclusion(Runnable runnable) {
+        return new ShutDownTask(runnable, this);
+    }
+
     static void consume(Task task) {
         task.setup();
         while (!task.isDone()) {
@@ -66,6 +71,8 @@ public interface Task {
         return Presentation.staticReference.backGroundTask.append(this);
     }
 
+    default void shutDown() {
+    }
 
 //
 //    public static <T extends Task> Collector<T, ?, ParalelTask> toList() {

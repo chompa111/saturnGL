@@ -60,12 +60,12 @@ public abstract class Presentation {
     private final BackGround backGround;
     private Camera camera;
 
+    private final PresentationConfig presentationConfig = new PresentationConfig();
+
     public final EndLessParallelTask backGroundTask = new EndLessParallelTask();
 
     public Presentation() {
 
-
-        PresentationConfig presentationConfig = new PresentationConfig();
         setup(presentationConfig);
         applyConfigs(presentationConfig);
 
@@ -126,7 +126,7 @@ public abstract class Presentation {
         }
 
 
-        this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2), presentationConfig.getWidth() / 2), presentationConfig.getScale());
+        this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2.0), presentationConfig.getWidth() / 2.0), presentationConfig.getScale());
 
         if (!presentationConfig.isDisablePreview()) {
 
@@ -168,7 +168,7 @@ public abstract class Presentation {
                     graphicEngine = new JavaNativeEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
                     break;
                 case JAVAFX:
-                    graphicEngine = new JavaFXEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getWidth() * presentationConfig.getScale()));
+                    graphicEngine = new JavaFXEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
                     break;
             }
         } else {
@@ -250,12 +250,26 @@ public abstract class Presentation {
         gobjects.add(gobject);
     }
 
+    public void addBefore(Gobject referential, Gobject gobject) {
+        gobjects.add(gobjects.indexOf(referential), gobject);
+    }
+
     public void add(Behavior behavior) {
         behaviors.add(behavior);
     }
 
     public void remove(Gobject gobject) {
         gobjects.remove(gobject);
+    }
+
+    public void remove(Gobject... gobjects) {
+        for (Gobject gobject : gobjects) {
+            this.gobjects.remove(gobject);
+        }
+    }
+
+    public void removeAll() {
+        this.gobjects = new ArrayList<>();
     }
 
     public void execute(Task task) {
@@ -267,6 +281,7 @@ public abstract class Presentation {
             if (switchProcessing)
                 processFrame();
         }
+        task.shutDown();
         //cut();
     }
 
@@ -321,4 +336,7 @@ public abstract class Presentation {
         return camera;
     }
 
+    public PresentationConfig getPresentationConfig() {
+        return presentationConfig;
+    }
 }
