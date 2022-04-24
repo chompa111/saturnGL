@@ -97,6 +97,10 @@ public class Group extends Gobject {
         gobjects.add(g);
     }
 
+    public void addBefore(Gobject referential, Gobject gobject){
+        gobjects.add(gobjects.indexOf(referential), gobject);
+    }
+
     public void add(int index, Gobject g) {
         gobjects.add(index, g);
     }

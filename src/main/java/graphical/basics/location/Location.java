@@ -65,4 +65,8 @@ public interface Location {
         return new PositionListTransform(List.of(this), List.of(this.plus(x, y)), steps);
     }
 
+    default Task sendTo(Location l, int steps) {
+        return new PositionListTransform(List.of(this), List.of(l.copy()), steps);
+    }
+
 }

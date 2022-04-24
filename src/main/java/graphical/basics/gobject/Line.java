@@ -80,5 +80,11 @@ public class Line extends FillAndStroke implements ShapeLike {
         return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
     }
 
+    public Location getP1() {
+        return p1;
+    }
 
+    public Location getP2() {
+        return p2;
+    }
 }

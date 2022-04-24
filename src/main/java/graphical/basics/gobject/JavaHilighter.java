@@ -12,7 +12,8 @@ public class JavaHilighter {
     public static final Color INTELLIJ_DARK_GRAY = new Color(86, 111, 127);
     public static final Color INTELLIJ_LIGHT_YELLOW = new Color(211, 229, 73);
     public static final Color INTELLIJ_BACKGROUND = new Color(43, 43, 44);
-    public static final Color INTELLIJ_DEBUGGER_COLOR = new Color(45, 95, 153);
+    public static final Color INTELLIJ_DEBUGGER_COLOR = new Color(45, 95, 153,140);
+    public static final Color GUTTER_COLOR = new Color(49, 51, 54);
     //asdhjkashdkjashdkjashjk
 
 
@@ -34,7 +35,7 @@ public class JavaHilighter {
                 if (RESERVED_WORDS.contains(term)) {
                     s.getFirstSubstring(term).setColor(INTELLIJ_ORANGE);
                 } else {
-                    if (s.getString().matches(".*\\s"+term+"\\s*\\(.*")){
+                    if (s.getString().matches("((void|int|double|float|boolean)|[A-Z][a-z0-9]*)\\s"+term+"\\s*\\(.*")){
                         s.getFirstSubstring(term).setColor(INTELLIJ_LIGHT_YELLOW);
                     }
                 }

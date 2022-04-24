@@ -37,6 +37,14 @@ public class ParalelTask implements Task {
     }
 
     @Override
+    public void shutDown() {
+        taskList = new ArrayList<>(tasks);
+        for (Task task : taskList) {
+            task.shutDown();
+        }
+    }
+
+    @Override
     public boolean isDone() {
         return taskList.isEmpty();
     }
