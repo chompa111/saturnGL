@@ -1,6 +1,7 @@
 package graphical.basics.examples;
 
 import codec.engine.EngineType;
+import com.sun.scenario.effect.GaussianBlur;
 import graphical.basics.gobject.*;
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.location.Location;
@@ -24,8 +25,7 @@ public class TextEx extends Presentation {
 
     @Override
     protected void buildPresentation() {
-
-
+        
         fibo(3, 0);
 
 
@@ -184,7 +184,7 @@ public class TextEx extends Presentation {
 
 
         txt.newLine("int fibo(int n){");
-        txt.newLine("   if(n==0) return 1");
+        txt.newLine("   if(n==0) return 1;");
         txt.newLine("   return fibo(n-1)+fibo(n-2);");
         txt.newLine("}");
 

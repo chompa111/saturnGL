@@ -1,11 +1,9 @@
 package graphical.basics.gobject;
 
 import graphical.basics.location.Location;
-import graphical.basics.presentation.Presentation;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.SequenceTask;
 import graphical.basics.task.Task;
-import graphical.basics.task.WaitTask;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -26,6 +26,9 @@ public class Init extends Presentation {
 
     @Override
     protected void buildPresentation() {
+
+        getBackGround().getBackGroundColor().setColor(new Color(0,255,0));
+
         SVGGobject aux = new SVGGobject("C:\\Users\\PICHAU\\Desktop\\icone.svg");
         aux.setPositionTo(MID);
         var bola = aux.getGroup("bola");

@@ -4,7 +4,6 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
-import graphical.basics.presentation.Animation;
 import graphical.basics.task.ContextSetupTask;
 import graphical.basics.task.SequenceTask;
 import graphical.basics.task.Task;

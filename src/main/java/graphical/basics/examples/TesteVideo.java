@@ -24,7 +24,7 @@ import java.util.List;
 public class TesteVideo {
     public static void main(String[] args) {
         YoutubeDownloader downloader = new YoutubeDownloader();
-        String videoId = "zYA2Yj56Mjc"; // for url https://www.youtube.com/watch?v=abc12345
+        String videoId = "4_cHyUqik-U"; // for url https://www.youtube.com/watch?v=abc12345
 
 // sync parsing
         RequestVideoInfo request = new RequestVideoInfo(videoId);
@@ -89,7 +89,7 @@ public class TesteVideo {
         RequestVideoFileDownload request2 = new RequestVideoFileDownload(format)
                 // optional params
                 .saveTo(outputDir) // by default "videos" directory
-                .renameTo("quasicristals") // by default file name will be same as video title on youtube
+                .renameTo("infinityPatterns") // by default file name will be same as video title on youtube
                 .overwriteIfExists(true); // if false and file with such name already exits sufix will be added video(1).mp4
         Response<File> response2 = downloader.downloadVideoFile(request2);
         File data = response2.data();

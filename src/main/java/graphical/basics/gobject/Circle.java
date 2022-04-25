@@ -4,7 +4,6 @@ package graphical.basics.gobject;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.FillAndStroke;
-import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
@@ -20,6 +19,8 @@ public class Circle extends FillAndStroke implements ShapeLike {
     Location center;
     NumberHolder radius;
 
+    private final Ellipse2D.Double ellipseAwt = new Ellipse2D.Double();
+
     public Circle(Location center, NumberHolder radius, Color color) {
         this.center = center;
         this.radius = radius;
@@ -29,15 +30,20 @@ public class Circle extends FillAndStroke implements ShapeLike {
     @Override
     public void paint(Graphics g) {
 
+
+
         int r = (int) radius.getValue();
-        if(fillColorHolder!=null){
+        ellipseAwt.setFrame(center.getX() - r / 2.0,  center.getY() - r / 2.0, r, r);
+        if (fillColorHolder != null) {
             g.setColor(fillColorHolder.getColor());
-            g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+            ((Graphics2D)g).fill(ellipseAwt);
+          //  g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
         }
-        if(strokeColorHolder!=null){
-            ((Graphics2D)g).setStroke(new BasicStroke((float)getStrokeThickness().getValue()));
+        if (strokeColorHolder != null) {
+            ((Graphics2D) g).setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
             g.setColor(strokeColorHolder.getColor());
-            g.drawOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+            ((Graphics2D)g).draw(ellipseAwt);
+         //   g.drawOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
         }
 
 

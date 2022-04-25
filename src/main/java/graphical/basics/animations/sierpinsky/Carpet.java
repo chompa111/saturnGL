@@ -1,9 +1,6 @@
 package graphical.basics.animations.sierpinsky;
 
-import graphical.basics.gobject.Fonts;
-import graphical.basics.gobject.Group;
-import graphical.basics.gobject.JavaHilighter;
-import graphical.basics.gobject.Text;
+import graphical.basics.gobject.*;
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.SVGGobject;
 import graphical.basics.location.Location;
@@ -20,7 +17,7 @@ import static graphical.basics.gobject.JavaHilighter.INTELLIJ_GRAY;
 public class Carpet extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-      //  presentationConfig.setDisableCodec(true);
+         // presentationConfig.setDisableCodec(true);
         presentationConfig.setWidth(1920);
         presentationConfig.setHeight(1080);
     }
@@ -28,48 +25,69 @@ public class Carpet extends Presentation {
     @Override
     protected void buildPresentation() {
 
-       // switchOff();
+        // switchOff();
 
-        sierpinsky(Location.at((1920 / 2.0) - 450, 90), 900, 3).execute();
+//        sierpinsky(Location.at((1920 / 2.0) - 450, 90), 900, 3).execute();
+////        removeAll();
+////       // wait(seconds(10)).execute();
+//
 //        removeAll();
-//       // wait(seconds(10)).execute();
+//
+//        var txt = new Text(INTELLIJ_GRAY, Fonts.JETBRAINS_MONO.deriveFont(30f), Location.at(200, 500));
+//
+//        add(txt);
+//        txt.newLine("void tapete(){");
+//        txt.newLine(" ");
+//        txt.newLine("   for(int i=0;i<200;i++){");
+//        txt.newLine("      funcaoDespirocada(int a8);");
+//        txt.newLine("   }");
+//        txt.newLine("}");
+//
+//
+//
+//        txt.setPositionTo(Location.at(1920 / 2.0, 1080 / 2.0));
+//
+//        new JavaHilighter().colorize(txt);
+//
+//        txt.typeEffect().execute();
 
-        removeAll();
-
-        var txt = new Text(INTELLIJ_GRAY, Fonts.JETBRAINS_MONO.deriveFont(30f), Location.at(200, 500));
-
-        add(txt);
-        txt.newLine("void tapete(){");
-        txt.newLine(" ");
-        txt.newLine("   for(int i=0;i<200;i++){");
-        txt.newLine("      funcaoDespirocada(int a8);");
-        txt.newLine("   }");
-        txt.newLine("}");
-
-
-
-        txt.setPositionTo(Location.at(1920 / 2.0, 1080 / 2.0));
-
-        new JavaHilighter().colorize(txt);
-
-        txt.typeEffect().execute();
-
-        var carpet = sierpinskyGobject(Location.at((1920 / 2.0) - 500, 40), 500, 3);
+        var carpet = sierpinskyGobject(Location.at((1920 / 2.0) - 500, 40), 500, 5);
+        add(carpet);
         carpet.setPositionTo(Location.at(1920 / 2.0, 1080 / 2.0));
-       // carpet.scale.setValue(0.5);
-//        add(carpet);
-//
-//        var aux = new SVGGobject("C:\\Users\\PICHAU\\Desktop\\icone.svg").toGroupGobject();
-//        aux.setPositionTo(Location.at(1920/2.0,1080/2.0));
-//
-//
 
-        wait(seconds(3)).execute();
-        Animation.t3b1b(txt, carpet, seconds(2)).execute();
+        Animation.fadeInGrow(carpet, seconds(1)).execute();
+
+      //  wait(seconds(10)).execute();
+        cut();
 
 
-        //carpet.move(300,300).execute();
-       // txt.transform(carpet,seconds(3)).execute();
+        var t = new StringGobject("Tapete de Sierpinsky", Fonts.COMPUTER_MODERN_I.deriveFont(40f), carpet.getBorders().midPoint().plus(-220, -270), Color.white);
+
+        add(t);
+        Animation.strokeAndFill(t, seconds(1)).execute();
+
+       // wait(seconds(20)).execute();
+
+        Animation.fadeOut(t, seconds(1)).execute();
+
+        cut();
+
+        var part = carpet.getGobjects().get(1);
+        add(part);
+
+        var mid = carpet.getBorders().midPoint().copy();
+
+        carpet.remove(part);
+
+        Animation.fadeOut(carpet, seconds(2)).execute();
+        wait(seconds(1)).execute();
+
+
+        part.moveTo(mid).execute();
+
+        wait(seconds(1)).execute();
+
+        part.getScale().change(2,seconds(2)).execute();
 
 
     }
@@ -98,7 +116,7 @@ public class Carpet extends Presentation {
                 .parallel(sierpinsky(l1.plus(0, newWidth), newWidth, depth - 1));
 
 
-        return mainRectTask.andThen(chieldTask).andThen(wait(10+(int)(Math.random()*30))).andThen(() -> Animation.fadeoutGrow(r,20));
+        return mainRectTask.andThen(chieldTask).andThen(wait(10 + (int) (Math.random() * 30))).andThen(() -> Animation.fadeoutGrow(r, 20));
 
     }
 

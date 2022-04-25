@@ -17,6 +17,8 @@ public class Rect extends FillAndStroke implements ShapeLike {
     Location p1;
     Location p2;
 
+    // Double implelemtation
+    private final Rectangle2D.Double awtRect = new Rectangle2D.Double();
 
     public Rect(Location p1, Location p2, Color color) {
         this.p1 = p1;
@@ -26,16 +28,23 @@ public class Rect extends FillAndStroke implements ShapeLike {
 
     @Override
     public void paint(Graphics g) {
+        awtRect.setRect(p1.getX(), p1.getY(), p2.getX() - p1.getX(), p2.getY() - p1.getY());
 
-        if(fillColorHolder!=null){
+        if (fillColorHolder != null) {
             g.setColor(fillColorHolder.getColor());
-            g.fillRect((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
+          //  g.fillRect((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
+            ((Graphics2D) g).fill(awtRect);
         }
 
         if (strokeColorHolder != null) {
-            ((Graphics2D)g).setStroke(new BasicStroke((float)getStrokeThickness().getValue()));
+            ((Graphics2D) g).setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
+
+
             g.setColor(strokeColorHolder.getColor());
-            g.drawRect((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
+
+
+            ((Graphics2D) g).draw(awtRect);
+            // g.drawRect((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
         }
 
     }

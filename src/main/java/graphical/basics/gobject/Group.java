@@ -97,7 +97,7 @@ public class Group extends Gobject {
         gobjects.add(g);
     }
 
-    public void addBefore(Gobject referential, Gobject gobject){
+    public void addBefore(Gobject referential, Gobject gobject) {
         gobjects.add(gobjects.indexOf(referential), gobject);
     }
 
@@ -129,9 +129,14 @@ public class Group extends Gobject {
         return new Group(list);
     }
 
-    public void remove(Group group) {
+    public void removeElements(Group group) {
         gobjects.removeAll(group.getGobjects());
     }
+
+    public void remove(Gobject gobject) {
+        gobjects.remove(gobject);
+    }
+
 
     public void remove(int index) {
         gobjects.remove(index);
