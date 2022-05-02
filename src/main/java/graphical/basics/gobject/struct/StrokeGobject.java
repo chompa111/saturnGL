@@ -66,7 +66,7 @@ public class StrokeGobject extends ShapeGobject2 {
                 BasicStroke.CAP_SQUARE,    // End cap
                 BasicStroke.JOIN_MITER,    // Join style
                 10.0f,                     // Miter limit
-                new float[]{(float) (perc.getValue() * len), (float) len}, // Dash pattern
+                new float[]{(float) (Math.abs(perc.getValue()) * len), (float) len}, // Dash pattern
                 0.0f);
         g2d.setStroke(s);
 

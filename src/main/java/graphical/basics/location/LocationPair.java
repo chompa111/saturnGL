@@ -38,7 +38,7 @@ public class LocationPair {
     }
 
     public double getheight() {
-        return Math.abs(l1.getX() - l2.getX());
+        return Math.abs(l1.getY() - l2.getY());
     }
 
     public Location l1plusWidth() {

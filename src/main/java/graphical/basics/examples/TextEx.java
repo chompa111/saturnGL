@@ -1,42 +1,83 @@
 package graphical.basics.examples;
 
 import codec.engine.EngineType;
-import com.sun.scenario.effect.GaussianBlur;
 import graphical.basics.gobject.*;
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.location.Location;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
-import graphical.basics.presentation.effects.T3b1b;
 
 import java.awt.*;
 
 import static graphical.basics.gobject.JavaHilighter.INTELLIJ_GRAY;
-import static graphical.basics.gobject.JavaHilighter.INTELLIJ_ORANGE;
 
 public class TextEx extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-        //presentationConfig.setDisableCodec(true);
+       // presentationConfig.setDisableCodec(true);
         presentationConfig.setEngine(EngineType.JAVAFX);
         //  presentationConfig.setFramerate(75);
     }
 
     @Override
     protected void buildPresentation() {
-        
-        fibo(3, 0);
+
+        //fibo(3, 0);
 
 
-//        var txt = new CodeBlock(Location.at(200, 200), 30, 600);
-//        add(txt);
-//        txt.newLine("int fibo(int n){");
-//        txt.newLine("   if(n==0) return 1;");
-//        txt.newLine("   return fibo(n-1)+fibo(n-2);");
-//        txt.newLine("}");
+        var txt = new CodeBlock(Location.at(200, 200), 30, 600);
+        add(txt);
+        txt.newLine("int fibo(int n){");
+        txt.newLine("   if(n==0) return 1;");
+        txt.newLine("   return fibo(n-1)+fibo(n-2);");
+        txt.newLine("}");
+
+
+        Animation.unstrokeAndUnFill(txt,seconds(4)).execute();
+
 //
-//        Animation.strokeAndFill(txt, seconds(1)).execute();
+//        var lens = new Magnifier(Location.at(250,250), Location.at(350,350));
+//        lens.move(0,-100).execute();
+//        add(lens);
+//        lens.getScale().change(1,seconds(2)).execute();
+//
+//        lens.move(170,0,seconds(2)).execute();
+//        lens.getScale().change(3,seconds(3)).execute();
+
+
+        var brace= HorizontalBrace.embrace(txt.getBackground(), HorizontalBrace.Placement.DOWN);
+        add(brace);
+
+        Animation.strokeAndFill(brace).executeInBackGround();
+
+      //  Animation.fadeInGrow(brace,seconds(1)).executeInBackGround();
+
+       // brace.expandCenterAnimated(200,seconds(1)).execute();
+
+        var t3= new StringGobject("l/3",Fonts.JETBRAINS_MONO.deriveFont(30f),brace.getBorders().midPoint().plus(0,+30),Color.white);
+        add(t3);
+        Animation.strokeAndFill(t3).execute();
+
+        var brace2=VerticalBrace.embrace(txt.getBackground(), VerticalBrace.Placement.LEFT);
+        add(brace2);
+        Animation.strokeAndFill(brace2).execute();
+
+       // lens.move(100,0,seconds(3)).execute();
+
+
+//        txt.addDebugLine();
+//        Animation.strokeAndFill(txt.getDebbugLine()).execute();
+//
+//        Animation.fadeInGrow(txt.getDebbugLine(),seconds(1)).execute();
+
+        // Animation.strokeAndFill(txt, seconds(1)).execute();
+
+//        txt.newLineAnimated(2,"// bman me ajuda").execute();
+//        txt.getText().getLine(2).typeEffect().execute();
+
+        //txt.getText().typingEffect().execute();
+
 //
 //        txt.addDebugLine();
 //        Animation.strokeAndFill(txt.getDebbugLine()).execute();
@@ -147,7 +188,7 @@ public class TextEx extends Presentation {
         // Animation.strokeAndFill(txt.getDebbugLine()).execute();
 
         txt.debuggNextLineAnimated(seconds(0.5) + 1).execute();
-        txt.getTextComment().newLine(1, "       : ("+(n == 0 || n== 1)+")");
+        txt.getTextComment().newLine(1, "       : (" + (n == 0 || n == 1) + ")");
         Animation.fadeInGrow(txt.getTextComment().getLine(1), seconds(1)).execute();
         if (n == 1 || n == 0) {
 
@@ -158,22 +199,22 @@ public class TextEx extends Presentation {
 
         txt.debuggNextLineAnimated(seconds(0.5) + 1).execute();
 
-        var borders=txt.getText().getLine(2).getFirstSubstring("fibo(n-1)").getBorders();
-        txt.getDebbugLine().getP1().sendTo(borders.getL1(),seconds(1)).executeInBackGround();
-        txt.getDebbugLine().getP2().sendTo(borders.getL2(),seconds(1)).execute();
+        var borders = txt.getText().getLine(2).getFirstSubstring("fibo(n-1)").getBorders();
+        txt.getDebbugLine().getP1().sendTo(borders.getL1(), seconds(1)).executeInBackGround();
+        txt.getDebbugLine().getP2().sendTo(borders.getL2(), seconds(1)).execute();
         int fibo1 = fibo(n - 1, profund + 1);
 
 
-        var borders2=txt.getText().getLine(2).getFirstSubstring("fibo(n-2)").getBorders();
-        txt.getDebbugLine().getP1().sendTo(borders2.getL1(),seconds(1)).executeInBackGround();
-        txt.getDebbugLine().getP2().sendTo(borders2.getL2(),seconds(1)).execute();
+        var borders2 = txt.getText().getLine(2).getFirstSubstring("fibo(n-2)").getBorders();
+        txt.getDebbugLine().getP1().sendTo(borders2.getL1(), seconds(1)).executeInBackGround();
+        txt.getDebbugLine().getP2().sendTo(borders2.getL2(), seconds(1)).execute();
 
 
         int fibo2 = fibo(n - 2, profund + 1);
 
         Animation.fadeOut(txt).execute();
         remove(txt);
-        return fibo1+fibo2;
+        return fibo1 + fibo2;
     }
 
     ;

@@ -339,4 +339,8 @@ public abstract class Presentation {
     public PresentationConfig getPresentationConfig() {
         return presentationConfig;
     }
+
+    public List<Gobject> getGobjects() {
+        return gobjects;
+    }
 }

@@ -1,6 +1,7 @@
 package graphical.basics.gobject;
 
 import graphical.basics.location.Location;
+import graphical.basics.location.LocationPair;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.SequenceTask;
 import graphical.basics.task.Task;
@@ -80,7 +81,7 @@ public class Text extends Group {
         return lines.get(index);
     }
 
-    public Task typeEffect() {
+    public Task typingEffect() {
         var taskList = new ArrayList<Task>();
         for (StringGobject s : lines) {
             taskList.add(s.typeEffect());
@@ -97,5 +98,10 @@ public class Text extends Group {
         var locations = super.getRefereceLocations();
         locations.add(location);
         return locations;
+    }
+
+    @Override
+    public LocationPair borderWhenEmpty() {
+        return new LocationPair(location, location);
     }
 }

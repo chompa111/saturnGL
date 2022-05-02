@@ -41,12 +41,21 @@ public class Group extends Gobject {
 
     @Override
     public LocationPair getBorders() {
+
+        if (gobjects.isEmpty()) {
+            return borderWhenEmpty();
+        }
+
         var borders = new ArrayList<LocationPair>();
         for (Gobject gobject : gobjects) {
             borders.add(gobject.getBorders());
         }
 
         return new LocationPair(borders, scale.getValue());
+    }
+
+    public LocationPair borderWhenEmpty() {
+        throw new RuntimeException("no border available");
     }
 
     @Override

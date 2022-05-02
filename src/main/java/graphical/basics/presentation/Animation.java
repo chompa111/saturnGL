@@ -1,30 +1,22 @@
 package graphical.basics.presentation;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.DynamicPath;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.Line;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.*;
-import graphical.basics.location.Point;
 import graphical.basics.presentation.effects.T3b1b;
 import graphical.basics.task.*;
 import graphical.basics.task.transformation.gobject.ColorListTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform2;
-import graphical.basics.task.transformation.gobject.PositionListTransform;
 import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Animation {
 
     private static final Presentation presentation = Presentation.staticReference;
-
 
     public static Task fadeOut(Gobject gobject, int steps) {
         return new ColorTranform(gobject, new Color(0, 0, 0, 0), steps);
@@ -78,6 +70,40 @@ public class Animation {
 
         return fadeIn(gobject, steps);
     }
+
+
+    public static Task unstrokeAndUnFill(Gobject gobject, int steps) {
+        if (gobject instanceof ShapeGobject2) {
+            var sw = new StrokeGobject((ShapeGobject2) gobject);
+            sw.getPerc().setValue(1);
+            presentation.add(sw);
+
+            return fadeOut(gobject, steps)
+                    .andThen(sw.getPerc().change(-1, steps))
+                    .step(() -> presentation.remove(sw));
+        }
+        if (gobject instanceof ShapeLike) {
+            var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
+            sw.getPerc().setValue(1);
+            presentation.add(sw);
+
+            return fadeOut(gobject, steps)
+                    .andThen(sw.getPerc().change(-1, steps))
+                    .step(() -> presentation.remove(sw));
+
+        }
+
+        if (gobject instanceof Group) {
+            return ((Group) gobject).onChildren(x -> Animation.unstrokeAndUnFill(x, steps), 0.7);
+        }
+
+        if (gobject instanceof SVGGobject) {
+            return unstrokeAndUnFill(((SVGGobject) gobject).toGroupGobject(), steps);
+        }
+
+        return fadeOut(gobject, steps);
+    }
+
 
     public static Task strokeAndFill(Gobject gobject) {
         return strokeAndFill(gobject, presentation.seconds(1));

@@ -35,6 +35,8 @@ public class CodeBlock extends Group {
     int lineCounter = 1;
     int debuggerCurrentLine = 1;
 
+    private int textSize = 30;
+
 
     public CodeBlock(Color color, Font font, Location location) {
         text = new Text(color, font, location);
@@ -46,9 +48,10 @@ public class CodeBlock extends Group {
     }
 
     public CodeBlock(Location location, int textSize, int width) {
+        this.textSize=textSize;
         this.location = location;
         text = new Text(JavaHilighter.INTELLIJ_GRAY, Fonts.JETBRAINS_MONO.deriveFont((float) textSize), location);
-        textComment = new Text(Color.gray, Fonts.JETBRAINS_MONO.deriveFont((float) textSize), location.plus(width-300,0));
+        textComment = new Text(Color.gray, Fonts.JETBRAINS_MONO.deriveFont((float) textSize), location.plus(width - 300, 0));
         textGutter = new Text(new Color(92, 90, 90), Fonts.JETBRAINS_MONO.deriveFont((float) textSize), location.plus(-70, 0));
         background = new Rect(location.plus(-80, -textSize * EXTRA_SPACEMENT - 10), location.plus(width, 0), JavaHilighter.INTELLIJ_BACKGROUND);
         backgroundShadow = new Rect(location.plus(-80, -textSize * EXTRA_SPACEMENT - 10).plus(-20, -20), location.plus(width, 0).plus(-20, -20), new Color(0, 0, 40, 150));
@@ -69,19 +72,19 @@ public class CodeBlock extends Group {
         text.newLine(line);
         textGutter.newLine("" + lineCounter);
         javaHilighter.colorize(text);
-        background.getP2().setY(background.getP2().getY() + 30 * 1.15);
-        backgroundShadow.getP2().setY(backgroundShadow.getP2().getY() + 30 * 1.15);
-        gutter.getP2().setY(gutter.getP2().getY() + 30 * 1.15);
-        gutterLine.getP2().setY(gutterLine.getP2().getY() + 30 * 1.15);
+        background.getP2().setY(background.getP2().getY() + textSize * 1.15);
+        backgroundShadow.getP2().setY(backgroundShadow.getP2().getY() + textSize * 1.15);
+        gutter.getP2().setY(gutter.getP2().getY() + textSize * 1.15);
+        gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
         lineCounter++;
     }
 
     public void newLine(int index, String line) {
         text.newLine(index, line);
-        background.getP2().setY(background.getP2().getY() + 30 * 1.15);
-        backgroundShadow.getP2().setY(backgroundShadow.getP2().getY() + 30 * 1.15);
-        gutter.getP2().setY(gutter.getP2().getY() + 30 * 1.15);
-        gutterLine.getP2().setY(gutterLine.getP2().getY() + 30 * 1.15);
+        background.getP2().setY(background.getP2().getY() + textSize * 1.15);
+        backgroundShadow.getP2().setY(backgroundShadow.getP2().getY() + textSize * 1.15);
+        gutter.getP2().setY(gutter.getP2().getY() + textSize * 1.15);
+        gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
     }
 
 
@@ -93,22 +96,22 @@ public class CodeBlock extends Group {
         textGutter.newLine("" + lineCounter);
         var newNumber = textGutter.getLine(textGutter.lines.size() - 1);
         return text.newLineAnimated(index, line)
-                .parallel(background.getP2().move(0, 30 * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(backgroundShadow.getP2().move(0, 30 * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(gutter.getP2().move(0, 30 * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(gutterLine.getP2().move(0, 30 * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(background.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(backgroundShadow.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutter.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutterLine.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(Animation.fadeInGrow(newNumber, Presentation.staticReference.seconds(1)));
     }
 
     public void addDebugLine() {
         //  debbugLine = new Rect(text.getBorders().getL1().plus(-80, 0), text.getBorders().getL1().plus(background.getBorders().getwidth() - 80, 30 * 1.15), JavaHilighter.INTELLIJ_DEBUGGER_COLOR);
-        debbugLine = new Rect(location.plus(-80, -30 * 1.15).plus(0, 5), location.plus(background.getBorders().getwidth() - 80, 0).plus(0, 7), JavaHilighter.INTELLIJ_DEBUGGER_COLOR);
+        debbugLine = new Rect(location.plus(-80, -textSize * 1.15).plus(0, 5), location.plus(background.getBorders().getwidth() - 80, 0).plus(0, 7), JavaHilighter.INTELLIJ_DEBUGGER_COLOR);
         add(debbugLine);
     }
 
     public void setDebugline(int line) {
         var delta = line - debuggerCurrentLine;
-        debbugLine.changeSetPosition(0, delta * 30 * EXTRA_SPACEMENT);
+        debbugLine.changeSetPosition(0, delta * textSize * EXTRA_SPACEMENT);
         debuggerCurrentLine = line;
     }
 
@@ -124,7 +127,7 @@ public class CodeBlock extends Group {
         return new ContextSetupTask(() -> {
             var delta = line - debuggerCurrentLine;
             debuggerCurrentLine = line;
-            return debbugLine.move(0, delta * 30 * EXTRA_SPACEMENT, frames);
+            return debbugLine.move(0, delta * textSize * EXTRA_SPACEMENT, frames);
         });
     }
 
