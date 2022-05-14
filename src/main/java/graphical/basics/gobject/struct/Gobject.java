@@ -175,4 +175,37 @@ public abstract class Gobject {
         return angle.change(amount);
     }
 
+
+    public Location getMidPoint() {
+        return getBorders().midPoint();
+    }
+
+    public Location getBellowPoint() {
+        var border = getBorders();
+        return border.midPoint().plus(0, border.getheight() / 2);
+    }
+
+    public Location getRightPoint() {
+        var border = getBorders();
+        return border.midPoint().plus(border.getwidth() / 2, 0);
+    }
+
+    public Location getLeftPoint() {
+        var border = getBorders();
+        return border.midPoint().plus(-border.getwidth() / 2, 0);
+    }
+
+    public Location getOverPoint() {
+        var border = getBorders();
+        return border.midPoint().plus(0, -border.getheight() / 2);
+    }
+
+    public double getWidth() {
+        return getBorders().getwidth();
+    }
+
+    public double getHeight() {
+        return getBorders().getheight();
+    }
+
 }

@@ -20,7 +20,7 @@ public class JavaHilighter {
     public static Set<String> RESERVED_WORDS =
             Set.of("public", "static", "if", "class", "void",
                     "final", "var", "int", "long", "double",
-                    "for", "while", "do", "return", "import");
+                    "for", "while", "do", "return", "import","new");
 
 
     public void colorize(Text text) {

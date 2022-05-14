@@ -23,6 +23,11 @@ public class StringGobject extends Group {
     private final Location ref;
 
 
+    public StringGobject(String string) {
+        this(string, Fonts.JETBRAINS_MONO.deriveFont(30f), Location.at(0, 0), Color.white);
+    }
+
+
     public StringGobject(String string, Font font, Location location, Color color) {
         this.string = string;
         this.spacemapping = extractSpaceMapping(string);

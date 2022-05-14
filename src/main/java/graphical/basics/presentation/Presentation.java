@@ -290,6 +290,9 @@ public abstract class Presentation {
     }
 
     public void cut() {
+
+       // wait(seconds(10)).execute();
+
         if (!disableCodec) {
             videoCodec.saveVideo();
             clipCounter++;

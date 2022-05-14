@@ -42,4 +42,12 @@ public interface NumberHolder {
     }
 
 
+    default Task changeTo(double target, int steps) {
+        var delta = target - getValue();
+        return change(delta, steps);
+    }
+
+    default Task changeTo(double target) {
+        return changeTo(target, Presentation.staticReference.seconds(1));
+    }
 }

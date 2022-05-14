@@ -1,6 +1,7 @@
 package graphical.basics.gobject.struct;
 
 import graphical.basics.gobject.Group;
+import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 
@@ -8,18 +9,20 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClipBox extends Group {
+public class ClipArea extends Group {
+
+    Gobject gobject;
+    ShapeLike shapeLike;
 
 
-    private Location p1;
-    private Location p2;
+    public ClipArea(ShapeLike shapeLike) {
+        this.shapeLike = shapeLike;
 
-    private LocationPair locationPair;
+        if (!(shapeLike instanceof Gobject)) {
+            throw new RuntimeException("shape-like needs to be a gobject instance!");
+        }
 
-    public ClipBox(Location p1, Location p2) {
-        this.p1 = p1;
-        this.p2 = p2;
-        locationPair = new LocationPair(p1, p2);
+        gobject = (Gobject) shapeLike;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class ClipBox extends Group {
 
 //        g.setColor(Color.magenta);
 //        g.drawRect((int) p1.getX(), (int) p1.getY(), (int) locationPair.getwidth(), (int) locationPair.getheight());
-        g.setClip((int) p1.getX(), (int) p1.getY(), (int) locationPair.getwidth(), (int) locationPair.getheight());
+        g.setClip(shapeLike.asShape());
 
         for (Gobject gobject : getGobjects()) {
             gobject.paint(g, true);
@@ -47,7 +50,7 @@ public class ClipBox extends Group {
 
     @Override
     public LocationPair getBorders() {
-        return locationPair;
+        return gobject.getBorders();
     }
 
 
@@ -57,9 +60,6 @@ public class ClipBox extends Group {
         for (Gobject gobject : getGobjects()) {
             list.addAll(gobject.getRefereceLocations());
         }
-        list.add(p1);
-        list.add(p2);
-
         return list;
     }
 

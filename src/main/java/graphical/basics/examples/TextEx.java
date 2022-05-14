@@ -15,7 +15,7 @@ import static graphical.basics.gobject.JavaHilighter.INTELLIJ_GRAY;
 public class TextEx extends Presentation {
     @Override
     public void setup(PresentationConfig presentationConfig) {
-       // presentationConfig.setDisableCodec(true);
+        // presentationConfig.setDisableCodec(true);
         presentationConfig.setEngine(EngineType.JAVAFX);
         //  presentationConfig.setFramerate(75);
     }
@@ -31,10 +31,12 @@ public class TextEx extends Presentation {
         txt.newLine("int fibo(int n){");
         txt.newLine("   if(n==0) return 1;");
         txt.newLine("   return fibo(n-1)+fibo(n-2);");
+        txt.newLine("var txt = new CodeBlock(Location.at(200, 200), 30, 600);");
         txt.newLine("}");
 
 
-        Animation.unstrokeAndUnFill(txt,seconds(4)).execute();
+        wait(seconds(10)).execute();
+        Animation.unstrokeAndUnFill(txt, seconds(4)).execute();
 
 //
 //        var lens = new Magnifier(Location.at(250,250), Location.at(350,350));
@@ -46,24 +48,32 @@ public class TextEx extends Presentation {
 //        lens.getScale().change(3,seconds(3)).execute();
 
 
-        var brace= HorizontalBrace.embrace(txt.getBackground(), HorizontalBrace.Placement.DOWN);
+        var brace = HorizontalBrace.embrace(txt.getBackground(), HorizontalBrace.Placement.DOWN);
         add(brace);
 
         Animation.strokeAndFill(brace).executeInBackGround();
 
-      //  Animation.fadeInGrow(brace,seconds(1)).executeInBackGround();
+        //  Animation.fadeInGrow(brace,seconds(1)).executeInBackGround();
 
-       // brace.expandCenterAnimated(200,seconds(1)).execute();
+        // brace.expandCenterAnimated(200,seconds(1)).execute();
 
-        var t3= new StringGobject("l/3",Fonts.JETBRAINS_MONO.deriveFont(30f),brace.getBorders().midPoint().plus(0,+30),Color.white);
+        var t3 = new StringGobject("L/3");
         add(t3);
+
+        t3.setPositionTo(brace.getMidPoint().plus(0, 30));
+
         Animation.strokeAndFill(t3).execute();
 
-        var brace2=VerticalBrace.embrace(txt.getBackground(), VerticalBrace.Placement.LEFT);
+        var brace2 = VerticalBrace.embrace(txt.getBackground(), VerticalBrace.Placement.LEFT);
         add(brace2);
         Animation.strokeAndFill(brace2).execute();
 
-       // lens.move(100,0,seconds(3)).execute();
+
+        StringGobject batata = new StringGobject("batata");
+        add(batata);
+        batata.setPositionTo(brace2.getMidPoint().plus(-100,0));
+
+        // lens.move(100,0,seconds(3)).execute();
 
 
 //        txt.addDebugLine();
