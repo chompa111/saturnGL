@@ -5,6 +5,8 @@
 .idea
 /video
 /my_videos
+src/main/java/graphical/basics/examples
+src/main/java/graphical/basics/animations
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -17,3 +19,5 @@ gradle-app.setting
 *.mov
 .mov
 .mp4
+
+
