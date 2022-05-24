@@ -2,7 +2,6 @@
 plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.9'
-   // id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
 javafx {
@@ -26,9 +25,6 @@ repositories {
 
     maven { url 'https://jitpack.io' }
 
-//    maven {
-//        url "https://plugins.gradle.org/m2/"
-//    }
 }
 
 dependencies {
@@ -39,20 +35,15 @@ dependencies {
 
     implementation 'org.scilab.forge:jlatexmath:1.0.7'
 
-
-
-
     implementation group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.14'
     implementation group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.14'
     implementation group: 'xuggle', name: 'xuggle-xuggler', version: '5.4'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
     implementation 'org.jfree:org.jfree.fxgraphics2d:2.1.2'
-   // implementation "gradle.plugin.com.github.johnrengelman:shadow:5.2.0"
     implementation 'com.github.sealedtx:java-youtube-downloader:3.0.1'
 
 }
 
-//apply plugin: "com.github.johnrengelman.shadow"
 test {
     useJUnitPlatform()
 }

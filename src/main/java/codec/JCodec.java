@@ -1,26 +1,23 @@
 package codec;
 
-import codec.VideoCodec;
-import org.jcodec.api.SequenceEncoder;
+import static codec.CodecType.JCODEC;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.Rational;
 
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
 public class JCodec implements VideoCodec {
 
     private SeekableByteChannel out;
-    public AWTSequenceEncoder encoder;
+    private AWTSequenceEncoder encoder;
 
     @Override
     public void startNewVideo(String path, String name, int frameRate) {
         try {
-            out = NIOUtils.writableFileChannel(path+""+name);
+            out = NIOUtils.writableFileChannel(path + name);
             encoder = new AWTSequenceEncoder(out, Rational.R(frameRate, 1));
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,7 +25,7 @@ public class JCodec implements VideoCodec {
     }
 
     @Override
-    public void addFrame(BufferedImage bufferedImage) {
+    public void addFrame(final BufferedImage bufferedImage) {
         try {
             encoder.encodeImage(bufferedImage);
         } catch (IOException e) {
@@ -48,6 +45,6 @@ public class JCodec implements VideoCodec {
 
     @Override
     public String getFileFormat() {
-        return ".mov";
+        return JCODEC.getFileExtension();
     }
 }

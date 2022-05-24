@@ -1,23 +1,26 @@
 package codec;
 
+import static codec.CodecType.XUGGLE;
+import static com.xuggle.xuggler.ICodec.ID.CODEC_ID_H264;
+import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
+
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.ICodec;
 import graphical.basics.presentation.PresentationConfig;
-
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class XugglerCodec implements VideoCodec {
 
-    IMediaWriter writer;
+    private static final double NANOSECOND = 1.0E9D;
+    private final PresentationConfig presentationConfig;
+    private IMediaWriter writer;
     private double fps;
     private boolean framesGenerated;
-    private int frameCount = 0;
-    PresentationConfig presentationConfig;
+    private int frameCount;
+
 
     public XugglerCodec(PresentationConfig presentationConfig) {
         this.presentationConfig = presentationConfig;
@@ -25,53 +28,54 @@ public class XugglerCodec implements VideoCodec {
 
     @Override
     public void startNewVideo(String path, String name, int frameRate) {
-        this.framesGenerated = false;
+        framesGenerated = false;
+        initWriter(path, name);
+        setupVideoResolution();
+        fps = frameRate;
+        frameCount = 0;
+    }
+
+    private void setupVideoResolution() {
+        final var presentationScale = presentationConfig.getScale();
+        final var videoWidth = (int) (presentationConfig.getWidth() * presentationScale);
+        final var videoHeight = (int) (presentationConfig.getHeight() * presentationScale);
+        writer.addVideoStream(0, 0, CODEC_ID_H264, videoWidth, videoHeight);
+    }
+
+    private void initWriter(String path, String name) {
         try {
-            this.writer = ToolFactory.makeWriter(new File(path + "" + name).getCanonicalPath());
+            writer = ToolFactory.makeWriter(new File(path + name).getCanonicalPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_H264, (int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
-        this.fps = frameRate;
-        frameCount = 0;
-
     }
 
     @Override
     public void addFrame(BufferedImage bufferedImage) {
-        this.framesGenerated = true;
-        BufferedImage bgrScreen = convertToType(bufferedImage, 5);
-        long nanosecondsElapsed = (long) (1.0E9D * (double) frameCount / this.fps);
-        if (frameCount == 60) {
-            long var10000 = (long) (1.0E9D * (double) frameCount / this.fps);
-        }
-
-        this.writer.encodeVideo(0, bgrScreen, nanosecondsElapsed, TimeUnit.NANOSECONDS);
+        framesGenerated = true;
+        final var bgrScreen = convertToType(bufferedImage, TYPE_3BYTE_BGR);
+        final var nanosecondsElapsed = (long) (NANOSECOND * frameCount / fps);
+        writer.encodeVideo(0, bgrScreen, nanosecondsElapsed, TimeUnit.NANOSECONDS);
         frameCount++;
     }
 
-    public static BufferedImage convertToType(BufferedImage sourceImage, int targetType) {
-        BufferedImage image;
-        if (sourceImage.getType() == targetType) {
-            image = sourceImage;
-        } else {
-            image = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(), targetType);
-            image.getGraphics().drawImage(sourceImage, 0, 0, (ImageObserver) null);
-        }
+    public static BufferedImage convertToType(final BufferedImage sourceImage, int targetType) {
+        if (sourceImage.getType() == targetType)
+            return sourceImage;
 
+        final var image = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(), targetType);
+        image.getGraphics().drawImage(sourceImage, 0, 0, null);
         return image;
     }
 
     @Override
     public void saveVideo() {
         if (framesGenerated)
-            this.writer.close();
+            writer.close();
     }
 
     @Override
     public String getFileFormat() {
-        return ".mov";
+        return XUGGLE.getFileExtension();
     }
-
-
 }

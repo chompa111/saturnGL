@@ -1,7 +1,6 @@
 package codec;
 
 import java.awt.image.BufferedImage;
-import java.security.cert.Extension;
 
 public interface VideoCodec {
 
@@ -11,5 +10,5 @@ public interface VideoCodec {
 
     void saveVideo();
 
-     String getFileFormat();
+    String getFileFormat();
 }

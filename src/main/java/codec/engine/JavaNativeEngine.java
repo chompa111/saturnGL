@@ -1,32 +1,26 @@
 package codec.engine;
 
-import java.awt.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
 public class JavaNativeEngine implements JavaGraphicEngine {
 
-    BufferedImage bufferedImage;
-    Graphics bufferedGraphics;
+    private final BufferedImage bufferedImage;
+    private final Graphics bufferedGraphics;
 
     public JavaNativeEngine(int width, int height) {
-
-        this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        bufferedGraphics= bufferedImage.getGraphics();
-        Graphics2D g2 = (Graphics2D) bufferedGraphics;
-
-        RenderingHints rh = new RenderingHints(
-
-                new HashMap<>() {
-                    {
-                        put(RenderingHints.KEY_ANTIALIASING,
-                                RenderingHints.VALUE_ANTIALIAS_ON);
-                        //put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-                       // put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                    }
-                });
-
+        bufferedImage = new BufferedImage(width, height, TYPE_INT_ARGB);
+        bufferedGraphics = bufferedImage.getGraphics();
+        final var g2 = (Graphics2D) bufferedGraphics;
+        final var rh = new RenderingHints(Map.of(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         g2.setRenderingHints(rh);
     }
 
@@ -42,10 +36,11 @@ public class JavaNativeEngine implements JavaGraphicEngine {
 
     @Override
     public void clear() {
-        int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
+        final var imageWidth = bufferedImage.getWidth();
+        final var imageHeight = bufferedImage.getHeight();
+        final var pixels = new int[imageWidth * imageHeight];
 
         Arrays.fill(pixels, 0);
-        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), pixels, 0, bufferedImage.getWidth());
+        bufferedImage.setRGB(0, 0, imageWidth, imageHeight, pixels, 0, imageWidth);
     }
-
 }
