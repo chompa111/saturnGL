@@ -27,7 +27,7 @@ public abstract class GraphicsGobject extends Gobject{
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return List.of(center);
     }
 }

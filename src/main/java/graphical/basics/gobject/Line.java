@@ -66,7 +66,7 @@ public class Line extends FillAndStroke implements ShapeLike {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(p1, p2);
     }
 

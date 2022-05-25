@@ -1,7 +1,6 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
@@ -68,10 +67,10 @@ public class Group extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         var list = new ArrayList<Location>();
         for (Gobject gobject : gobjects) {
-            list.addAll(gobject.getRefereceLocations());
+            list.addAll(gobject.getReferenceLocations());
         }
         return list;
     }

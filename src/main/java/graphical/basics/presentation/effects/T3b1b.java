@@ -50,8 +50,8 @@ public class T3b1b {
         presentation.add(dpa);
 
         //equalizing number of vertex;
-        var sizea = dpa.getRefereceLocations().size();
-        var sizeb = dpb.getRefereceLocations().size();
+        var sizea = dpa.getReferenceLocations().size();
+        var sizeb = dpb.getReferenceLocations().size();
 
         if (sizea < sizeb) {
             dpa.addPoints(sizeb - sizea);
@@ -62,7 +62,7 @@ public class T3b1b {
         var thicknessDiff= dpb.getStrokeThickness().getValue()-dpa.getStrokeThickness().getValue();
         var strokeTask=dpa.getStrokeThickness().change(thicknessDiff,steps);
 
-        var demorf = new PositionListTransform(dpa.getRefereceLocations(), dpb.getRefereceLocations(), steps);
+        var demorf = new PositionListTransform(dpa.getReferenceLocations(), dpb.getReferenceLocations(), steps);
         var colorpart = new ColorListTranform(dpa.getColors(), dpb.getColors().stream().map(ColorHolder::getColor).collect(Collectors.toList()), steps);
         return demorf.parallel(colorpart)
                 .parallel(strokeTask)

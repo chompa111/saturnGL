@@ -66,7 +66,7 @@ public class Circle extends FillAndStroke implements ShapeLike {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(center);
     }
 

@@ -157,7 +157,7 @@ public class Polygon extends Gobject implements ShapeLike {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return locations;
     }
 

@@ -176,10 +176,10 @@ public class StrokeWriter extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         var list = new ArrayList<Location>();
         for (Line line : lines) {
-            list.addAll(line.getRefereceLocations());
+            list.addAll(line.getReferenceLocations());
         }
         return list;
     }

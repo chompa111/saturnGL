@@ -55,10 +55,10 @@ public class ClipArea extends Group {
 
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         var list = new ArrayList<Location>();
         for (Gobject gobject : getGobjects()) {
-            list.addAll(gobject.getRefereceLocations());
+            list.addAll(gobject.getReferenceLocations());
         }
         return list;
     }

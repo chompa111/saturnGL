@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static graphical.basics.gobject.latex.lixao.Latex.generateExp;
+import static graphical.basics.gobject.latex.Latex.generateExp;
 
 public class TextGobject extends Group {
 

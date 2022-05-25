@@ -67,7 +67,7 @@ public class Pencil extends Gobject implements ShapeLike {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(Location.at(500, 500));
     }
 }

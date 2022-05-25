@@ -32,7 +32,7 @@ public class Pivot extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
-        return gobject.getRefereceLocations();
+    public List<Location> getReferenceLocations() {
+        return gobject.getReferenceLocations();
     }
 }

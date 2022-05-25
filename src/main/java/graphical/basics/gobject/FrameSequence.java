@@ -11,7 +11,6 @@ import graphical.basics.task.Task;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FrameSequence extends Gobject {
@@ -50,9 +49,9 @@ public class FrameSequence extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         int framePointer = ((int)(frameCounter * fpsRatio))%frames.size();
-        return frames.get(framePointer).getRefereceLocations();
+        return frames.get(framePointer).getReferenceLocations();
     }
 
     public Task play(int frames){
