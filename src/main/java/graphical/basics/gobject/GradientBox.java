@@ -60,7 +60,7 @@ public class GradientBox extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(p1, p2);
     }
 

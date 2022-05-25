@@ -50,7 +50,7 @@ public class Camera extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(location);
     }
 

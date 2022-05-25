@@ -51,7 +51,7 @@ public class Light extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(center);
     }
 }

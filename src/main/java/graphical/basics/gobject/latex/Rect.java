@@ -3,7 +3,6 @@ package graphical.basics.gobject.latex;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.FillAndStroke;
-import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 
@@ -14,64 +13,72 @@ import java.util.List;
 
 public class Rect extends FillAndStroke implements ShapeLike {
 
-    Location p1;
-    Location p2;
+    private final Location upperLeftDiagonal;
+    private final Location lowerRightDiagonal;
 
-    // Double implelemtation
     private final Rectangle2D.Double awtRect = new Rectangle2D.Double();
 
-    public Rect(Location p1, Location p2, Color color) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.fillColorHolder = new ColorHolder(color);
+    public Rect(final Location upperLeftDiagonal, final Location lowerRightDiagonal, final Color color) {
+        this.upperLeftDiagonal = upperLeftDiagonal;
+        this.lowerRightDiagonal = lowerRightDiagonal;
+        fillColorHolder = new ColorHolder(color);
     }
 
     @Override
-    public void paint(Graphics g) {
-        awtRect.setRect(p1.getX(), p1.getY(), p2.getX() - p1.getX(), p2.getY() - p1.getY());
+    public void paint(final Graphics g) {
+        awtRect.setRect(upperLeftDiagonal.getX(), upperLeftDiagonal.getY(), getCurrentWidth(), getCurrentHeight());
+        final var g2d = (Graphics2D) g;
+        paintFillColor(g2d);
+        paintStrokeColor(g2d);
+    }
 
+    private void paintStrokeColor(final Graphics2D g) {
+        if (strokeColorHolder != null) {
+            g.setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
+            g.setColor(strokeColorHolder.getColor());
+            g.draw(awtRect);
+        }
+    }
+
+    private void paintFillColor(final Graphics2D g) {
         if (fillColorHolder != null) {
             g.setColor(fillColorHolder.getColor());
-          //  g.fillRect((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
-            ((Graphics2D) g).fill(awtRect);
+            g.fill(awtRect);
         }
-
-        if (strokeColorHolder != null) {
-            ((Graphics2D) g).setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
-
-
-            g.setColor(strokeColorHolder.getColor());
-
-
-            ((Graphics2D) g).draw(awtRect);
-            // g.drawRect((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
-        }
-
     }
 
     @Override
     public LocationPair getBorders() {
-        return new LocationPair(p1, p2);
+        return new LocationPair(upperLeftDiagonal, lowerRightDiagonal);
     }
 
 
     @Override
-    public List<Location> getRefereceLocations() {
-        return Arrays.asList(p1, p2);
+    public List<Location> getReferenceLocations() {
+        return Arrays.asList(upperLeftDiagonal, lowerRightDiagonal);
     }
 
     @Override
     public Shape asShape() {
-        var rect = new Rectangle((int) p1.getX(), (int) p1.getY(), (int) (p2.getX() - p1.getX()), (int) (p2.getY() - p1.getY()));
+        var rect = new Rectangle((int) upperLeftDiagonal.getX(),
+                (int) upperLeftDiagonal.getY(),
+                (int) getCurrentWidth(),
+                (int) getCurrentHeight());
 
-        return this.getTranformation().createTransformedShape(rect);
+        return getTranformation().createTransformedShape(rect);
     }
 
-    public Location getP1() {
-        return p1;
+    private double getCurrentWidth() {
+        return lowerRightDiagonal.getX() - upperLeftDiagonal.getX();
     }
 
-    public Location getP2() {
-        return p2;
+    private double getCurrentHeight() {
+        return lowerRightDiagonal.getY() - upperLeftDiagonal.getY();
+    }
+
+    public Location getUpperLeftDiagonal() { return upperLeftDiagonal; }
+
+    public Location getLowerRightDiagonal() {
+        return lowerRightDiagonal;
     }
 }

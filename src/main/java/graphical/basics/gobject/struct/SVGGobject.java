@@ -157,11 +157,11 @@ public class SVGGobject extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         var list = new ArrayList<Location>();
 
         for (ShapeGobject2 shapeGobject : shapeGobjects) {
-            var aux = shapeGobject.getRefereceLocations();
+            var aux = shapeGobject.getReferenceLocations();
             if (aux != null)
                 list.addAll(aux);
         }

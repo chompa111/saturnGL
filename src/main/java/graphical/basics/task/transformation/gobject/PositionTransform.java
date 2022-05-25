@@ -34,7 +34,7 @@ public class PositionTransform implements Task {
     @Override
     public void setup() {
         stepCount = 0;
-        locations = gobject.getRefereceLocations();
+        locations = gobject.getReferenceLocations();
         aX = (4 * amountX) / (2 * steps + (steps * steps));
         aY = (4 * amountY) / (2 * steps + (steps * steps));
 

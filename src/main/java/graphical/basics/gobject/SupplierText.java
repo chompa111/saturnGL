@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static graphical.basics.gobject.latex.lixao.Latex.generateExp;
+import static graphical.basics.gobject.latex.Latex.generateExp;
 
 public class SupplierText extends Group {
 

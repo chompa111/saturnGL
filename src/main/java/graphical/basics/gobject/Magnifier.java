@@ -96,7 +96,7 @@ public class Magnifier extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return List.of(p1, p2);
     }
 }

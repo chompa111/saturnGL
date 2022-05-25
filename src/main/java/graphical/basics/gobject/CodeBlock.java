@@ -5,11 +5,9 @@ import graphical.basics.location.Location;
 import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.task.ContextSetupTask;
-import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class CodeBlock extends Group {
 
@@ -72,18 +70,18 @@ public class CodeBlock extends Group {
         text.newLine(line);
         textGutter.newLine("" + lineCounter);
         javaHilighter.colorize(text);
-        background.getP2().setY(background.getP2().getY() + textSize * 1.15);
-        backgroundShadow.getP2().setY(backgroundShadow.getP2().getY() + textSize * 1.15);
-        gutter.getP2().setY(gutter.getP2().getY() + textSize * 1.15);
+        background.getLowerRightDiagonal().setY(background.getLowerRightDiagonal().getY() + textSize * 1.15);
+        backgroundShadow.getLowerRightDiagonal().setY(backgroundShadow.getLowerRightDiagonal().getY() + textSize * 1.15);
+        gutter.getLowerRightDiagonal().setY(gutter.getLowerRightDiagonal().getY() + textSize * 1.15);
         gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
         lineCounter++;
     }
 
     public void newLine(int index, String line) {
         text.newLine(index, line);
-        background.getP2().setY(background.getP2().getY() + textSize * 1.15);
-        backgroundShadow.getP2().setY(backgroundShadow.getP2().getY() + textSize * 1.15);
-        gutter.getP2().setY(gutter.getP2().getY() + textSize * 1.15);
+        background.getLowerRightDiagonal().setY(background.getLowerRightDiagonal().getY() + textSize * 1.15);
+        backgroundShadow.getLowerRightDiagonal().setY(backgroundShadow.getLowerRightDiagonal().getY() + textSize * 1.15);
+        gutter.getLowerRightDiagonal().setY(gutter.getLowerRightDiagonal().getY() + textSize * 1.15);
         gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
     }
 
@@ -96,9 +94,9 @@ public class CodeBlock extends Group {
         textGutter.newLine("" + lineCounter);
         var newNumber = textGutter.getLine(textGutter.lines.size() - 1);
         return text.newLineAnimated(index, line)
-                .parallel(background.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(backgroundShadow.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(gutter.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(background.getLowerRightDiagonal().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(backgroundShadow.getLowerRightDiagonal().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutter.getLowerRightDiagonal().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(Animation.fadeInGrow(newNumber, Presentation.staticReference.seconds(1)));
     }

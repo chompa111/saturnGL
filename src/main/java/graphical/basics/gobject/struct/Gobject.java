@@ -1,7 +1,6 @@
 package graphical.basics.gobject.struct;
 
 
-import graphical.basics.gobject.Group;
 import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
@@ -60,7 +59,7 @@ public abstract class Gobject {
 
     public abstract List<ColorHolder> getColors();
 
-    public abstract List<Location> getRefereceLocations();
+    public abstract List<Location> getReferenceLocations();
 
     public Task transform(Gobject gobject2, int steps) {
         return new MorfTransform(this, gobject2, steps);
@@ -108,7 +107,7 @@ public abstract class Gobject {
 
 
     public void changeSetPosition(double x, double y) {
-        for (Location location : this.getRefereceLocations()) {
+        for (Location location : this.getReferenceLocations()) {
             location.incrementX(x);
             location.incrementY(y);
         }

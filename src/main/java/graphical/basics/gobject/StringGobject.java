@@ -145,8 +145,8 @@ public class StringGobject extends Group {
 
 
     @Override
-    public List<Location> getRefereceLocations() {
-        var locations = super.getRefereceLocations();
+    public List<Location> getReferenceLocations() {
+        var locations = super.getReferenceLocations();
         locations.add(ref);
         return locations;
     }

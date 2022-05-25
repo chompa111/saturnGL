@@ -92,7 +92,7 @@ public class ShapeGobject2 extends FillAndStroke {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return Arrays.asList(location);
     }
 

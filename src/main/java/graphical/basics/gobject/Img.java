@@ -42,7 +42,7 @@ public class Img extends Gobject {
     }
 
     @Override
-    public List<Location> getRefereceLocations() {
+    public List<Location> getReferenceLocations() {
         return null;
     }
 }
