@@ -4,13 +4,13 @@ import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 
 public class FollowBehavior implements Behavior {
-    Gobject gobject;
-    Location location;
+    private final Gobject gobject;
+    private final Location location;
 
-    double oldX;
-    double oldY;
+    private double oldX;
+    private double oldY;
 
-    public FollowBehavior(Gobject gobject, Location location) {
+    public FollowBehavior(final Gobject gobject, final Location location) {
         this.gobject = gobject;
         this.location = location;
         oldX = location.getX();
