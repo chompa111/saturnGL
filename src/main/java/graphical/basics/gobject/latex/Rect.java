@@ -13,20 +13,20 @@ import java.util.List;
 
 public class Rect extends FillAndStroke implements ShapeLike {
 
-    private final Location upperLeftDiagonal;
-    private final Location lowerRightDiagonal;
+    private final Location upperLeftPoint;
+    private final Location lowerRightPoint;
 
     private final Rectangle2D.Double awtRect = new Rectangle2D.Double();
 
     public Rect(final Location upperLeftDiagonal, final Location lowerRightDiagonal, final Color color) {
-        this.upperLeftDiagonal = upperLeftDiagonal;
-        this.lowerRightDiagonal = lowerRightDiagonal;
+        this.upperLeftPoint = upperLeftDiagonal;
+        this.lowerRightPoint = lowerRightDiagonal;
         fillColorHolder = new ColorHolder(color);
     }
 
     @Override
     public void paint(final Graphics g) {
-        awtRect.setRect(upperLeftDiagonal.getX(), upperLeftDiagonal.getY(), getCurrentWidth(), getCurrentHeight());
+        awtRect.setRect(upperLeftPoint.getX(), upperLeftPoint.getY(), getCurrentWidth(), getCurrentHeight());
         final var g2d = (Graphics2D) g;
         paintFillColor(g2d);
         paintStrokeColor(g2d);
@@ -49,19 +49,19 @@ public class Rect extends FillAndStroke implements ShapeLike {
 
     @Override
     public LocationPair getBorders() {
-        return new LocationPair(upperLeftDiagonal, lowerRightDiagonal);
+        return new LocationPair(upperLeftPoint, lowerRightPoint);
     }
 
 
     @Override
     public List<Location> getReferenceLocations() {
-        return Arrays.asList(upperLeftDiagonal, lowerRightDiagonal);
+        return Arrays.asList(upperLeftPoint, lowerRightPoint);
     }
 
     @Override
     public Shape asShape() {
-        var rect = new Rectangle((int) upperLeftDiagonal.getX(),
-                (int) upperLeftDiagonal.getY(),
+        var rect = new Rectangle((int) upperLeftPoint.getX(),
+                (int) upperLeftPoint.getY(),
                 (int) getCurrentWidth(),
                 (int) getCurrentHeight());
 
@@ -69,16 +69,16 @@ public class Rect extends FillAndStroke implements ShapeLike {
     }
 
     private double getCurrentWidth() {
-        return lowerRightDiagonal.getX() - upperLeftDiagonal.getX();
+        return lowerRightPoint.getX() - upperLeftPoint.getX();
     }
 
     private double getCurrentHeight() {
-        return lowerRightDiagonal.getY() - upperLeftDiagonal.getY();
+        return lowerRightPoint.getY() - upperLeftPoint.getY();
     }
 
-    public Location getUpperLeftDiagonal() { return upperLeftDiagonal; }
+    public Location getUpperLeftPoint() { return upperLeftPoint; }
 
-    public Location getLowerRightDiagonal() {
-        return lowerRightDiagonal;
+    public Location getLowerRightPoint() {
+        return lowerRightPoint;
     }
 }

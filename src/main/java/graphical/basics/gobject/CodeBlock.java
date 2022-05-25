@@ -70,18 +70,18 @@ public class CodeBlock extends Group {
         text.newLine(line);
         textGutter.newLine("" + lineCounter);
         javaHilighter.colorize(text);
-        background.getLowerRightDiagonal().setY(background.getLowerRightDiagonal().getY() + textSize * 1.15);
-        backgroundShadow.getLowerRightDiagonal().setY(backgroundShadow.getLowerRightDiagonal().getY() + textSize * 1.15);
-        gutter.getLowerRightDiagonal().setY(gutter.getLowerRightDiagonal().getY() + textSize * 1.15);
+        background.getLowerRightPoint().setY(background.getLowerRightPoint().getY() + textSize * 1.15);
+        backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() + textSize * 1.15);
+        gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() + textSize * 1.15);
         gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
         lineCounter++;
     }
 
     public void newLine(int index, String line) {
         text.newLine(index, line);
-        background.getLowerRightDiagonal().setY(background.getLowerRightDiagonal().getY() + textSize * 1.15);
-        backgroundShadow.getLowerRightDiagonal().setY(backgroundShadow.getLowerRightDiagonal().getY() + textSize * 1.15);
-        gutter.getLowerRightDiagonal().setY(gutter.getLowerRightDiagonal().getY() + textSize * 1.15);
+        background.getLowerRightPoint().setY(background.getLowerRightPoint().getY() + textSize * 1.15);
+        backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() + textSize * 1.15);
+        gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() + textSize * 1.15);
         gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
     }
 
@@ -94,9 +94,9 @@ public class CodeBlock extends Group {
         textGutter.newLine("" + lineCounter);
         var newNumber = textGutter.getLine(textGutter.lines.size() - 1);
         return text.newLineAnimated(index, line)
-                .parallel(background.getLowerRightDiagonal().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(backgroundShadow.getLowerRightDiagonal().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(gutter.getLowerRightDiagonal().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(background.getLowerRightPoint().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(backgroundShadow.getLowerRightPoint().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutter.getLowerRightPoint().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(Animation.fadeInGrow(newNumber, Presentation.staticReference.seconds(1)));
     }

@@ -46,11 +46,11 @@ public class GraphicsDrawCharProxy extends GraphicsProxy {
             var rect = (Rectangle2D) shape;
             final var widthOffSet = rect.getWidth() * size;
             final var heightOffSet = rect.getHeight() * size;
-            final var upperLeftDiagonal = new Point(rect.getX() * size, rect.getY() * size);
-            final var lowerRightDiagonal = new Point(
-                    upperLeftDiagonal.getX() + widthOffSet,
-                    upperLeftDiagonal.getY() + heightOffSet);
-            charList.add(new Rect(upperLeftDiagonal, lowerRightDiagonal, Color.white));
+            final var upperLeftPoint = new Point(rect.getX() * size, rect.getY() * size);
+            final var lowerRightPoint = new Point(
+                    upperLeftPoint.getX() + widthOffSet,
+                    upperLeftPoint.getY() + heightOffSet);
+            charList.add(new Rect(upperLeftPoint, lowerRightPoint, Color.white));
         }
         super.fill(shape);
     }
