@@ -1,17 +1,10 @@
 package codec;
 
-import javax.imageio.IIOException;
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.ImageOutputStream;
+import static codec.CodecType.GIF;
+
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GIFCodec implements VideoCodec {
@@ -20,22 +13,24 @@ public class GIFCodec implements VideoCodec {
     private List<BufferedImage> rawImages;
     private String path;
 
+    private static final int UPDATE_RATE = 50;
+
     @Override
     public void startNewVideo(String path, String name, int frameRate) {
-        rawImages= new ArrayList<>();
-        this.path=path+"/"+name;
-        delay=50/frameRate;
+        rawImages = new ArrayList<>();
+        this.path = path + name;
+        delay = UPDATE_RATE / frameRate;
     }
 
     @Override
-    public void addFrame(BufferedImage bufferedImage) {
+    public void addFrame(final BufferedImage bufferedImage) {
         rawImages.add(deepCopy(bufferedImage));
     }
 
     @Override
     public void saveVideo() {
         try {
-            Giffer.generateFromBI(rawImages.toArray(new BufferedImage[0]) ,path,delay,true);
+            Giffer.generateFromBI(rawImages.toArray(new BufferedImage[0]), path, delay, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,13 +38,13 @@ public class GIFCodec implements VideoCodec {
 
     @Override
     public String getFileFormat() {
-        return ".gif";
+        return GIF.getFileExtension();
     }
 
-    static BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
+    private static BufferedImage deepCopy(final BufferedImage bi) {
+        final var cm = bi.getColorModel();
+        final var isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        final var raster = bi.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 }
