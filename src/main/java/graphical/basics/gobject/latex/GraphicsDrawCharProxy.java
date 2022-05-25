@@ -16,8 +16,8 @@ public class GraphicsDrawCharProxy extends GraphicsProxy {
     private final List<Gobject> charList;
     private final Color color;
 
-    public GraphicsDrawCharProxy(final Graphics2D aux, final Color color) {
-        super(aux);
+    public GraphicsDrawCharProxy(final Graphics2D source, final Color color) {
+        super(source);
         this.color = color;
         charList = new ArrayList<>();
     }
