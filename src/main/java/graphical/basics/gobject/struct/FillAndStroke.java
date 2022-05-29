@@ -14,7 +14,7 @@ public abstract class FillAndStroke extends Gobject {
     protected ColorHolder fillColorHolder;
     protected ColorHolder strokeColorHolder;
 
-    NumberHolder strokeThickness= new DoubleHolder(1);
+    Stroke stroke = new Stroke();
 
     public FillAndStroke() {
     }
@@ -44,11 +44,11 @@ public abstract class FillAndStroke extends Gobject {
     }
 
     public NumberHolder getStrokeThickness() {
-        return strokeThickness;
+        return stroke.getStrokeThickness();
     }
 
     public void setStrokeThickness(NumberHolder strokeThickness) {
-        this.strokeThickness = strokeThickness;
+        stroke.setStrokeThickness(strokeThickness);
     }
 
     public ColorHolder getFillColorHolder() {
@@ -65,5 +65,9 @@ public abstract class FillAndStroke extends Gobject {
 
     public void setStrokeColorHolder(ColorHolder strokeColorHolder) {
         this.strokeColorHolder = strokeColorHolder;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
     }
 }

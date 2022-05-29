@@ -34,7 +34,7 @@ public class Rect extends FillAndStroke implements ShapeLike {
 
     private void paintStrokeColor(final Graphics2D g) {
         if (strokeColorHolder != null) {
-            g.setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
+            g.setStroke(getStroke().getStroke());
             g.setColor(strokeColorHolder.getColor());
             g.draw(awtRect);
         }

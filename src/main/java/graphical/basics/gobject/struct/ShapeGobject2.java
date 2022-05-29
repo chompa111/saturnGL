@@ -66,7 +66,7 @@ public class ShapeGobject2 extends FillAndStroke {
      //   g.setClip(null);
         var g2d = ((Graphics2D) g);
 
-        ((Graphics2D) g).setStroke(new BasicStroke((float) this.strokeThickness.getValue()));
+        ((Graphics2D) g).setStroke(getStroke().getStroke());
 
         var transf = g2d.getTransform();
         g2d.translate(location.getX() - shapeOfsetX, location.getY() - shapeOfsetY);

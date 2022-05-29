@@ -7,7 +7,7 @@ import graphical.basics.location.LocationPair;
 import graphical.basics.value.DoubleHolder;
 import graphical.basics.value.NumberHolder;
 import org.apache.batik.ext.awt.geom.PathLength;
-
+import java.awt.Stroke;
 import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +31,7 @@ public class StrokeGobject extends ShapeGobject2 {
         this.location = shapeGobject2.location;
         this.angle = shapeGobject2.getAngle();
         this.scale = shapeGobject2.getScale();
-        this.strokeThickness=shapeGobject2.getStrokeThickness();
+        this.setStrokeThickness(shapeGobject2.getStrokeThickness());
 
         // funciona bem pra figuras
 
@@ -48,7 +48,7 @@ public class StrokeGobject extends ShapeGobject2 {
         this.shapeOfsetY = shapeGobject2.shapeOfsetY;
         this.shape = shapeGobject2.shape;
         this.location = shapeGobject2.location;
-        this.strokeThickness=shapeGobject2.getStrokeThickness();
+        this.setStrokeThickness(shapeGobject2.getStrokeThickness());
 
         len = new PathLength(shape).lengthOfPath();
     }
@@ -62,13 +62,9 @@ public class StrokeGobject extends ShapeGobject2 {
         if(perc.getValue()==0)return;
         if (strokeColorHolder != null)
             g.setColor(strokeColorHolder.getColor());
-        Stroke s = new BasicStroke((float) this.strokeThickness.getValue(),                      // Width
-                BasicStroke.CAP_SQUARE,    // End cap
-                BasicStroke.JOIN_MITER,    // Join style
-                10.0f,                     // Miter limit
-                new float[]{(float) (Math.abs(perc.getValue()) * len), (float) len}, // Dash pattern
-                0.0f);
-        g2d.setStroke(s);
+
+
+        g2d.setStroke(getStroke().getStroke());
 
         var transf = g2d.getTransform();
         g2d.translate(location.getX() - shapeOfsetX, location.getY() - shapeOfsetY);

@@ -40,7 +40,7 @@ public class Circle extends FillAndStroke implements ShapeLike {
           //  g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
         }
         if (strokeColorHolder != null) {
-            ((Graphics2D) g).setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
+            ((Graphics2D) g).setStroke(getStroke().getStroke());
             g.setColor(strokeColorHolder.getColor());
             ((Graphics2D)g).draw(ellipseAwt);
          //   g.drawOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
