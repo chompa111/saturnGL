@@ -64,7 +64,14 @@ public class StrokeGobject extends ShapeGobject2 {
             g.setColor(strokeColorHolder.getColor());
 
 
-        g2d.setStroke(getStroke().getStroke());
+        Stroke s = new BasicStroke((float) getStroke().getStrokeThickness().getValue(),                      // Width
+                BasicStroke.CAP_SQUARE,    // End cap
+                BasicStroke.JOIN_MITER,    // Join style
+                10.0f,                     // Miter limit
+                new float[]{(float) (Math.abs(perc.getValue()) * len), (float) len}, // Dash pattern
+                0.0f);
+        g2d.setStroke(s);
+
 
         var transf = g2d.getTransform();
         g2d.translate(location.getX() - shapeOfsetX, location.getY() - shapeOfsetY);
