@@ -1,7 +1,6 @@
 package codec.engine;
 
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.*;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 import java.awt.Graphics;
@@ -20,7 +19,7 @@ public class JavaNativeEngine implements JavaGraphicEngine {
         bufferedImage = new BufferedImage(width, height, TYPE_INT_ARGB);
         bufferedGraphics = bufferedImage.getGraphics();
         final var g2 = (Graphics2D) bufferedGraphics;
-        final var rh = new RenderingHints(Map.of(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        final var rh = new RenderingHints(Map.of(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON, KEY_STROKE_CONTROL,VALUE_STROKE_PURE));
         g2.setRenderingHints(rh);
     }
 

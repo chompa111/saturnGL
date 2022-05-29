@@ -21,7 +21,7 @@ public class Stroke {
         var pattern = !enableDash ? null : new float[]{(float) dashWidth.getValue(), (float) dashWidth.getValue()};
 
         return new BasicStroke((float) this.strokeThickness.getValue(),
-                BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL, 1, pattern, (float) dashPhase.getValue());
+                BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 100, pattern, (float) dashPhase.getValue());
     }
 
     public void enableDash() {
