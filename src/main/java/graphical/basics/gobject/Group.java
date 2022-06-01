@@ -9,9 +9,7 @@ import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 import java.util.function.Function;
 
@@ -103,6 +101,10 @@ public class Group extends Gobject {
 
     public void add(Gobject g) {
         gobjects.add(g);
+    }
+
+    public void addAll(Collection<Gobject> gobjects) {
+        this.gobjects.addAll(gobjects);
     }
 
     public void addBefore(Gobject referential, Gobject gobject) {

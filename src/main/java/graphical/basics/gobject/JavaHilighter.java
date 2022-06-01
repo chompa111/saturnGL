@@ -30,10 +30,14 @@ public class JavaHilighter {
                 s.setColor(INTELLIJ_DARK_GRAY);
             }
 
-            for (String term : s.getString().split("[ (){}<>+\\-=;]")) {
+            s.getAllMatchesGroup(";").setColor(INTELLIJ_ORANGE);
+            s.getAllMatchesGroup(",").setColor(INTELLIJ_ORANGE);
+
+            for (String term : s.getString().split("[ (){}<>+\\-=;,]")) {
                 term = term.replaceAll("[^a-zA-Z0-9]*", "");
                 if (RESERVED_WORDS.contains(term)) {
-                    s.getFirstSubstring(term).setColor(INTELLIJ_ORANGE);
+                    //mutiples match of same term
+                    s.getAllMatchesGroup(term).setColor(INTELLIJ_ORANGE);
                 } else {
                     if (s.getString().matches("((void|int|double|float|boolean)|[A-Z][a-z0-9]*)\\s"+term+"\\s*\\(.*")){
                         s.getFirstSubstring(term).setColor(INTELLIJ_LIGHT_YELLOW);

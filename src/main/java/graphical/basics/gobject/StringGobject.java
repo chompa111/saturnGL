@@ -64,6 +64,18 @@ public class StringGobject extends Group {
 
     }
 
+    public Group getAllMatchesGroup(String s) {
+        var group = new Group();
+        int index = string.indexOf(s);
+        while (index >= 0) {
+            var auxIndex = fixedIndex(index);
+            group.addAll(this.subGroup(IntStream.rangeClosed(auxIndex, auxIndex + s.length() - 1).boxed().toArray(Integer[]::new)).getGobjects());
+            index = string.indexOf(s, index + 1);
+
+        }
+        return group;
+    }
+
     private int fixedIndex(int index) {
         int result = index;
         for (var el : spacemapping) {

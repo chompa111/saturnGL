@@ -3,6 +3,7 @@ package graphical.basics.gobject.latex;
 import static java.awt.image.BufferedImage.*;
 import static org.scilab.forge.jlatexmath.TeXConstants.*;
 
+import graphical.basics.gobject.Group;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -13,7 +14,12 @@ import java.util.List;
 
 public class Latex {
 
-    private Latex(){}
+    private Latex() {
+    }
+
+    public static Group of(String s) {
+        return new Group(generateExp(s, Location.at(0, 0), Color.white));
+    }
 
     private static final double FONT_SIZE = 50;
 
