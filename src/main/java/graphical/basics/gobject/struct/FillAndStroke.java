@@ -70,4 +70,22 @@ public abstract class FillAndStroke extends Gobject {
     public Stroke getStroke() {
         return stroke;
     }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
+    }
+
+    @Override
+    protected void copyBasicFields(Gobject copy, Gobject source) {
+        super.copyBasicFields(copy, source);
+        if (copy instanceof FillAndStroke && source instanceof FillAndStroke) {
+            var copyfs = (FillAndStroke) copy;
+            var sourcefs = (FillAndStroke) source;
+
+            copyfs.setStroke(sourcefs.getStroke().copy());
+            if (sourcefs.getStrokeColorHolder() != null)
+                copyfs.setStrokeColorHolder(new ColorHolder(sourcefs.getStrokeColorHolder().getColor()));
+            copyfs.setFillColorHolder(new ColorHolder(sourcefs.getFillColorHolder().getColor()));
+        }
+    }
 }

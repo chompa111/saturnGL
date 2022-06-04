@@ -12,6 +12,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Group extends Gobject {
 
@@ -152,4 +153,10 @@ public class Group extends Gobject {
         gobjects.remove(index);
     }
 
+    @Override
+    public Gobject copy() {
+        var copy = new Group(gobjects.stream().map(Gobject::copy).collect(Collectors.toList()));
+        copyBasicFields(copy, this);
+        return copy;
+    }
 }

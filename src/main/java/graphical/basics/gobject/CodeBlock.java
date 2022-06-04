@@ -83,6 +83,7 @@ public class CodeBlock extends Group {
         backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() + textSize * 1.15);
         gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() + textSize * 1.15);
         gutterLine.getP2().setY(gutterLine.getP2().getY() + textSize * 1.15);
+        lineCounter++;
     }
 
 
@@ -98,7 +99,8 @@ public class CodeBlock extends Group {
                 .parallel(backgroundShadow.getLowerRightPoint().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(gutter.getLowerRightPoint().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
-                .parallel(Animation.fadeInGrow(newNumber, Presentation.staticReference.seconds(1)));
+                .parallel(Animation.fadeInGrow(newNumber, Presentation.staticReference.seconds(1)))
+                .afterConclusion(()->lineCounter++);
     }
 
     public void addDebugLine() {

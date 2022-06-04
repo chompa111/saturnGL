@@ -63,7 +63,7 @@ public class ShapeGobject2 extends FillAndStroke {
 
     @Override
     public void paint(Graphics g) {
-     //   g.setClip(null);
+        //   g.setClip(null);
         var g2d = ((Graphics2D) g);
 
         ((Graphics2D) g).setStroke(getStroke().getStroke());
@@ -130,5 +130,12 @@ public class ShapeGobject2 extends FillAndStroke {
 
         }
         return new ShapeGobject2(shape, fillColorHolder, strokeColorHolder);
+    }
+
+    @Override
+    public Gobject copy() {
+        var copy = new ShapeGobject2(ShapeCopyMachine.clone(shape),location.copy(), new ColorHolder(getFillColorHolder().getColor()), null);
+        copyBasicFields(copy, this);
+        return copy;
     }
 }

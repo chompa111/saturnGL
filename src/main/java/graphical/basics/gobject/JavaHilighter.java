@@ -33,7 +33,7 @@ public class JavaHilighter {
             s.getAllMatchesGroup(";").setColor(INTELLIJ_ORANGE);
             s.getAllMatchesGroup(",").setColor(INTELLIJ_ORANGE);
 
-            for (String term : s.getString().split("[ (){}<>+\\-=;,]")) {
+            for (String term : s.getString().split("[ (){}<>+\\-*/=;,]")) {
                 term = term.replaceAll("[^a-zA-Z0-9]*", "");
                 if (RESERVED_WORDS.contains(term)) {
                     //mutiples match of same term

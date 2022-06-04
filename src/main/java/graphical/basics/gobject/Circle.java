@@ -4,9 +4,11 @@ package graphical.basics.gobject;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.FillAndStroke;
+import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
+import graphical.basics.value.DoubleHolder;
 import graphical.basics.value.NumberHolder;
 
 import java.awt.*;
@@ -31,19 +33,18 @@ public class Circle extends FillAndStroke implements ShapeLike {
     public void paint(Graphics g) {
 
 
-
         int r = (int) radius.getValue();
-        ellipseAwt.setFrame(center.getX() - r / 2.0,  center.getY() - r / 2.0, r, r);
+        ellipseAwt.setFrame(center.getX() - r / 2.0, center.getY() - r / 2.0, r, r);
         if (fillColorHolder != null) {
             g.setColor(fillColorHolder.getColor());
-            ((Graphics2D)g).fill(ellipseAwt);
-          //  g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+            ((Graphics2D) g).fill(ellipseAwt);
+            //  g.fillOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
         }
         if (strokeColorHolder != null) {
             ((Graphics2D) g).setStroke(getStroke().getStroke());
             g.setColor(strokeColorHolder.getColor());
-            ((Graphics2D)g).draw(ellipseAwt);
-         //   g.drawOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
+            ((Graphics2D) g).draw(ellipseAwt);
+            //   g.drawOval((int) center.getX() - r / 2, (int) center.getY() - r / 2, r, r);
         }
 
 
@@ -89,5 +90,12 @@ public class Circle extends FillAndStroke implements ShapeLike {
     @Override
     public Shape asShape() {
         return new Ellipse2D.Double(center.getX() - radius.getValue() / 2, center.getY() - radius.getValue() / 2, radius.getValue(), radius.getValue());
+    }
+
+    @Override
+    public Gobject copy() {
+        var copy = new Circle(center.copy(), new DoubleHolder(radius.getValue()), fillColorHolder.getColor());
+        copyBasicFields(copy, this);
+        return copy;
     }
 }

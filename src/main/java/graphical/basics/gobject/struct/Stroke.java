@@ -27,8 +27,9 @@ public class Stroke {
     public void enableDash() {
         enableDash = true;
     }
+
     public void disableDash() {
-       enableDash = false;
+        enableDash = false;
     }
 
     public NumberHolder getStrokeThickness() {
@@ -45,5 +46,14 @@ public class Stroke {
 
     public void setStrokeThickness(NumberHolder strokeThickness) {
         this.strokeThickness = strokeThickness;
+    }
+
+
+    public Stroke copy() {
+        var copy = new Stroke();
+        copy.getStrokeThickness().setValue(strokeThickness.getValue());
+        copy.getDashPhase().setValue(strokeThickness.getValue());
+        copy.getDashWidth().setValue(dashWidth.getValue());
+        return copy;
     }
 }

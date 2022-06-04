@@ -207,4 +207,12 @@ public abstract class Gobject {
         return getBorders().getheight();
     }
 
+    public Gobject copy(){
+        throw new RuntimeException("not implemented yet");
+    }
+    protected void copyBasicFields(Gobject copy, Gobject source){
+        copy.getScale().setValue(source.getScale().getValue());
+        copy.getAngle().setValue(source.getAngle().getValue());
+    }
+
 }
