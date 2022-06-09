@@ -1,5 +1,6 @@
 package graphical.basics.gobject;
 
+import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.task.ParalelTask;
@@ -64,17 +65,55 @@ public class Text extends Group {
 
         for (int i = index; i < lines.size(); i++) {
             list.add(lines.get(i).move(0, font.getSize() * 1.15));
-
         }
 
         return new ParalelTask(list).afterConclusion(() -> {
+
             lines.add(index, newLine);
-            add(index, newLine);
+            if (!line.isBlank()) {
+                add(index, newLine);
+            }
+        });
+    }
+
+    public Task newLinesAnimated(int index, String... newLineslines) {
+        var list = new ArrayList<Task>();
+        for (int i = index; i < lines.size(); i++) {
+            list.add(lines.get(i).move(0, newLineslines.length * font.getSize() * 1.15));
+
+        }
+        return new ParalelTask(list).afterConclusion(() -> {
+
+            for (int i = 0; i < newLineslines.length; i++) {
+                var newLine = new StringGobject(newLineslines[i], font, location.plus(0, (index + i) * font.getSize() * 1.15), color);
+                lines.add(index + i, newLine);
+
+                if (!newLineslines[i].isBlank()) {
+                    add(index + i, newLine);
+                }
+
+            }
         });
     }
 
     public List<StringGobject> getLines() {
         return lines;
+    }
+
+    public List<StringGobject> getLines(int i, int j) {
+        var result = new ArrayList<StringGobject>();
+        for (int x = i; x <= j; x++) {
+            result.add(lines.get(i));
+        }
+        return result;
+    }
+
+    public Group getLinesAsGroup(int i, int j) {
+        var result = new ArrayList<Gobject>();
+        for (int x = i; x <= j; x++) {
+            result.add(lines.get(x));
+        }
+        return new Group(result);
     }
 
     public StringGobject getLine(int index) {

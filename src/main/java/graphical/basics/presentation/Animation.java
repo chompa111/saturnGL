@@ -16,6 +16,9 @@ import java.awt.*;
 
 public class Animation {
 
+
+
+
     private static final Presentation presentation = Presentation.staticReference;
 
     public static Task fadeOut(Gobject gobject, int steps) {
@@ -195,6 +198,13 @@ public class Animation {
             presentation.remove(clipBox);
             presentation.add(gobject);
         })).parallel(fadeIn(gobject));
+    }
+
+    public static Task replace(Gobject replaced,Gobject newGObject){
+       return new ContextSetupTask(()->{
+           newGObject.setPositionTo(replaced.getMidPoint());
+           return t3b1b(replaced,newGObject,presentation.seconds(1));
+       });
     }
 
 }
