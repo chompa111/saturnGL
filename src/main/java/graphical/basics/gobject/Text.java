@@ -36,6 +36,23 @@ public class Text extends Group {
         }
     }
 
+    public void removeLine(int index){
+        var lineToBeRemoved=lines.get(index);
+        getLinesAsGroup(index+1,lines.size()-1).changeSetPosition(0,-font.getSize() * 1.15);
+        if(!lineToBeRemoved.getString().isBlank()){
+            remove(lineToBeRemoved);
+        }
+    }
+
+    public Task removeLineAnimated(int index){
+        var lineToBeRemoved=lines.get(index);
+        return getLinesAsGroup(index+1,lines.size()-1).move(0,-font.getSize() * 1.15).afterConclusion(()->{
+            if(!lineToBeRemoved.getString().isBlank()){
+                remove(lineToBeRemoved);
+            }
+        });
+    }
+
     public void newLine(int index, String line) {
         var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
 

@@ -103,7 +103,35 @@ public class CodeBlock extends Group {
                 .parallel(gutter.getLowerRightPoint().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(Animation.fadeInGrow(newNumber, Presentation.staticReference.seconds(1)))
-                .afterConclusion(() -> lineCounter++);
+                .afterConclusion(() -> {
+                    lineCounter++;
+                    javaHilighter.colorize(text);
+                });
+    }
+
+    public void removeLine(int index) {
+        textGutter.removeLine(lineCounter - 2);
+        text.removeLine(index);
+        background.getLowerRightPoint().setY(background.getLowerRightPoint().getY() - textSize * 1.15);
+        backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() - textSize * 1.15);
+        gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() - textSize * 1.15);
+        gutterLine.getP2().setY(gutterLine.getP2().getY() - textSize * 1.15);
+        lineCounter--;
+
+    }
+
+    public Task removeLineAnimated(int index) {
+        return text.removeLineAnimated(index)
+                .parallel(background.getLowerRightPoint().move(0, -textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(backgroundShadow.getLowerRightPoint().move(0, -textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutter.getLowerRightPoint().move(0, -textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutterLine.getP2().move(0, -textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(Animation.fadeOut(textGutter.getLine(lineCounter-2), Presentation.staticReference.seconds(1)))
+                .afterConclusion(()->{
+                    textGutter.removeLine(lineCounter - 2);
+                    lineCounter--;
+                });
+
     }
 
     public Task newLinesAnimated(int index, String... newLines) {
@@ -115,13 +143,16 @@ public class CodeBlock extends Group {
                 .parallel(gutter.getLowerRightPoint().move(0, amount * textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, amount * textSize * 1.15, Presentation.staticReference.seconds(1)))
                 .parallel(new WaitTask(Presentation.staticReference.seconds(0.5) + 1)
-                                .andThen(() -> {
-                                    for (int i = 0; i < newLines.length; i++) {
-                                        textGutter.newLine("" + (lineCounter + i));
-                                    }
-                                    return textGutter.getLinesAsGroup(lineCounter - 1, lineCounter - 2 + amount).onChildren(x -> Animation.fadeInGrow(x, Presentation.staticReference.seconds(1)));
-                                }))
-                .afterConclusion(() -> lineCounter += amount);
+                        .andThen(() -> {
+                            for (int i = 0; i < newLines.length; i++) {
+                                textGutter.newLine("" + (lineCounter + i));
+                            }
+                            return textGutter.getLinesAsGroup(lineCounter - 1, lineCounter - 2 + amount).onChildren(x -> Animation.fadeInGrow(x, Presentation.staticReference.seconds(1)));
+                        }))
+                .afterConclusion(() -> {
+                    lineCounter += amount;
+                    javaHilighter.colorize(text);
+                });
     }
 
     public void addDebugLine() {
