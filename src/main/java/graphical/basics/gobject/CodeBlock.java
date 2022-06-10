@@ -120,6 +120,32 @@ public class CodeBlock extends Group {
 
     }
 
+    public void removeLines(int i,int j) {
+        textGutter.removeLine(lineCounter - 2);
+        for(int x=i;x<=j;x++){
+            text.removeLine(x);
+        }
+        background.getLowerRightPoint().setY(background.getLowerRightPoint().getY() - (j-i+1)*textSize * 1.15);
+        backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() - (j-i+1)*textSize * 1.15);
+        gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() - (j-i+1)*textSize * 1.15);
+        gutterLine.getP2().setY(gutterLine.getP2().getY() - (j-i+1)*textSize * 1.15);
+        lineCounter-=(j-i+1);
+    }
+
+    public Task removeLinesAnimated(int i, int j) {
+        return text.removeLinesAnimated(i,j)
+                .parallel(background.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(backgroundShadow.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutter.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(gutterLine.getP2().move(0, -(j-i+1)*textSize * 1.15, Presentation.staticReference.seconds(1)))
+                .parallel(Animation.fadeoutGrow(textGutter.getLinesAsGroup((lineCounter-2)-(j-i),lineCounter-2), Presentation.staticReference.seconds(0.75)))
+                .afterConclusion(()->{
+                    textGutter.removeLines((lineCounter-2)-(j-i),lineCounter-2);
+                    lineCounter-=(j-i+1);
+                });
+
+    }
+
     public Task removeLineAnimated(int index) {
         return text.removeLineAnimated(index)
                 .parallel(background.getLowerRightPoint().move(0, -textSize * 1.15, Presentation.staticReference.seconds(1)))

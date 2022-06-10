@@ -44,6 +44,27 @@ public class Text extends Group {
         }
     }
 
+    public void removeLines(int i, int j){
+        getLinesAsGroup(j+1,lines.size()-1).changeSetPosition(0,-(j-i+1)*font.getSize() * 1.15);
+       for (var lineToBeRemoved : getLines(i,j)){
+           lines.remove(lineToBeRemoved);
+           if(!lineToBeRemoved.getString().isBlank()){
+               remove(lineToBeRemoved);
+           }
+       }
+    }
+
+    public Task removeLinesAnimated(int i,int j){
+        return getLinesAsGroup(j+1,lines.size()-1).move(0,-(j-i+1)*font.getSize() * 1.15).afterConclusion(()->{
+            for (var lineToBeRemoved : getLines(i,j)){
+                lines.remove(lineToBeRemoved);
+                if(!lineToBeRemoved.getString().isBlank()){
+                    remove(lineToBeRemoved);
+                }
+            }
+        });
+    }
+
     public Task removeLineAnimated(int index){
         var lineToBeRemoved=lines.get(index);
         return getLinesAsGroup(index+1,lines.size()-1).move(0,-font.getSize() * 1.15).afterConclusion(()->{
@@ -120,14 +141,14 @@ public class Text extends Group {
     public List<StringGobject> getLines(int i, int j) {
         var result = new ArrayList<StringGobject>();
         for (int x = i; x <= j; x++) {
-            result.add(lines.get(i));
+            result.add(lines.get(x));
         }
         return result;
     }
 
     public Group getLinesAsGroup(int i, int j) {
         var result = new ArrayList<Gobject>();
-        for (int x = i; x <= j; x++) {
+        for (int x = i; x <= j && x<lines.size(); x++) {
             result.add(lines.get(x));
         }
         return new Group(result);
