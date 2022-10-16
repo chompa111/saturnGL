@@ -15,9 +15,9 @@ public class Fonts {
             JETBRAINS_MONO = pathToFont("/fonts/JetBrainsMono-Regular.ttf");
     }
 
-    private static Font pathToFont(String s) {
+    private static Font pathToFont(String path) {
         try {
-            return Font.createFonts(Objects.requireNonNull(Fonts.class.getResourceAsStream("/fonts/cmunbi.ttf")))[0];
+            return Font.createFonts(Objects.requireNonNull(Fonts.class.getResourceAsStream(path)))[0];
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
