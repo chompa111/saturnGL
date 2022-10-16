@@ -1,10 +1,8 @@
 package graphical.basics.gobject;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.util.Objects;
 
 public class Fonts {
     public static Font COMPUTER_MODERN_I;
@@ -12,13 +10,17 @@ public class Fonts {
     public static Font JETBRAINS_MONO;
 
     static {
+            COMPUTER_MODERN_I = pathToFont("/fonts/cmunbi.ttf");
+            COMPUTER_MODERN_L = pathToFont("/fonts/cmunbl.ttf");
+            JETBRAINS_MONO = pathToFont("/fonts/JetBrainsMono-Regular.ttf");
+    }
+
+    private static Font pathToFont(String s) {
         try {
-           ;
-            COMPUTER_MODERN_I = Font.createFont(Font.TRUETYPE_FONT, Paths.get(Fonts.class.getResource("/fonts/cmunbi.ttf").toURI()).toFile());
-            COMPUTER_MODERN_L = Font.createFont(Font.TRUETYPE_FONT, Paths.get(Fonts.class.getResource("/fonts/cmunbl.ttf").toURI()).toFile());
-            JETBRAINS_MONO = Font.createFont(Font.TRUETYPE_FONT, Paths.get(Fonts.class.getResource("/fonts/JetBrainsMono-Regular.ttf").toURI()).toFile());
-        } catch (FontFormatException | URISyntaxException | IOException e) {
+            return Font.createFonts(Objects.requireNonNull(Fonts.class.getResourceAsStream("/fonts/cmunbi.ttf")))[0];
+        } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
