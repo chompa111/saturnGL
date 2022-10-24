@@ -3,6 +3,7 @@ package graphical.basics.gobject.latex;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.FillAndStroke;
+import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 
@@ -76,9 +77,17 @@ public class Rect extends FillAndStroke implements ShapeLike {
         return lowerRightPoint.getY() - upperLeftPoint.getY();
     }
 
-    public Location getUpperLeftPoint() { return upperLeftPoint; }
+    public Location getUpperLeftPoint() {
+        return upperLeftPoint;
+    }
 
     public Location getLowerRightPoint() {
         return lowerRightPoint;
+    }
+
+
+    public static Rect backgroundFor(Gobject g, double margin) {
+        var borders = g.getBorders();
+        return new Rect(borders.getL1().plus(-margin, -margin), borders.getL2().plus(margin, margin), new Color(0,0,0,170));
     }
 }

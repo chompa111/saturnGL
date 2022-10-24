@@ -21,11 +21,16 @@ public class Latex {
         return new Group(generateExp(s, Location.at(0, 0), Color.white));
     }
 
+    public static Group of(String s, double size) {
+        return new Group(generateExp(s, Location.at(0, 0), Color.white, size));
+    }
+
     private static final double FONT_SIZE = 50;
 
     public static List<Gobject> generateExp(String s, Location location, Color color) {
         return generateExp(s, location, color, FONT_SIZE);
     }
+
 
     public static List<Gobject> generateExp(String s, Location location, Color color, double size) {
 

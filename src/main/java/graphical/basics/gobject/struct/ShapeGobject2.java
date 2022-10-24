@@ -135,6 +135,8 @@ public class ShapeGobject2 extends FillAndStroke {
     @Override
     public Gobject copy() {
         var copy = new ShapeGobject2(ShapeCopyMachine.clone(shape),location.copy(), new ColorHolder(getFillColorHolder().getColor()), null);
+        copy.shapeOfsetX=this.shapeOfsetX;
+        copy.shapeOfsetY=this.shapeOfsetY;
         copyBasicFields(copy, this);
         return copy;
     }

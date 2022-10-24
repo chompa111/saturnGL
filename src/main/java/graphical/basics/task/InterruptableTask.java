@@ -1,5 +1,7 @@
 package graphical.basics.task;
 
+import graphical.basics.presentation.Presentation;
+
 public class InterruptableTask implements Task {
 
     private final Task slave;

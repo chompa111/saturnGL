@@ -1,6 +1,7 @@
 package graphical.basics.gobject.struct;
 
 
+import graphical.basics.gobject.Group;
 import graphical.basics.presentation.Positioning;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
@@ -18,6 +19,8 @@ import graphical.basics.value.NumberHolder;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static graphical.basics.presentation.Positioning.Reference.*;
@@ -207,12 +210,20 @@ public abstract class Gobject {
         return getBorders().getheight();
     }
 
-    public Gobject copy(){
+    public Gobject copy() {
         throw new RuntimeException("not implemented yet");
     }
-    protected void copyBasicFields(Gobject copy, Gobject source){
+
+    protected void copyBasicFields(Gobject copy, Gobject source) {
         copy.getScale().setValue(source.getScale().getValue());
         copy.getAngle().setValue(source.getAngle().getValue());
+    }
+
+    public Group and(Gobject... gobjects) {
+        var result = new ArrayList<Gobject>();
+        result.add(this);
+        result.addAll(Arrays.asList(gobjects));
+        return new Group(result);
     }
 
 }

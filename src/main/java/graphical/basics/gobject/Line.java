@@ -20,28 +20,34 @@ public class Line extends FillAndStroke implements ShapeLike {
     Location p2;
     ColorHolder colorHolder;
 
+    Line2D.Double line2D;
+
     public Line(Location p1, Location p2, Color color, NumberHolder thickness) {
-        super(color,color);
+        super(color, color);
         this.p1 = p1;
         this.p2 = p2;
+        this.line2D = new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         this.colorHolder = new ColorHolder(color);
         setStrokeThickness(thickness);
     }
 
     public Line(Location p1, Location p2, Color color) {
-        super(color,color);
+        super(color, color);
         this.p1 = p1;
         this.p2 = p2;
+        this.line2D = new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         this.colorHolder = new ColorHolder(color);
     }
 
 
     @Override
     public void paint(Graphics g) {
+
+        line2D.setLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke((float)getStrokeThickness().getValue()));
+        g2.setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
         g.setColor(colorHolder.getColor());
-        g.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
+        g2.draw(line2D);
         g2.setStroke(new BasicStroke(1));
 
     }
@@ -86,5 +92,12 @@ public class Line extends FillAndStroke implements ShapeLike {
 
     public Location getP2() {
         return p2;
+    }
+
+    @Override
+    public Gobject copy() {
+        var copy = new Line(p1.copy(), p2.copy(), colorHolder.getColor());
+        copyBasicFields(copy, this);
+        return copy;
     }
 }

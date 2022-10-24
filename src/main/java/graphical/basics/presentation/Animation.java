@@ -3,6 +3,7 @@ package graphical.basics.presentation;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.Line;
+import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.*;
 import graphical.basics.presentation.effects.T3b1b;
@@ -15,8 +16,6 @@ import graphical.basics.value.DoubleHolder;
 import java.awt.*;
 
 public class Animation {
-
-
 
 
     private static final Presentation presentation = Presentation.staticReference;
@@ -121,6 +120,15 @@ public class Animation {
         });
     }
 
+    public static Task fadeInGrowFromBig(Gobject gobject, int steps) {
+        return new ContextSetupTask(() -> {
+            var scale = gobject.scale.getValue();
+            gobject.getScale().setValue(15);
+            return fadeIn(gobject, steps).parallel(gobject.getScale().changeTo(scale, steps));
+        });
+    }
+
+
     public static Task fadeoutGrow(Gobject gobject, int steps) {
         return fadeOut(gobject, steps).parallel(gobject.getScale().change(gobject.getScale().getValue() * -1, steps));
     }
@@ -200,11 +208,18 @@ public class Animation {
         })).parallel(fadeIn(gobject));
     }
 
-    public static Task replace(Gobject replaced,Gobject newGObject){
-       return new ContextSetupTask(()->{
-           newGObject.setPositionTo(replaced.getMidPoint());
-           return t3b1b(replaced,newGObject,presentation.seconds(1));
-       });
+    public static Task replace(Gobject replaced, Gobject newGObject) {
+        return new ContextSetupTask(() -> {
+            newGObject.setPositionTo(replaced.getMidPoint());
+            return t3b1b(replaced, newGObject, presentation.seconds(1));
+        });
+    }
+
+    public static Task emphasizeBox(Gobject g) {
+        var rect = Rect.backgroundFor(g, 15);
+        rect.setStrokeColorHolder(new ColorHolder(Color.orange));
+        rect.setFillColorHolder(new ColorHolder(new Color(0, 0, 0, 0)));
+        return strokeAndFill(rect, presentation.seconds(1));
     }
 
 }

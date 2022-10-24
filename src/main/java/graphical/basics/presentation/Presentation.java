@@ -22,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -248,6 +249,9 @@ public abstract class Presentation {
 
     public void add(Gobject gobject) {
         gobjects.add(gobject);
+    }
+    public void add(Gobject... gs){
+        gobjects.addAll(Arrays.asList(gs));
     }
 
     public void addBefore(Gobject referential, Gobject gobject) {
