@@ -205,16 +205,11 @@ public abstract class Presentation {
     public void processFrame() {
         runBehaviors();
         frameCounter++;
-        System.out.println("COUNTER(" + frameCounter + ")");
-        var before1 = System.currentTimeMillis();
         paintComponent(bufferedGraphics);
         if (!isDisablePreview)
             frame.repaint();
-        System.out.println((System.currentTimeMillis() - before1) + "ms processando quadro");
         var before2 = System.currentTimeMillis();
         if (!disableCodec) videoCodec.addFrame(graphicEngine.getActualFrame());
-        System.out.println((System.currentTimeMillis() - before1) + "ms de codec");
-
         if (disableCodec) {
             try {
                 Thread.sleep(20);
@@ -250,7 +245,8 @@ public abstract class Presentation {
     public void add(Gobject gobject) {
         gobjects.add(gobject);
     }
-    public void add(Gobject... gs){
+
+    public void add(Gobject... gs) {
         gobjects.addAll(Arrays.asList(gs));
     }
 
@@ -295,7 +291,7 @@ public abstract class Presentation {
 
     public void cut() {
 
-       // wait(seconds(10)).execute();
+        // wait(seconds(10)).execute();
 
         if (!disableCodec) {
             videoCodec.saveVideo();
