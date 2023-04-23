@@ -262,6 +262,14 @@ public abstract class Presentation {
         gobjects.remove(gobject);
     }
 
+    public int getObjectIndex(Gobject gobject) {
+        return gobjects.indexOf(gobject);
+    }
+
+    public void add(Gobject g, int index) {
+        gobjects.add(index, g);
+    }
+
     public void remove(Gobject... gobjects) {
         for (Gobject gobject : gobjects) {
             this.gobjects.remove(gobject);

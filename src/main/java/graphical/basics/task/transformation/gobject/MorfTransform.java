@@ -35,6 +35,8 @@ public class MorfTransform implements Task {
     double[][] accumulation;
     double[][] deltaColor;
 
+    int refIndex = 0;
+
     public MorfTransform(Gobject g1, Gobject g2, int steps) {
         this.g1 = g1;
         this.g2 = g2;
@@ -46,8 +48,9 @@ public class MorfTransform implements Task {
         // burlando regras
         gf1 = new GobjectFrame(g1);
         gf2 = new GobjectFrame(g2);
+        refIndex = Presentation.staticReference.getObjectIndex(g1);
         Presentation.staticReference.remove(g1);
-        Presentation.staticReference.add(gf1);
+        Presentation.staticReference.add(gf1,refIndex);
         // Presentation.staticReference.add(g2);
 
         colorHolders1 = new ArrayList<>();
@@ -170,7 +173,7 @@ public class MorfTransform implements Task {
                 delta[i][1] -= aceleration[i][1];
             }
 
-        //    System.out.println("sub:" + stepCount);
+            //    System.out.println("sub:" + stepCount);
 
         }
         for (int i = 0; i < acelerationcolor.length; i++) {
@@ -185,7 +188,7 @@ public class MorfTransform implements Task {
 //            }
 
             Presentation.staticReference.remove(gf1);
-            Presentation.staticReference.add(g2);
+            Presentation.staticReference.add(g2,refIndex);
         }
 
 
@@ -194,27 +197,27 @@ public class MorfTransform implements Task {
     }
 
     public static double messureAng(double cx, double cy, double px, double py) {
-        double deltay=(py-cy);
-        double deltax=((px-cx)+0.01);
+        double deltay = (py - cy);
+        double deltax = ((px - cx) + 0.01);
 
-        double r=Math.atan((py-cy)/((px-cx)+0.01));
+        double r = Math.atan((py - cy) / ((px - cx) + 0.01));
 
-        if(deltax>0){
-            if(deltay>0){
+        if (deltax > 0) {
+            if (deltay > 0) {
                 return r;
-            }else{
-                return 2*3.1415+r;
+            } else {
+                return 2 * 3.1415 + r;
             }
 
-        }else{
-            if(deltay>0){
-                return  (3.141592)+r;
-            }else{
-                return  (3.141592)+r;
+        } else {
+            if (deltay > 0) {
+                return (3.141592) + r;
+            } else {
+                return (3.141592) + r;
             }
         }
 
-       // return  Math.atan((py-cy)/((px-cx)+0.01));
+        // return  Math.atan((py-cy)/((px-cx)+0.01));
     }
 
 

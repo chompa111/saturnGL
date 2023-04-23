@@ -41,8 +41,8 @@ public class T3b1b {
 
         //todos os objetos são stroke and fill então vale o caso de colocar cores transparestes para fazer o stroke aparecer ou sumir caso um dos objetos não tenha stroke
 
-        var dpa = new DynamicPath(sa.getShape(), sa.getFillColorHolder() == null ? new ColorHolder(new Color(0,0,0,0)) : sa.getFillColorHolder().copy(), sa.getStrokeColorHolder() == null ?  new ColorHolder(new Color(0,0,0,0)) : sa.getStrokeColorHolder().copy());
-        var dpb = new DynamicPath(sb.getShape(), sb.getFillColorHolder() == null ?  new ColorHolder(new Color(0,0,0,0)) : sb.getFillColorHolder().copy(), sb.getStrokeColorHolder() == null ? new ColorHolder(new Color(0,0,0,0)) : sb.getStrokeColorHolder().copy());
+        var dpa = new DynamicPath(sa.getShape(), sa.getFillColorHolder() == null ? new ColorHolder(new Color(0, 0, 0, 0)) : sa.getFillColorHolder().copy(), sa.getStrokeColorHolder() == null ? new ColorHolder(new Color(0, 0, 0, 0)) : sa.getStrokeColorHolder().copy());
+        var dpb = new DynamicPath(sb.getShape(), sb.getFillColorHolder() == null ? new ColorHolder(new Color(0, 0, 0, 0)) : sb.getFillColorHolder().copy(), sb.getStrokeColorHolder() == null ? new ColorHolder(new Color(0, 0, 0, 0)) : sb.getStrokeColorHolder().copy());
 
         dpa.setStrokeThickness(sa.getStrokeThickness());
         dpb.setStrokeThickness(sb.getStrokeThickness());
@@ -59,8 +59,8 @@ public class T3b1b {
             dpb.addPoints(sizea - sizeb);
         }
 
-        var thicknessDiff= dpb.getStrokeThickness().getValue()-dpa.getStrokeThickness().getValue();
-        var strokeTask=dpa.getStrokeThickness().change(thicknessDiff,steps);
+        var thicknessDiff = dpb.getStrokeThickness().getValue() - dpa.getStrokeThickness().getValue();
+        var strokeTask = dpa.getStrokeThickness().change(thicknessDiff, steps);
 
         var demorf = new PositionListTransform(dpa.getReferenceLocations(), dpb.getReferenceLocations(), steps);
         var colorpart = new ColorListTranform(dpa.getColors(), dpb.getColors().stream().map(ColorHolder::getColor).collect(Collectors.toList()), steps);
@@ -75,8 +75,9 @@ public class T3b1b {
     }
 
     public static Task t3b1b(Gobject a, Gobject b, TransformationType transformationType, int steps) {
-
-        presentation.remove(a);
+        var gobjectAIndexAux = presentation.getObjectIndex(a);
+        var gobjectAIndex = gobjectAIndexAux == -1 ? 0: gobjectAIndexAux;
+                presentation.remove(a);
         List<ShapeGobject2> la = asShapeList(a);
         List<ShapeGobject2> lb = asShapeList(b);
 
@@ -95,16 +96,16 @@ public class T3b1b {
                 int diff = la.size() - lb.size();
                 int count = 0;
                 if (diff != 0) {
-                    LBB:while (true){
+                    LBB:
+                    while (true) {
                         for (int i = 0; i < lb.size(); i++) {
-                            taskList.add(turnInto(la.get((lb.size()-1)+count), lb.get(i), steps));
+                            taskList.add(turnInto(la.get((lb.size() - 1) + count), lb.get(i), steps));
                             count++;
-                            if(count==diff)break LBB;
+                            if (count == diff) break LBB;
                         }
                     }
 
                 }
-
 
 
             } else {
@@ -158,7 +159,7 @@ public class T3b1b {
                     var objB = lb.get(i);
                     var midB = objB.getBorders().midPoint();
                     var objectA = la.stream().min(Comparator.comparing(xa -> midB.distanceTo(xa.getBorders().midPoint()))).orElse(lb.get(0));
-                    taskList.add(turnInto( objectA,objB, steps));
+                    taskList.add(turnInto(objectA, objB, steps));
                 }
 
             }
@@ -171,7 +172,7 @@ public class T3b1b {
 
                 parallel(new WaitTask(steps - 1).
 
-                        step(() -> presentation.add(b)));
+                        step(() -> presentation.add(b, gobjectAIndex)));
 
     }
 
