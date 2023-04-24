@@ -1,12 +1,13 @@
 package graphical.basics.task.transformation.value;
 
 import graphical.basics.task.Task;
+import graphical.basics.task.TimeDefinedTask;
 import graphical.basics.value.NumberHolder;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ValueTransform implements Task {
+public class ValueTransform implements TimeDefinedTask {
 
     double change;
     List<NumberHolder> numberHolders;
@@ -56,5 +57,11 @@ public class ValueTransform implements Task {
     @Override
     public boolean isDone() {
         return stepCount == steps;
+    }
+
+    @Override
+    public Task forFrames(int frames) {
+        this.steps = frames;
+        return this;
     }
 }

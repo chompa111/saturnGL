@@ -3,11 +3,12 @@ package graphical.basics.task.transformation.gobject;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.task.Task;
+import graphical.basics.task.TimeDefinedTask;
 
 import java.awt.*;
 import java.util.List;
 
-public class ColorTranform implements Task {
+public class ColorTranform implements TimeDefinedTask {
 
     int steps;
     int stepCount;
@@ -84,5 +85,11 @@ public class ColorTranform implements Task {
     @Override
     public boolean isDone() {
         return steps == stepCount;
+    }
+
+    @Override
+    public Task forFrames(int frames) {
+        steps = frames;
+        return this;
     }
 }

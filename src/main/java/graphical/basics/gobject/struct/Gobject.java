@@ -1,16 +1,15 @@
 package graphical.basics.gobject.struct;
 
 
-import graphical.basics.gobject.Group;
-import graphical.basics.presentation.Positioning;
-import graphical.basics.presentation.Presentation;
 import graphical.basics.ColorHolder;
-import graphical.basics.behavior.Behavior;
-import graphical.basics.behavior.FollowBehavior;
+import graphical.basics.gobject.Group;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.SupplierPoint;
+import graphical.basics.presentation.Positioning;
+import graphical.basics.presentation.Presentation;
 import graphical.basics.task.Task;
+import graphical.basics.task.TimeDefinedTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 import graphical.basics.task.transformation.gobject.MorfTransform;
 import graphical.basics.task.transformation.gobject.PositionTransform;
@@ -22,6 +21,7 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static graphical.basics.presentation.Positioning.Reference.*;
 
@@ -32,8 +32,6 @@ public abstract class Gobject {
     public NumberHolder scale = new DoubleHolder(1);
 
     public void paint(Graphics g, boolean b) {
-
-
         var midpoint = getBorders().midPoint();
         var g2d = (Graphics2D) g;
         var oldT = (AffineTransform) g2d.getTransform().clone();
@@ -64,16 +62,16 @@ public abstract class Gobject {
 
     public abstract List<Location> getReferenceLocations();
 
-    public Task transform(Gobject gobject2, int steps) {
+    public TimeDefinedTask transform(Gobject gobject2, int steps) {
         return new MorfTransform(this, gobject2, steps);
     }
 
-    public Task transform(Gobject gobject2) {
+    public TimeDefinedTask transform(Gobject gobject2) {
         return transform(gobject2, Presentation.staticReference.seconds(1));
     }
 
 
-    public Task changeColor(Color color, int steps) {
+    public TimeDefinedTask changeColor(Color color, int steps) {
         return new ColorTranform(this, color, steps);
     }
 
@@ -83,20 +81,20 @@ public abstract class Gobject {
         }
     }
 
-    public Task changeColor(Color color) {
+    public TimeDefinedTask changeColor(Color color) {
         return changeColor(color, Presentation.staticReference.seconds(1));
     }
 
 
-    public Task move(double x, double y, int steps) {
+    public TimeDefinedTask move(double x, double y, int steps) {
         return new PositionTransform(this, x, y, steps);
     }
 
-    public Task move(double x, double y) {
+    public TimeDefinedTask move(double x, double y) {
         return move(x, y, Presentation.staticReference.seconds(1));
     }
 
-    public Task moveTo(Location location, int steps) {
+    public TimeDefinedTask moveTo(Location location, int steps) {
         var mylocation = getBorders().midPoint();
         var diffx = location.getX() - mylocation.getX();
         var diffy = location.getY() - mylocation.getY();
@@ -104,7 +102,7 @@ public abstract class Gobject {
         return this.move(diffx, diffy, steps);
     }
 
-    public Task moveTo(Location location) {
+    public TimeDefinedTask moveTo(Location location) {
         return this.moveTo(location, Presentation.staticReference.seconds(1));
     }
 
@@ -121,21 +119,6 @@ public abstract class Gobject {
         var diffx = location.getX() - myLocation.getX();
         var diffy = location.getY() - myLocation.getY();
         changeSetPosition(diffx, diffy);
-    }
-
-    public Behavior asSubtitle(Gobject gobject, Positioning.Reference reference) {
-        //por enquanto
-        switch (reference) {
-            case BOTTOM:
-                Positioning.align(gobject, this, BOTTOM);
-                return new FollowBehavior(gobject, new SupplierPoint(() -> Positioning.getPositionX(this, CENTER), () -> Positioning.getPositionY(this, BOTTOM)));
-            case RIGHT:
-                Positioning.align(gobject, this, LEFT);
-                return new FollowBehavior(gobject, new SupplierPoint(() -> Positioning.getPositionX(this, LEFT), () -> Positioning.getPositionY(this, CENTER)));
-        }
-
-        return new FollowBehavior(gobject, new SupplierPoint(() -> this.getBorders().midPoint().getX(), () -> this.getBorders().getL2().getY()));
-
     }
 
     public AffineTransform getTranformation() {
@@ -226,4 +209,15 @@ public abstract class Gobject {
         return new Group(result);
     }
 
+    public Runnable addTask(Runnable task) {
+        return Presentation.staticReference.addTask(task);
+    }
+
+    public <T> Runnable addTask(T metadata, Consumer<T> task) {
+        return Presentation.staticReference.addTask(metadata, task);
+    }
+
+    public void removeTask(Runnable r) {
+        Presentation.staticReference.removeTask(r);
+    }
 }

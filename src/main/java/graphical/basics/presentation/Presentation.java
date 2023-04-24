@@ -5,7 +5,6 @@ import codec.engine.JavaFXEngine;
 import codec.engine.JavaGraphicEngine;
 import codec.engine.JavaNativeEngine;
 import graphical.basics.BackGround;
-import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.Camera;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
@@ -24,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -48,7 +48,7 @@ public abstract class Presentation {
     JavaGraphicEngine graphicEngine;
 
     List<Gobject> gobjects = new ArrayList<>();
-    List<Behavior> behaviors = new ArrayList<>();
+    private final List<Runnable> prePaintTasks = new ArrayList<>();
 
     //FpsControler fpsControler = new FpsControler();
 
@@ -151,13 +151,13 @@ public abstract class Presentation {
             frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
             frame.setVisible(true);
             frame.setTitle(" Saturn-preview ");
-
-            try {
-                var icn = ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
-                frame.setIconImage(icn);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//
+//            try {
+//                var icn = ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
+//                frame.setIconImage(icn);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         } else {
             isDisablePreview = true;
         }
@@ -203,7 +203,7 @@ public abstract class Presentation {
 
 
     public void processFrame() {
-        runBehaviors();
+        prePaintTasks.forEach(Runnable::run);
         frameCounter++;
         paintComponent(bufferedGraphics);
         if (!isDisablePreview)
@@ -236,11 +236,6 @@ public abstract class Presentation {
         g2d.setTransform(oldT);
     }
 
-    public void runBehaviors() {
-        for (Behavior behavior : behaviors) {
-            behavior.update();
-        }
-    }
 
     public void add(Gobject gobject) {
         gobjects.add(gobject);
@@ -252,10 +247,6 @@ public abstract class Presentation {
 
     public void addBefore(Gobject referential, Gobject gobject) {
         gobjects.add(gobjects.indexOf(referential), gobject);
-    }
-
-    public void add(Behavior behavior) {
-        behaviors.add(behavior);
     }
 
     public void remove(Gobject gobject) {
@@ -353,5 +344,19 @@ public abstract class Presentation {
 
     public List<Gobject> getGobjects() {
         return gobjects;
+    }
+
+    public Runnable addTask(Runnable task) {
+        prePaintTasks.add(task);
+
+        return task;
+    }
+
+    public <T> Runnable addTask(T metadata, Consumer<T> task) {
+        return addTask(() -> task.accept(metadata));
+    }
+
+    public void removeTask(Runnable r) {
+        prePaintTasks.remove(r);
     }
 }

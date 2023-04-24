@@ -166,6 +166,12 @@ public class Animation {
                         .andThen(gobject.getAngle().change(0.5, presentation.seconds(0.5))));
     }
 
+    public static Task wooble2(Gobject gobject) {
+        return gobject.getAngle().change(0.5).forSeconds(0.5)
+                .andThen(gobject.getAngle().change(-1.0).forSeconds(0.5)
+                        .andThen(gobject.getAngle().change(0.5).forSeconds(0.5)));
+    }
+
 
     public static Task t3b1b(Gobject a, Gobject b, int steps) {
         return T3b1b.t3b1b(a, b, steps);

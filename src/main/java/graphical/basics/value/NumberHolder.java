@@ -2,6 +2,7 @@ package graphical.basics.value;
 
 import graphical.basics.presentation.Presentation;
 import graphical.basics.task.Task;
+import graphical.basics.task.TimeDefinedTask;
 import graphical.basics.task.transformation.value.ConstantSpeedTransformation;
 import graphical.basics.task.transformation.value.MeanSpeedTransformation;
 import graphical.basics.task.transformation.value.ValueTransform;
@@ -21,11 +22,11 @@ public interface NumberHolder {
     void add(double x);
 
 
-    default Task change(double amount, int steps) {
+    default TimeDefinedTask change(double amount, int steps) {
         return new ValueTransform(this, amount, steps);
     }
 
-    default Task change(double amount) {
+    default TimeDefinedTask change(double amount) {
         return change(amount, Presentation.staticReference.seconds(1));
     }
 
@@ -42,12 +43,12 @@ public interface NumberHolder {
     }
 
 
-    default Task changeTo(double target, int steps) {
+    default TimeDefinedTask changeTo(double target, int steps) {
         var delta = target - getValue();
         return change(delta, steps);
     }
 
-    default Task changeTo(double target) {
+    default TimeDefinedTask changeTo(double target) {
         return changeTo(target, Presentation.staticReference.seconds(1));
     }
 }

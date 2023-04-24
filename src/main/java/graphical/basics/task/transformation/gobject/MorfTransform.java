@@ -5,13 +5,14 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.GobjectFrame;
 import graphical.basics.task.Task;
+import graphical.basics.task.TimeDefinedTask;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class MorfTransform implements Task {
+public class MorfTransform implements TimeDefinedTask {
     Gobject g1;
     Gobject g2;
 
@@ -50,7 +51,7 @@ public class MorfTransform implements Task {
         gf2 = new GobjectFrame(g2);
         refIndex = Presentation.staticReference.getObjectIndex(g1);
         Presentation.staticReference.remove(g1);
-        Presentation.staticReference.add(gf1,refIndex);
+        Presentation.staticReference.add(gf1, refIndex);
         // Presentation.staticReference.add(g2);
 
         colorHolders1 = new ArrayList<>();
@@ -188,7 +189,7 @@ public class MorfTransform implements Task {
 //            }
 
             Presentation.staticReference.remove(gf1);
-            Presentation.staticReference.add(g2,refIndex);
+            Presentation.staticReference.add(g2, refIndex);
         }
 
 
@@ -227,4 +228,9 @@ public class MorfTransform implements Task {
     }
 
 
+    @Override
+    public Task forFrames(int frames) {
+        this.steps = frames;
+        return this;
+    }
 }

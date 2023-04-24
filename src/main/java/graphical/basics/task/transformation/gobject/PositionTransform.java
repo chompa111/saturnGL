@@ -3,10 +3,11 @@ package graphical.basics.task.transformation.gobject;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.task.Task;
+import graphical.basics.task.TimeDefinedTask;
 
 import java.util.List;
 
-public class PositionTransform implements Task {
+public class PositionTransform implements TimeDefinedTask {
 
     List<Location> locations;
 
@@ -69,5 +70,11 @@ public class PositionTransform implements Task {
     @Override
     public boolean isDone() {
         return stepCount == steps;
+    }
+
+    @Override
+    public Task forFrames(int frames) {
+        this.steps = frames;
+        return this;
     }
 }

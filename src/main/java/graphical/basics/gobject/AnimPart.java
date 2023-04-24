@@ -1,7 +1,6 @@
 package graphical.basics.gobject;
 
 import graphical.basics.BackGround;
-import graphical.basics.behavior.Behavior;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.presentation.PresentationConfig;
@@ -20,10 +19,6 @@ public abstract class AnimPart {
 
     public void addBefore(Gobject referential, Gobject gobject) {
         Presentation.staticReference.addBefore(referential, gobject);
-    }
-
-    public void add(Behavior behavior) {
-        Presentation.staticReference.add(behavior);
     }
 
     public void remove(Gobject gobject) {
