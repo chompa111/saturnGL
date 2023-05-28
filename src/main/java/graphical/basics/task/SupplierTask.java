@@ -2,13 +2,13 @@ package graphical.basics.task;
 
 import java.util.function.Supplier;
 
-public class ContextSetupTask implements Task {
+public class SupplierTask implements Task {
 
     private Task slaveTask;
 
-    public Supplier<Task> taskSupplier;
+    public Supplier<?extends Task> taskSupplier;
 
-    public ContextSetupTask(Supplier<Task> taskSupplier) {
+    public SupplierTask(Supplier<? extends Task> taskSupplier) {
         this.taskSupplier = taskSupplier;
     }
 
@@ -26,5 +26,9 @@ public class ContextSetupTask implements Task {
     @Override
     public boolean isDone() {
         return slaveTask.isDone();
+    }
+
+    public static SupplierTask of(Supplier<? extends Task> t) {
+        return new SupplierTask(t);
     }
 }

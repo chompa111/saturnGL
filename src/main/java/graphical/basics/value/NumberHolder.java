@@ -1,5 +1,6 @@
 package graphical.basics.value;
 
+import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.presentation.Presentation;
 import graphical.basics.task.Task;
 import graphical.basics.task.TimeDefinedTask;
@@ -27,7 +28,7 @@ public interface NumberHolder {
     }
 
     default TimeDefinedTask change(double amount) {
-        return change(amount, Presentation.staticReference.seconds(1));
+        return change(amount, AnimationStaticReference.staticReference.seconds(1));
     }
 
     default Task change(double amount, int steps, ChangeType changeType) {

@@ -24,7 +24,8 @@ public class EndLessParallelTask implements Task {
     @Override
     public void step() {
         Set<Task> toRemove = new HashSet<>();
-        for (Task task : taskList) {
+        for (int i = 0; i < taskList.size(); i++) {
+            var task = taskList.get(i);
             if (!setedUpTasks.contains(task)) {
                 task.setup();
                 setedUpTasks.add(task);
@@ -68,7 +69,7 @@ public class EndLessParallelTask implements Task {
         return !taskList.isEmpty();
     }
 
-    public void clear(){
-        taskList= new ArrayList<>();
+    public void clear() {
+        taskList = new ArrayList<>();
     }
 }

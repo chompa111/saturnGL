@@ -120,6 +120,10 @@ public class Group extends Gobject {
         this.gobjects.addAll(gobjectList);
     }
 
+    public void deleteGobjects() {
+        this.gobjects = new ArrayList<>();
+    }
+
 
     public Group subGroup(Integer... index) {
         var list = new ArrayList<Gobject>();

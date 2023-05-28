@@ -8,18 +8,13 @@ import graphical.basics.BackGround;
 import graphical.basics.gobject.Camera;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
-import graphical.basics.task.EndLessParallelTask;
-import graphical.basics.task.ParalelTask;
-import graphical.basics.task.Task;
-import graphical.basics.task.WaitTask;
+import graphical.basics.task.*;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +22,7 @@ import java.util.function.Consumer;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public abstract class Presentation {
+public abstract class Presentation extends AnimationStaticReference {
 
     public static Presentation staticReference;
 
@@ -89,6 +84,7 @@ public abstract class Presentation {
 
 
         staticReference = this;
+        AnimationStaticReference.staticReference = this;
 
     }
 
@@ -203,7 +199,9 @@ public abstract class Presentation {
 
 
     public void processFrame() {
-        prePaintTasks.forEach(Runnable::run);
+        for (int i = 0; i < prePaintTasks.size(); i++) {
+            prePaintTasks.get(i).run();
+        }
         frameCounter++;
         paintComponent(bufferedGraphics);
         if (!isDisablePreview)
@@ -284,6 +282,10 @@ public abstract class Presentation {
         //cut();
     }
 
+    public InterruptableTask executeInBackGround(Task task) {
+        return backGroundTask.append(task);
+    }
+
     public void execute(Task... tasks) {
         execute(new ParalelTask(tasks));
     }
@@ -346,17 +348,17 @@ public abstract class Presentation {
         return gobjects;
     }
 
-    public Runnable addTask(Runnable task) {
+    public Runnable addBehavior(Runnable task) {
         prePaintTasks.add(task);
 
         return task;
     }
 
-    public <T> Runnable addTask(T metadata, Consumer<T> task) {
-        return addTask(() -> task.accept(metadata));
+    public <T> Runnable addBehavior(T metadata, Consumer<T> task) {
+        return addBehavior(() -> task.accept(metadata));
     }
 
-    public void removeTask(Runnable r) {
+    public void removeBehavior(Runnable r) {
         prePaintTasks.remove(r);
     }
 }

@@ -5,10 +5,7 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Group;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
-import graphical.basics.location.SupplierPoint;
-import graphical.basics.presentation.Positioning;
-import graphical.basics.presentation.Presentation;
-import graphical.basics.task.Task;
+import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.task.TimeDefinedTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 import graphical.basics.task.transformation.gobject.MorfTransform;
@@ -22,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static graphical.basics.presentation.Positioning.Reference.*;
 
 
 public abstract class Gobject {
@@ -67,7 +62,7 @@ public abstract class Gobject {
     }
 
     public TimeDefinedTask transform(Gobject gobject2) {
-        return transform(gobject2, Presentation.staticReference.seconds(1));
+        return transform(gobject2, AnimationStaticReference.staticReference.seconds(1));
     }
 
 
@@ -82,7 +77,7 @@ public abstract class Gobject {
     }
 
     public TimeDefinedTask changeColor(Color color) {
-        return changeColor(color, Presentation.staticReference.seconds(1));
+        return changeColor(color, AnimationStaticReference.staticReference.seconds(1));
     }
 
 
@@ -91,7 +86,7 @@ public abstract class Gobject {
     }
 
     public TimeDefinedTask move(double x, double y) {
-        return move(x, y, Presentation.staticReference.seconds(1));
+        return move(x, y, AnimationStaticReference.staticReference.seconds(1));
     }
 
     public TimeDefinedTask moveTo(Location location, int steps) {
@@ -103,7 +98,7 @@ public abstract class Gobject {
     }
 
     public TimeDefinedTask moveTo(Location location) {
-        return this.moveTo(location, Presentation.staticReference.seconds(1));
+        return this.moveTo(location, AnimationStaticReference.staticReference.seconds(1));
     }
 
 
@@ -143,20 +138,20 @@ public abstract class Gobject {
         return angle;
     }
 
-    public Task scale(double factor, int steps) {
+    public TimeDefinedTask scale(double factor, int steps) {
         var actual = scale.getValue();
         return scale.change(actual * factor - actual, steps);
     }
 
-    public Task scale(double amount) {
-        return scale(amount, Presentation.staticReference.seconds(1));
+    public TimeDefinedTask scale(double amount) {
+        return scale(amount, AnimationStaticReference.staticReference.seconds(1));
     }
 
-    public Task rotate(double amount, int steps) {
+    public TimeDefinedTask rotate(double amount, int steps) {
         return angle.change(amount, steps);
     }
 
-    public Task rotate(double amount) {
+    public TimeDefinedTask rotate(double amount) {
         return angle.change(amount);
     }
 
@@ -209,15 +204,15 @@ public abstract class Gobject {
         return new Group(result);
     }
 
-    public Runnable addTask(Runnable task) {
-        return Presentation.staticReference.addTask(task);
+    public Runnable addBehavior(Runnable task) {
+        return AnimationStaticReference.staticReference.addBehavior(task);
     }
 
-    public <T> Runnable addTask(T metadata, Consumer<T> task) {
-        return Presentation.staticReference.addTask(metadata, task);
+    public <T> Runnable addBehavior(T metadata, Consumer<T> task) {
+        return AnimationStaticReference.staticReference.addBehavior(metadata, task);
     }
 
-    public void removeTask(Runnable r) {
-        Presentation.staticReference.removeTask(r);
+    public void removeBehavior(Runnable r) {
+        AnimationStaticReference.staticReference.removeBehavior(r);
     }
 }

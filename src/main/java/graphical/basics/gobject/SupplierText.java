@@ -22,6 +22,11 @@ public class SupplierText extends Group {
         this.color = new ColorHolder(color);
         this.supplier = supplier;
 
+        if (isLatex) {
+            this.setGobjects(generateExp(supplier.get(), location, this.color.getColor()));
+        } else {
+            this.setGobjects(TextGobject.generateText(f, supplier.get(), location, this.color.getColor()));
+        }
     }
 
     public SupplierText(Font font, Supplier<String> supplier, Location location, Color color) {
@@ -46,11 +51,13 @@ public class SupplierText extends Group {
         super.paint(g);
     }
 
-
     @Override
     public List<ColorHolder> getColors() {
         return List.of(color);
     }
 
-
+    @Override
+    public List<Location> getReferenceLocations() {
+        return List.of(location);
+    }
 }

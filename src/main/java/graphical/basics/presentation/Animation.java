@@ -18,7 +18,7 @@ import java.awt.*;
 public class Animation {
 
 
-    private static final Presentation presentation = Presentation.staticReference;
+    private static final AnimationStaticReference presentation = AnimationStaticReference.staticReference;
 
     public static Task fadeOut(Gobject gobject, int steps) {
         return new ColorTranform(gobject, new Color(0, 0, 0, 0), steps);
@@ -113,7 +113,7 @@ public class Animation {
 
 
     public static Task fadeInGrow(Gobject gobject, int steps) {
-        return new ContextSetupTask(() -> {
+        return new SupplierTask(() -> {
             var scale = gobject.scale.getValue();
             gobject.getScale().setValue(0);
             return fadeIn(gobject, steps).parallel(gobject.getScale().change(scale, steps));
@@ -121,7 +121,7 @@ public class Animation {
     }
 
     public static Task fadeInGrowFromBig(Gobject gobject, int steps) {
-        return new ContextSetupTask(() -> {
+        return new SupplierTask(() -> {
             var scale = gobject.scale.getValue();
             gobject.getScale().setValue(15);
             return fadeIn(gobject, steps).parallel(gobject.getScale().changeTo(scale, steps));
@@ -134,7 +134,7 @@ public class Animation {
     }
 
     public static Task emphasize(Gobject gobject) {
-        return new ContextSetupTask(() -> {
+        return new SupplierTask(() -> {
             var colorHolders = gobject.getColors();
             var beforeColors = ColorHolder.toColorList(colorHolders);
 
@@ -147,7 +147,7 @@ public class Animation {
     }
 
     public static Task emphasize(Gobject gobject, Color color) {
-        return new ContextSetupTask(() -> {
+        return new SupplierTask(() -> {
             var colorHolders = gobject.getColors();
             var beforeColors = ColorHolder.toColorList(colorHolders);
 
@@ -215,7 +215,7 @@ public class Animation {
     }
 
     public static Task replace(Gobject replaced, Gobject newGObject) {
-        return new ContextSetupTask(() -> {
+        return new SupplierTask(() -> {
             newGObject.setPositionTo(replaced.getMidPoint());
             return t3b1b(replaced, newGObject, presentation.seconds(1));
         });

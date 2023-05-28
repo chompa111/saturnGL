@@ -1,8 +1,8 @@
 package graphical.basics.task;
 
+import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.presentation.Presentation;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface Task {
@@ -24,7 +24,7 @@ public interface Task {
     }
 
     default Task andThen(Supplier<Task> supplier) {
-        return andThen(new ContextSetupTask(supplier));
+        return andThen(new SupplierTask(supplier));
     }
 
     default Task parallel(Task t2) {
@@ -37,7 +37,7 @@ public interface Task {
     }
 
     default Task parallel(Supplier<Task> supplier) {
-        return parallel(new ContextSetupTask(supplier));
+        return parallel(new SupplierTask(supplier));
     }
 
     default Task repeat(int times) {
@@ -64,11 +64,11 @@ public interface Task {
     }
 
     default void execute() {
-        Presentation.staticReference.execute(this);
+        AnimationStaticReference.staticReference.execute(this);
     }
 
     default InterruptableTask executeInBackGround() {
-        return Presentation.staticReference.backGroundTask.append(this);
+        return AnimationStaticReference.staticReference.executeInBackGround(this);
     }
 
     default void shutDown() {

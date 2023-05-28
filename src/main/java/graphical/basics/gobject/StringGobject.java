@@ -4,7 +4,7 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
-import graphical.basics.task.ContextSetupTask;
+import graphical.basics.task.SupplierTask;
 import graphical.basics.task.SequenceTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
@@ -63,6 +63,7 @@ public class StringGobject extends Group {
                 .boxed().toArray(Integer[]::new));
 
     }
+
 
     public Group getAllMatchesGroup(String s) {
         var group = new Group();
@@ -123,7 +124,7 @@ public class StringGobject extends Group {
         for (int i = 0; i < colorHolders.size(); i++) {
 
             int finalI = i;
-            taskList.add(new ContextSetupTask(() -> {
+            taskList.add(new SupplierTask(() -> {
                 colorHolders.get(finalI).setColor(beforeColors.get(finalI));
                 return new WaitTask((int) (Math.random() * 2) + 1);
             }));
@@ -137,7 +138,7 @@ public class StringGobject extends Group {
     public Task erase(int amount) {
         var taskList = new ArrayList<Task>();
         for (int i = 0; i < amount; i++) {
-            taskList.add(new ContextSetupTask(() -> {
+            taskList.add(new SupplierTask(() -> {
                 var size = getGobjects().size();
                 if (size >= 1) {
                     remove(size - 1);
@@ -154,6 +155,15 @@ public class StringGobject extends Group {
     public Location getRef() {
         return ref;
     }
+
+
+    public void set(String s){
+        this.string = s;
+        this.spacemapping = extractSpaceMapping(s);
+        deleteGobjects();
+        addAll(generateText(Fonts.JETBRAINS_MONO.deriveFont(30f), s, ref, Color.white));
+    }
+
 
 
     @Override

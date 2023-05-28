@@ -55,6 +55,13 @@ public abstract class FillAndStroke extends Gobject {
         return fillColorHolder;
     }
 
+    public Color getFillColor() {
+        return fillColorHolder.getColor();
+    }
+    public Color getStrokeColor() {
+        return strokeColorHolder.getColor();
+    }
+
     public void setFillColorHolder(ColorHolder fillColorHolder) {
         this.fillColorHolder = fillColorHolder;
     }
