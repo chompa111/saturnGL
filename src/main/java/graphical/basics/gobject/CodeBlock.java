@@ -2,9 +2,9 @@ package graphical.basics.gobject;
 
 import graphical.basics.gobject.latex.Rect;
 import graphical.basics.location.Location;
-import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.Animations;
 import graphical.basics.presentation.AnimationStaticReference;
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
 import graphical.basics.task.SupplierTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
@@ -101,7 +101,7 @@ public class CodeBlock extends Group {
                 .parallel(backgroundShadow.getLowerRightPoint().move(0, textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutter.getLowerRightPoint().move(0, textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(Animation.fadeInGrow(newNumber, AnimationStaticReference.staticReference.seconds(1)))
+                .parallel(Animations.fadeInGrow(newNumber, AnimationStaticReference.staticReference.seconds(1)))
                 .afterConclusion(() -> {
                     lineCounter++;
                     javaHilighter.colorize(text);
@@ -137,7 +137,7 @@ public class CodeBlock extends Group {
                 .parallel(backgroundShadow.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutter.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(Animation.fadeoutGrow(textGutter.getLinesAsGroup((lineCounter-2)-(j-i),lineCounter-2), Presentation.staticReference.seconds(0.75)))
+                .parallel(Animations.fadeoutGrow(textGutter.getLinesAsGroup((lineCounter-2)-(j-i),lineCounter-2), Animation.staticReference.seconds(0.75)))
                 .afterConclusion(()->{
                     textGutter.removeLines((lineCounter-2)-(j-i),lineCounter-2);
                     lineCounter-=(j-i+1);
@@ -151,7 +151,7 @@ public class CodeBlock extends Group {
                 .parallel(backgroundShadow.getLowerRightPoint().move(0, -textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutter.getLowerRightPoint().move(0, -textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, -textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(Animation.fadeOut(textGutter.getLine(lineCounter-2), AnimationStaticReference.staticReference.seconds(1)))
+                .parallel(Animations.fadeOut(textGutter.getLine(lineCounter-2), AnimationStaticReference.staticReference.seconds(1)))
                 .afterConclusion(()->{
                     textGutter.removeLine(lineCounter - 2);
                     lineCounter--;
@@ -166,12 +166,12 @@ public class CodeBlock extends Group {
                 .parallel(backgroundShadow.getLowerRightPoint().move(0, amount * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutter.getLowerRightPoint().move(0, amount * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, amount * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(new WaitTask(Presentation.staticReference.seconds(0.5) + 1)
+                .parallel(new WaitTask(Animation.staticReference.seconds(0.5) + 1)
                         .andThen(() -> {
                             for (int i = 0; i < newLines.length; i++) {
                                 textGutter.newLine("" + (lineCounter + i));
                             }
-                            return textGutter.getLinesAsGroup(lineCounter - 1, lineCounter - 2 + amount).onChildren(x -> Animation.fadeInGrow(x, AnimationStaticReference.staticReference.seconds(1)));
+                            return textGutter.getLinesAsGroup(lineCounter - 1, lineCounter - 2 + amount).onChildren(x -> Animations.fadeInGrow(x, AnimationStaticReference.staticReference.seconds(1)));
                         }))
                 .afterConclusion(() -> {
                     lineCounter += amount;

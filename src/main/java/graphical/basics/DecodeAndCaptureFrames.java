@@ -11,11 +11,18 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
     private int mVideoStreamIndex = -1;
     BufferedImage bu;
     IMediaReader reader;
+    String videoFile;
 
     boolean pepe = false;
 
 
     public DecodeAndCaptureFrames(String videoFile) {
+        this.videoFile = videoFile;
+        config();
+    }
+
+    public void config() {
+        bu = null;
         // create a media reader for processing video
         reader = ToolFactory.makeReader(videoFile);
 
@@ -29,6 +36,10 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
         // onVideoPicture().
 
         reader.addListener(this);
+
+        while (getFrame() == null) {
+            processFrame();
+        }
     }
 
     public void processFrame() {

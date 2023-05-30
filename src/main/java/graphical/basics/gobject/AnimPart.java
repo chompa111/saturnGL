@@ -2,7 +2,7 @@ package graphical.basics.gobject;
 
 import graphical.basics.BackGround;
 import graphical.basics.gobject.struct.Gobject;
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
 import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.task.Task;
 
@@ -10,78 +10,78 @@ public abstract class AnimPart {
     protected abstract void buildPresentation(Gobject... gobjects);
 
     public void add(Gobject gobject) {
-        Presentation.staticReference.add(gobject);
+        Animation.staticReference.add(gobject);
     }
 
     public void add(Gobject... gs) {
-        Presentation.staticReference.add(gs);
+        Animation.staticReference.add(gs);
     }
 
     public void addBefore(Gobject referential, Gobject gobject) {
-        Presentation.staticReference.addBefore(referential, gobject);
+        Animation.staticReference.addBefore(referential, gobject);
     }
 
     public void remove(Gobject gobject) {
-        Presentation.staticReference.remove(gobject);
+        Animation.staticReference.remove(gobject);
     }
 
     public void remove(Gobject... gobjects) {
-        Presentation.staticReference.remove(gobjects);
+        Animation.staticReference.remove(gobjects);
     }
 
     public void removeAll() {
-        Presentation.staticReference.removeAll();
+        Animation.staticReference.removeAll();
     }
 
     public void execute(Task task) {
-        Presentation.staticReference.execute(task);
+        Animation.staticReference.execute(task);
     }
 
     public void execute(Task... tasks) {
-        Presentation.staticReference.execute(tasks);
+        Animation.staticReference.execute(tasks);
     }
 
     public void cut() {
-        Presentation.staticReference.cut();
+        Animation.staticReference.cut();
     }
 
     public int seconds(double seconds) {
-        return Presentation.staticReference.seconds(seconds);
+        return Animation.staticReference.seconds(seconds);
     }
 
     public Task paralel(Task... tasks) {
-        return Presentation.staticReference.paralel(tasks);
+        return Animation.staticReference.paralel(tasks);
     }
 
     public Task fadeOut(Gobject gobject, int steps) {
-        return Presentation.staticReference.fadeOut(gobject, steps);
+        return Animation.staticReference.fadeOut(gobject, steps);
     }
 
     public Task fadeOut(Gobject gobject) {
-        return Presentation.staticReference.fadeOut(gobject);
+        return Animation.staticReference.fadeOut(gobject);
     }
 
     public Task wait(int steps) {
-        return Presentation.staticReference.wait(steps);
+        return Animation.staticReference.wait(steps);
     }
 
     public void switchOff() {
-        Presentation.staticReference.switchOff();
+        Animation.staticReference.switchOff();
     }
 
     public void switchOn() {
-        Presentation.staticReference.switchOn();
+        Animation.staticReference.switchOn();
     }
 
     public BackGround getBackGround() {
-        return Presentation.staticReference.getBackGround();
+        return Animation.staticReference.getBackGround();
     }
 
     public Camera getCamera() {
-        return Presentation.staticReference.getCamera();
+        return Animation.staticReference.getCamera();
     }
 
     public PresentationConfig getPresentationConfig() {
-        return Presentation.staticReference.getPresentationConfig();
+        return Animation.staticReference.getPresentationConfig();
     }
 }

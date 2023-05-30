@@ -1,11 +1,10 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.struct.ClipBox;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -73,7 +72,7 @@ public class Magnifier extends Gobject {
 
 
 
-        for (Gobject gobject : Presentation.staticReference.getGobjects()) {
+        for (Gobject gobject : Animation.staticReference.getGobjects()) {
 
             if(gobject.equals(this)){
                 //avoiding recursion

@@ -1,6 +1,6 @@
 package graphical.basics.task.transformation.gobject;
 
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.GobjectFrame;
@@ -9,7 +9,6 @@ import graphical.basics.task.TimeDefinedTask;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class MorfTransform implements TimeDefinedTask {
@@ -49,9 +48,9 @@ public class MorfTransform implements TimeDefinedTask {
         // burlando regras
         gf1 = new GobjectFrame(g1);
         gf2 = new GobjectFrame(g2);
-        refIndex = Presentation.staticReference.getObjectIndex(g1);
-        Presentation.staticReference.remove(g1);
-        Presentation.staticReference.add(gf1, refIndex);
+        refIndex = Animation.staticReference.getObjectIndex(g1);
+        Animation.staticReference.remove(g1);
+        Animation.staticReference.add(gf1, refIndex);
         // Presentation.staticReference.add(g2);
 
         colorHolders1 = new ArrayList<>();
@@ -188,8 +187,8 @@ public class MorfTransform implements TimeDefinedTask {
 //                p1.get(i).setY(p2.get(i).getY());
 //            }
 
-            Presentation.staticReference.remove(gf1);
-            Presentation.staticReference.add(g2, refIndex);
+            Animation.staticReference.remove(gf1);
+            Animation.staticReference.add(g2, refIndex);
         }
 
 

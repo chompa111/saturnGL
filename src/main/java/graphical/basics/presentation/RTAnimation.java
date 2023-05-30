@@ -1,18 +1,14 @@
 package graphical.basics.presentation;
 
-import codec.GIFCodec;
-import codec.JCodec;
-import codec.RawImageCodec;
-import codec.XugglerCodec;
 import codec.engine.JavaFXEngine;
 import codec.engine.JavaGraphicEngine;
 import codec.engine.JavaNativeEngine;
 import graphical.basics.BackGround;
 import graphical.basics.gobject.Camera;
-import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.listeners.ClickListener;
 import graphical.basics.listeners.DragListener;
+import graphical.basics.listeners.KeyListener;
 import graphical.basics.location.Location;
 import graphical.basics.task.EndLessParallelTask;
 import graphical.basics.task.InterruptableTask;
@@ -20,8 +16,7 @@ import graphical.basics.task.Task;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.util.*;
 import java.util.List;
@@ -31,7 +26,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public abstract class RTAnimation extends AnimationStaticReference {
 
-    public static Presentation staticReference;
+    public static Animation staticReference;
 
     private boolean switchProcessing = true;
     private boolean disableCodec;
@@ -40,6 +35,7 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
     private DragListener dragListener;
     private ClickListener clickListener;
+    private KeyListener keyListener;
 
     public static int FRAME_RATE = 60;
 
@@ -89,6 +85,7 @@ public abstract class RTAnimation extends AnimationStaticReference {
         };
         dragListener = new DragListener(frame);
         clickListener = new ClickListener(frame);
+        keyListener = new KeyListener(frame);
 
 
         //preview windowSize
@@ -252,7 +249,15 @@ public abstract class RTAnimation extends AnimationStaticReference {
         dragListener.add(gobject);
     }
 
-    public void addClickListener(Gobject gobject,Runnable r) {
-        clickListener.add(gobject,r);
+    public void addClickListener(Gobject gobject, Runnable r) {
+        clickListener.add(gobject, r);
+    }
+
+    public void addKeyPressedListener(Consumer<KeyEvent> keyEventConsumer) {
+        keyListener.addPressedFunction(keyEventConsumer);
+    }
+
+    public void addKeyReleasedListener(Consumer<KeyEvent> keyEventConsumer) {
+        keyListener.addReleasedFunction(keyEventConsumer);
     }
 }

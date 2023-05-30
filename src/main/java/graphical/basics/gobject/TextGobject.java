@@ -4,8 +4,8 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
+import graphical.basics.presentation.Animations;
 import graphical.basics.presentation.Animation;
-import graphical.basics.presentation.Presentation;
 import graphical.basics.task.Task;
 
 import java.awt.*;
@@ -56,7 +56,7 @@ public class TextGobject extends Group {
         for (Gobject gobject : group.getGobjects()) {
 
             var number = new TextGobject(new Font("Consolas", Font.BOLD, 15), index + "", gobject.getBorders().midPoint(), Color.green);
-            Presentation.staticReference.add(number);
+            Animation.staticReference.add(number);
             index++;
         }
     }
@@ -81,9 +81,9 @@ public class TextGobject extends Group {
     }
 
     public Task write(){
-        return this.onChildren(Animation::strokeAndFill,3);
+        return this.onChildren(Animations::strokeAndFill,3);
     }
     public Task write(int frames, double delay){
-        return this.onChildren(c->Animation.strokeAndFill(c,frames),delay);
+        return this.onChildren(c-> Animations.strokeAndFill(c,frames),delay);
     }
 }

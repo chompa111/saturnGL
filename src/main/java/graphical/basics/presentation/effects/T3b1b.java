@@ -6,7 +6,7 @@ import graphical.basics.gobject.Group;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.gobject.struct.ShapeGobject2;
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
@@ -27,7 +27,7 @@ public class T3b1b {
         BEST_MATCHING
     }
 
-    private static final Presentation presentation = Presentation.staticReference;
+    private static final Animation ANIMATION = Animation.staticReference;
 
     public static Task turnInto(Gobject a, Gobject b, int steps) {
         ShapeGobject2 sa = null;
@@ -47,7 +47,7 @@ public class T3b1b {
         dpa.setStrokeThickness(sa.getStrokeThickness());
         dpb.setStrokeThickness(sb.getStrokeThickness());
 
-        presentation.add(dpa);
+        ANIMATION.add(dpa);
 
         //equalizing number of vertex;
         var sizea = dpa.getReferenceLocations().size();
@@ -66,7 +66,7 @@ public class T3b1b {
         var colorpart = new ColorListTranform(dpa.getColors(), dpb.getColors().stream().map(ColorHolder::getColor).collect(Collectors.toList()), steps);
         return demorf.parallel(colorpart)
                 .parallel(strokeTask)
-                .step(() -> presentation.remove(dpa));
+                .step(() -> ANIMATION.remove(dpa));
 
     }
 
@@ -75,9 +75,9 @@ public class T3b1b {
     }
 
     public static Task t3b1b(Gobject a, Gobject b, TransformationType transformationType, int steps) {
-        var gobjectAIndexAux = presentation.getObjectIndex(a);
+        var gobjectAIndexAux = ANIMATION.getObjectIndex(a);
         var gobjectAIndex = gobjectAIndexAux == -1 ? 0: gobjectAIndexAux;
-                presentation.remove(a);
+                ANIMATION.remove(a);
         List<ShapeGobject2> la = asShapeList(a);
         List<ShapeGobject2> lb = asShapeList(b);
 
@@ -172,7 +172,7 @@ public class T3b1b {
 
                 parallel(new WaitTask(steps - 1).
 
-                        step(() -> presentation.add(b, gobjectAIndex)));
+                        step(() -> ANIMATION.add(b, gobjectAIndex)));
 
     }
 

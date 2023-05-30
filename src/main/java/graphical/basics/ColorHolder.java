@@ -1,7 +1,7 @@
 package graphical.basics;
 
 
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
 import graphical.basics.task.Task;
 import graphical.basics.task.transformation.gobject.ColorListTranform;
 
@@ -45,7 +45,7 @@ public class ColorHolder {
     }
 
     public Task changeColor(Color c) {
-        return changeColor(c, Presentation.staticReference.seconds(1));
+        return changeColor(c, Animation.staticReference.seconds(1));
     }
 
     public Task changeColor(Color color, int steps) {

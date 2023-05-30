@@ -1,231 +1,364 @@
 package graphical.basics.presentation;
 
-import graphical.basics.ColorHolder;
-import graphical.basics.gobject.Group;
-import graphical.basics.gobject.Line;
-import graphical.basics.gobject.latex.Rect;
-import graphical.basics.gobject.shape.ShapeLike;
-import graphical.basics.gobject.struct.*;
-import graphical.basics.presentation.effects.T3b1b;
+import codec.*;
+import codec.engine.JavaFXEngine;
+import codec.engine.JavaGraphicEngine;
+import codec.engine.JavaNativeEngine;
+import graphical.basics.BackGround;
+import graphical.basics.gobject.Camera;
+import graphical.basics.gobject.struct.Gobject;
+import graphical.basics.location.Location;
 import graphical.basics.task.*;
-import graphical.basics.task.transformation.gobject.ColorListTranform;
 import graphical.basics.task.transformation.gobject.ColorTranform;
-import graphical.basics.task.transformation.gobject.ColorTranform2;
-import graphical.basics.value.DoubleHolder;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
-public class Animation {
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
+public abstract class Animation extends AnimationStaticReference {
+
+    public static Animation staticReference;
+
+    private boolean switchProcessing = true;
+    private boolean disableCodec;
+    private boolean isDisablePreview;
+    private boolean isEnableTransparency;
+
+    public static int FRAME_RATE = 60;
+
+    private JFrame frame;
 
 
-    private static final AnimationStaticReference presentation = AnimationStaticReference.staticReference;
+    //  public BufferedImage bufferedImage;
+    public Graphics bufferedGraphics;
 
-    public static Task fadeOut(Gobject gobject, int steps) {
+    VideoCodec videoCodec;
+    JavaGraphicEngine graphicEngine;
+
+    List<Gobject> gobjects = new ArrayList<>();
+    private final List<Runnable> prePaintTasks = new ArrayList<>();
+
+    //FpsControler fpsControler = new FpsControler();
+
+    int clipCounter = 0;
+    int frameCounter = 0;
+
+    long lastMesure = System.currentTimeMillis();
+
+
+    private final BackGround backGround;
+    private Camera camera;
+
+    private final PresentationConfig presentationConfig = new PresentationConfig();
+
+    public final EndLessParallelTask backGroundTask = new EndLessParallelTask();
+
+    public Animation() {
+
+        setup(presentationConfig);
+        applyConfigs(presentationConfig);
+
+        backGround = new BackGround(presentationConfig.getWidth(), presentationConfig.getHeight());
+
+
+        //dirs
+        var executionPath = System.getProperty("user.dir");
+        File videoDir = new File(executionPath + "/video");
+        videoDir.mkdir();
+
+        File rawDir = new File(executionPath + "/video/raw");
+        rawDir.mkdir();
+
+        if (!disableCodec)
+            videoCodec.startNewVideo(executionPath + "/video/", "mv" + clipCounter + videoCodec.getFileFormat(), FRAME_RATE);
+
+
+        //preview window
+
+
+        staticReference = this;
+        AnimationStaticReference.staticReference = this;
+
+    }
+
+    public abstract void setup(PresentationConfig presentationConfig);
+
+    private void applyConfigs(PresentationConfig presentationConfig) {
+        if (presentationConfig.getFramerate() != null) {
+            FRAME_RATE = presentationConfig.getFramerate();
+        } else {
+            FRAME_RATE = 30;
+        }
+
+        if (presentationConfig.isDisableCodec() != null) {
+            disableCodec = presentationConfig.isDisableCodec();
+        } else {
+            disableCodec = false;
+        }
+
+        if (presentationConfig.getCodec() != null) {
+            switch (presentationConfig.getCodec()) {
+                case JCODEC:
+                    this.videoCodec = new JCodec();
+                    break;
+                case RAW_IMAGE:
+                    this.videoCodec = new RawImageCodec();
+                    break;
+                case XUGGLE:
+                    this.videoCodec = new XugglerCodec(presentationConfig);
+                    break;
+                case GIF:
+                    this.videoCodec = new GIFCodec();
+            }
+
+        } else {
+            this.videoCodec = new XugglerCodec(presentationConfig);//default
+        }
+
+
+        this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2.0), presentationConfig.getWidth() / 2.0), presentationConfig.getScale());
+
+        if (!presentationConfig.isDisablePreview()) {
+
+            frame = new JFrame() {
+                @Override
+                public void paint(Graphics g) {
+                    if (graphicEngine != null)
+                        g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
+                    g.setColor(Color.green);
+                    g.drawString("" + frameCounter, 900, 100);
+                    g.drawString((System.currentTimeMillis() - lastMesure) + " ms", 900, 150);
+                    lastMesure = System.currentTimeMillis();
+                }
+            };
+
+            //preview windowSize
+            frame.setUndecorated(!presentationConfig.isPreviewWindowBarVisible());
+            frame.setSize((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
+            //eable preview
+
+            frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            frame.setVisible(true);
+            frame.setTitle(" Saturn-preview ");
+//
+//            try {
+//                var icn = ImageIO.read(new File("C:\\Users\\PICHAU\\Desktop\\saticon2.png"));
+//                frame.setIconImage(icn);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+        } else {
+            isDisablePreview = true;
+        }
+
+
+        if (presentationConfig.getEngine() != null) {
+            switch (presentationConfig.getEngine()) {
+                case NATIVE_JAVA:
+                    graphicEngine = new JavaNativeEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
+                    break;
+                case JAVAFX:
+                    graphicEngine = new JavaFXEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
+                    break;
+            }
+        } else {
+            graphicEngine = new JavaNativeEngine((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
+
+        }
+        // this.bufferedImage = graphicEngine.getActualFrame();
+        bufferedGraphics = graphicEngine.getGraphics();
+
+        isEnableTransparency = presentationConfig.isEnableTransparency();
+
+    }
+
+    protected abstract void buildAnimation();
+
+    public void build() {
+        buildAnimation();
+        joinBackGroundTasks();
+        execute(wait(1));
+        cut();
+    }
+
+    public void joinBackGroundTasks() {
+        if (backGroundTask.hasTasks()) {
+            // consome as coisas que estejam ainda em background
+            var remainingTaks = backGroundTask.getResumedTask();
+            backGroundTask.clear();
+            remainingTaks.execute();
+        }
+    }
+
+
+    public void processFrame() {
+        for (int i = 0; i < prePaintTasks.size(); i++) {
+            prePaintTasks.get(i).run();
+        }
+        frameCounter++;
+        paintComponent(bufferedGraphics);
+        if (!isDisablePreview)
+            frame.repaint();
+        var before2 = System.currentTimeMillis();
+        if (!disableCodec) videoCodec.addFrame(graphicEngine.getActualFrame());
+        if (disableCodec) {
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void paintComponent(Graphics g) {
+        if (isEnableTransparency)
+            graphicEngine.clear();
+        backGround.paint(g);
+
+
+        var g2d = (Graphics2D) g;
+        var oldT = (AffineTransform) g2d.getTransform().clone();
+        camera.applyView(g);
+
+        for (int i = 0; i < gobjects.size(); i++) {
+            gobjects.get(i).paint(g, true);
+        }
+
+        g2d.setTransform(oldT);
+    }
+
+
+    public void add(Gobject gobject) {
+        gobjects.add(gobject);
+    }
+
+    public void add(Gobject... gs) {
+        gobjects.addAll(Arrays.asList(gs));
+    }
+
+    public void addBefore(Gobject referential, Gobject gobject) {
+        gobjects.add(gobjects.indexOf(referential), gobject);
+    }
+
+    public void remove(Gobject gobject) {
+        gobjects.remove(gobject);
+    }
+
+    public int getObjectIndex(Gobject gobject) {
+        return gobjects.indexOf(gobject);
+    }
+
+    public void add(Gobject g, int index) {
+        gobjects.add(index, g);
+    }
+
+    public void remove(Gobject... gobjects) {
+        for (Gobject gobject : gobjects) {
+            this.gobjects.remove(gobject);
+        }
+    }
+
+    public void removeAll() {
+        this.gobjects = new ArrayList<>();
+    }
+
+    public void execute(Task task) {
+
+        task.setup();
+        while (!task.isDone()) {
+            task.step();
+            backGroundTask.step();
+            if (switchProcessing)
+                processFrame();
+        }
+        task.shutDown();
+        //cut();
+    }
+
+    public InterruptableTask executeInBackGround(Task task) {
+        return backGroundTask.append(task);
+    }
+
+    public void execute(Task... tasks) {
+        execute(new ParalelTask(tasks));
+    }
+
+    public void cut() {
+
+        // wait(seconds(10)).execute();
+
+        if (!disableCodec) {
+            videoCodec.saveVideo();
+            clipCounter++;
+            videoCodec.startNewVideo("video/", "mv" + clipCounter + ".mov", FRAME_RATE);
+        }
+    }
+
+
+    public int seconds(double seconds) {
+        return (int) (seconds * FRAME_RATE);
+    }
+
+    public Task paralel(Task... tasks) {
+        return new ParalelTask(tasks);
+    }
+
+    public Task fadeOut(Gobject gobject, int steps) {
         return new ColorTranform(gobject, new Color(0, 0, 0, 0), steps);
     }
 
-    public static Task fadeOut(Gobject gobject) {
-        return new ColorTranform(gobject, new Color(0, 0, 0, 0), presentation.seconds(1));
+    public Task fadeOut(Gobject gobject) {
+        return new ColorTranform(gobject, new Color(0, 0, 0, 0), seconds(1));
     }
 
-    public static Task fadeIn(Gobject gobject, int steps) {
-
-        var colorHolders = gobject.getColors();
-        var beforeColors = ColorHolder.toColorList(colorHolders);
-        for (ColorHolder colorHolder : colorHolders) {
-            var color = colorHolder.getColor();
-            colorHolder.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
-        }
-
-        return new ColorListTranform(colorHolders, beforeColors, steps);
-    }
-
-    public static Task fadeIn(Gobject gobject) {
-        return fadeIn(gobject, presentation.seconds(1));
+    public Task wait(int steps) {
+        return new WaitTask(steps);
     }
 
 
-    public static Task strokeAndFill(Gobject gobject, int steps) {
-        if (gobject instanceof ShapeGobject2) {
-            var sw = new StrokeGobject((ShapeGobject2) gobject);
-            presentation.add(sw);
-            return sw.getPerc().change(1, steps)
-                    .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
-                    .step(() -> presentation.remove(sw));
-        }
-        if (gobject instanceof ShapeLike) {
-            var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
-            presentation.add(sw);
-            return sw.getPerc().change(1, steps)
-                    .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
-                    .step(() -> presentation.remove(sw));
+    public void switchOff() {
+        switchProcessing = false;
+    }
 
-        }
-
-        if (gobject instanceof Group) {
-            return ((Group) gobject).onChildren(x -> Animation.strokeAndFill(x, steps), 0.7);
-        }
-
-        if (gobject instanceof SVGGobject) {
-            return strokeAndFill(((SVGGobject) gobject).toGroupGobject(), steps);
-        }
-
-        return fadeIn(gobject, steps);
+    public void switchOn() {
+        switchProcessing = true;
     }
 
 
-    public static Task unstrokeAndUnFill(Gobject gobject, int steps) {
-        if (gobject instanceof ShapeGobject2) {
-            var sw = new StrokeGobject((ShapeGobject2) gobject);
-            sw.getPerc().setValue(1);
-            presentation.add(sw);
-
-            return fadeOut(gobject, steps)
-                    .andThen(sw.getPerc().change(-1, steps))
-                    .step(() -> presentation.remove(sw));
-        }
-        if (gobject instanceof ShapeLike) {
-            var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
-            sw.getPerc().setValue(1);
-            presentation.add(sw);
-
-            return fadeOut(gobject, steps)
-                    .andThen(sw.getPerc().change(-1, steps))
-                    .step(() -> presentation.remove(sw));
-
-        }
-
-        if (gobject instanceof Group) {
-            return ((Group) gobject).onChildren(x -> Animation.unstrokeAndUnFill(x, steps), 0.7);
-        }
-
-        if (gobject instanceof SVGGobject) {
-            return unstrokeAndUnFill(((SVGGobject) gobject).toGroupGobject(), steps);
-        }
-
-        return fadeOut(gobject, steps);
+    public BackGround getBackGround() {
+        return backGround;
     }
 
-
-    public static Task strokeAndFill(Gobject gobject) {
-        return strokeAndFill(gobject, presentation.seconds(1));
+    public Camera getCamera() {
+        return camera;
     }
 
-
-    public static Task fadeInGrow(Gobject gobject, int steps) {
-        return new SupplierTask(() -> {
-            var scale = gobject.scale.getValue();
-            gobject.getScale().setValue(0);
-            return fadeIn(gobject, steps).parallel(gobject.getScale().change(scale, steps));
-        });
+    public PresentationConfig getPresentationConfig() {
+        return presentationConfig;
     }
 
-    public static Task fadeInGrowFromBig(Gobject gobject, int steps) {
-        return new SupplierTask(() -> {
-            var scale = gobject.scale.getValue();
-            gobject.getScale().setValue(15);
-            return fadeIn(gobject, steps).parallel(gobject.getScale().changeTo(scale, steps));
-        });
+    public List<Gobject> getGobjects() {
+        return gobjects;
     }
 
+    public Runnable addBehavior(Runnable task) {
+        prePaintTasks.add(task);
 
-    public static Task fadeoutGrow(Gobject gobject, int steps) {
-        return fadeOut(gobject, steps).parallel(gobject.getScale().change(gobject.getScale().getValue() * -1, steps));
+        return task;
     }
 
-    public static Task emphasize(Gobject gobject) {
-        return new SupplierTask(() -> {
-            var colorHolders = gobject.getColors();
-            var beforeColors = ColorHolder.toColorList(colorHolders);
-
-            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, presentation.seconds(0.5));
-
-            return new ColorTranform2(gobject, Color.yellow, 1.5, presentation.seconds(0.5))
-                    .parallel(gobject.getScale().change(0.1, presentation.seconds(0.5)))
-                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
-        });
+    public <T> Runnable addBehavior(T metadata, Consumer<T> task) {
+        return addBehavior(() -> task.accept(metadata));
     }
 
-    public static Task emphasize(Gobject gobject, Color color) {
-        return new SupplierTask(() -> {
-            var colorHolders = gobject.getColors();
-            var beforeColors = ColorHolder.toColorList(colorHolders);
-
-            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, presentation.seconds(0.5));
-
-            return new ColorTranform2(gobject, color, 1.5, presentation.seconds(0.5))
-                    .parallel(gobject.getScale().change(0.1, presentation.seconds(0.5)))
-                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
-        });
+    public void removeBehavior(Runnable r) {
+        prePaintTasks.remove(r);
     }
-
-
-    public static Task wooble(Gobject gobject) {
-        return gobject.getAngle().change(0.5, presentation.seconds(0.5))
-                .andThen(gobject.getAngle().change(-1.0, presentation.seconds(0.5))
-                        .andThen(gobject.getAngle().change(0.5, presentation.seconds(0.5))));
-    }
-
-    public static Task wooble2(Gobject gobject) {
-        return gobject.getAngle().change(0.5).forSeconds(0.5)
-                .andThen(gobject.getAngle().change(-1.0).forSeconds(0.5)
-                        .andThen(gobject.getAngle().change(0.5).forSeconds(0.5)));
-    }
-
-
-    public static Task t3b1b(Gobject a, Gobject b, int steps) {
-        return T3b1b.t3b1b(a, b, steps);
-    }
-
-    public static Task t3b1b(Gobject a, Gobject b, T3b1b.TransformationType transformationType, int steps) {
-        return T3b1b.t3b1b(a, b, transformationType, steps);
-    }
-
-    public static Task redBarr(Gobject g, int steps) {
-        var bounds = g.getBorders();
-        var line = new Line(bounds.getL1(), bounds.getL2(), Color.red);
-        line.setStrokeThickness(new DoubleHolder(3));
-        return strokeAndFill(line, steps);
-    }
-
-    public static Task redX(Gobject g, int steps) {
-        var bounds = g.getBorders();
-
-        var line1 = new Line(bounds.getL1(), bounds.getL2(), new Color(180, 20, 0));
-        line1.setStrokeThickness(new DoubleHolder(3));
-
-        var line2 = new Line(bounds.l1plusWidth(), bounds.l2minusWidth(), new Color(180, 20, 0));
-        line2.setStrokeThickness(new DoubleHolder(3));
-
-        return strokeAndFill(line1, steps).parallel(new WaitTask(presentation.seconds(0.10)).andThen(strokeAndFill(line2, steps)));
-    }
-
-    public static Task clipInit(Gobject gobject) {
-        var borders = gobject.getBorders();
-        var clipBox = new ClipBox(borders.getL1().copy(), borders.getL2().copy());
-        presentation.remove(gobject);
-        presentation.add(clipBox);
-        clipBox.add(gobject);
-        gobject.changeSetPosition(0, -borders.getheight());
-
-        return gobject.move(0, borders.getheight()).andThen(new SingleStepTask(() -> {
-            presentation.remove(clipBox);
-            presentation.add(gobject);
-        })).parallel(fadeIn(gobject));
-    }
-
-    public static Task replace(Gobject replaced, Gobject newGObject) {
-        return new SupplierTask(() -> {
-            newGObject.setPositionTo(replaced.getMidPoint());
-            return t3b1b(replaced, newGObject, presentation.seconds(1));
-        });
-    }
-
-    public static Task emphasizeBox(Gobject g) {
-        var rect = Rect.backgroundFor(g, 15);
-        rect.setStrokeColorHolder(new ColorHolder(Color.orange));
-        rect.setFillColorHolder(new ColorHolder(new Color(0, 0, 0, 0)));
-        return strokeAndFill(rect, presentation.seconds(1));
-    }
-
 }

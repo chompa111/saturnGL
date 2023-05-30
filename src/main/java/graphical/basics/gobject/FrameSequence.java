@@ -4,7 +4,8 @@ import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
-import graphical.basics.presentation.Presentation;
+import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.task.SingleStepTask;
 import graphical.basics.task.Task;
 
@@ -20,7 +21,7 @@ public class FrameSequence extends Gobject {
 
 
     public FrameSequence(Location location,String path, int fps) {
-        fpsRatio = fps / (Presentation.staticReference.seconds(1) + 0.0);
+        fpsRatio = fps / (AnimationStaticReference.staticReference.seconds(1) + 0.0);
         File folder = new File(path);
         for (File file : folder.listFiles()) {
             frames.add(new Image(location,file));

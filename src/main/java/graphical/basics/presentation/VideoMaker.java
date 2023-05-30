@@ -1,10 +1,8 @@
 package graphical.basics.presentation;
 
-import java.util.function.Consumer;
-
-public abstract class VideoMaker extends Presentation {
+public abstract class VideoMaker extends Animation {
     @Override
-    protected void buildPresentation() {
+    protected void buildAnimation() {
         // do nothing
     }
 

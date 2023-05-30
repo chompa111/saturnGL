@@ -1,7 +1,6 @@
 package graphical.basics.task;
 
 import graphical.basics.presentation.AnimationStaticReference;
-import graphical.basics.presentation.Presentation;
 
 import java.util.function.Supplier;
 

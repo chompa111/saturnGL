@@ -2,14 +2,11 @@ package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.FillAndStroke;
-import graphical.basics.gobject.struct.ShapeGobject2;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
-import graphical.basics.presentation.Presentation;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
