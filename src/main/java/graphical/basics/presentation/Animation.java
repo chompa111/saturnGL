@@ -43,7 +43,7 @@ public abstract class Animation extends AnimationStaticReference {
     JavaGraphicEngine graphicEngine;
 
     List<Gobject> gobjects = new ArrayList<>();
-    private final List<Runnable> prePaintTasks = new ArrayList<>();
+    private List<Runnable> prePaintTasks = new ArrayList<>();
 
     //FpsControler fpsControler = new FpsControler();
 
@@ -360,5 +360,11 @@ public abstract class Animation extends AnimationStaticReference {
 
     public void removeBehavior(Runnable r) {
         prePaintTasks.remove(r);
+    }
+
+    @Override
+    public void clear() {
+        gobjects = new ArrayList<>();
+        prePaintTasks = new ArrayList<>();
     }
 }

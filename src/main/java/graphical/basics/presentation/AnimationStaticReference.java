@@ -25,4 +25,6 @@ public abstract class AnimationStaticReference {
     public abstract void add(Gobject gobject);
 
     public abstract void remove(Gobject gobject);
+
+    public abstract void clear();
 }

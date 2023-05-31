@@ -60,6 +60,11 @@ public class Video extends Gobject {
         }).repeat(frames);
     }
 
+    public Task play() {
+        return play(AnimationStaticReference.staticReference.seconds(decodeAndCaptureFrames.getDuration()));
+    }
+
+
     static public String getValidJarPath(String resourceName) {
         try {
             var inputStream = AnimationStaticReference.staticReference.getClass().getResourceAsStream(resourceName);

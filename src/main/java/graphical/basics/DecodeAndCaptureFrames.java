@@ -4,6 +4,7 @@ import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.MediaListenerAdapter;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.mediatool.event.IVideoPictureEvent;
+import com.xuggle.xuggler.IContainer;
 
 import java.awt.image.BufferedImage;
 
@@ -13,12 +14,31 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
     IMediaReader reader;
     String videoFile;
 
+    double duration;
+
     boolean pepe = false;
 
 
     public DecodeAndCaptureFrames(String videoFile) {
         this.videoFile = videoFile;
+        duration = calculateDuration(videoFile);
         config();
+    }
+
+    private double calculateDuration(String caminho) {
+        // Criar um objeto de contêiner
+        IContainer container = IContainer.make();
+
+        // Abrir o arquivo de mídia
+        if (container.open(caminho, IContainer.Type.READ, null) < 0) {
+            throw new IllegalArgumentException("Não foi possível abrir o arquivo de mídia");
+        }
+
+        // Obter a duração do vídeo em microssegundos
+        long duration = container.getDuration();
+
+        container.close();
+        return (double) duration / 1000000;
     }
 
     public void config() {
@@ -40,6 +60,10 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
         while (getFrame() == null) {
             processFrame();
         }
+    }
+
+    public double getDuration() {
+        return duration;
     }
 
     public void processFrame() {

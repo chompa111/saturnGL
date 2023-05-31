@@ -2,13 +2,14 @@ package graphical.basics.behaviors;
 
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.AnimationStaticReference;
 
 public class AlwaysOnTop {
 
     public static Runnable onTop(Gobject gobject) {
         return () ->{
-            Animation.staticReference.remove(gobject);
-            Animation.staticReference.add(gobject);
+            AnimationStaticReference.staticReference.remove(gobject);
+            AnimationStaticReference.staticReference.add(gobject);
         };
     }
 }

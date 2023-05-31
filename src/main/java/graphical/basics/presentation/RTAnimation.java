@@ -26,7 +26,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public abstract class RTAnimation extends AnimationStaticReference {
 
-    public static Animation staticReference;
+    public static RTAnimation staticReference;
 
     private boolean switchProcessing = true;
     private boolean disableCodec;
@@ -46,7 +46,7 @@ public abstract class RTAnimation extends AnimationStaticReference {
     JavaGraphicEngine graphicEngine;
 
     List<Gobject> gobjects = new ArrayList<>();
-    private final List<Runnable> prePaintTasks = new ArrayList<>();
+    private List<Runnable> prePaintTasks = new ArrayList<>();
 
     long lastMesure = System.currentTimeMillis();
 
@@ -145,7 +145,7 @@ public abstract class RTAnimation extends AnimationStaticReference {
     }
 
     public RTAnimation() {
-
+        staticReference = this;
         AnimationStaticReference.staticReference = this;
         setup(presentationConfig);
         applyConfigs(presentationConfig);
@@ -259,5 +259,11 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
     public void addKeyReleasedListener(Consumer<KeyEvent> keyEventConsumer) {
         keyListener.addReleasedFunction(keyEventConsumer);
+    }
+
+    @Override
+    public void clear() {
+        gobjects = new ArrayList<>();
+        prePaintTasks = new ArrayList<>();
     }
 }

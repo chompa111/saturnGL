@@ -13,7 +13,7 @@ public class VideoSlide implements SaturnSlide {
     @Override
     public void perform() {
         AnimationStaticReference.staticReference.add(mainVideo);
-        mainVideo.play(AnimationStaticReference.staticReference.seconds(3))
+        mainVideo.play()
                 .executeInBackGround();
     }
 
@@ -22,7 +22,7 @@ public class VideoSlide implements SaturnSlide {
         AnimationStaticReference.staticReference.remove(mainVideo);
         if (revertVideo == null) return;
         AnimationStaticReference.staticReference.add(revertVideo);
-        mainVideo.play(AnimationStaticReference.staticReference.seconds(3))
+        mainVideo.play()
                 .executeInBackGround();
     }
 

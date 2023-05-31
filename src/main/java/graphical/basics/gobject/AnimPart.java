@@ -3,14 +3,19 @@ package graphical.basics.gobject;
 import graphical.basics.BackGround;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.presentation.PresentationConfig;
+import graphical.basics.presentation.RTAnimation;
 import graphical.basics.task.Task;
+
+import java.awt.event.KeyEvent;
+import java.util.function.Consumer;
 
 public abstract class AnimPart {
     protected abstract void buildPresentation(Gobject... gobjects);
 
     public void add(Gobject gobject) {
-        Animation.staticReference.add(gobject);
+        AnimationStaticReference.staticReference.add(gobject);
     }
 
     public void add(Gobject... gs) {
@@ -22,7 +27,7 @@ public abstract class AnimPart {
     }
 
     public void remove(Gobject gobject) {
-        Animation.staticReference.remove(gobject);
+        AnimationStaticReference.staticReference.remove(gobject);
     }
 
     public void remove(Gobject... gobjects) {
@@ -34,7 +39,7 @@ public abstract class AnimPart {
     }
 
     public void execute(Task task) {
-        Animation.staticReference.execute(task);
+        AnimationStaticReference.staticReference.execute(task);
     }
 
     public void execute(Task... tasks) {
@@ -46,7 +51,7 @@ public abstract class AnimPart {
     }
 
     public int seconds(double seconds) {
-        return Animation.staticReference.seconds(seconds);
+        return AnimationStaticReference.staticReference.seconds(seconds);
     }
 
     public Task paralel(Task... tasks) {
@@ -83,5 +88,33 @@ public abstract class AnimPart {
 
     public PresentationConfig getPresentationConfig() {
         return Animation.staticReference.getPresentationConfig();
+    }
+
+    public Runnable addBehavior(Runnable task) {
+        return AnimationStaticReference.staticReference.addBehavior(task);
+    }
+
+    public <T> Runnable addBehavior(T metadata, Consumer<T> task) {
+        return AnimationStaticReference.staticReference.addBehavior(metadata, task);
+    }
+
+    public void removeBehavior(Runnable r) {
+        AnimationStaticReference.staticReference.removeBehavior(r);
+    }
+
+    public void addDragBehavior(Gobject gobject) {
+        RTAnimation.staticReference.addDragBehavior(gobject);
+    }
+
+    public void addClickListener(Gobject gobject, Runnable r) {
+        RTAnimation.staticReference.addClickListener(gobject, r);
+    }
+
+    public void addKeyPressedListener(Consumer<KeyEvent> keyEventConsumer) {
+        RTAnimation.staticReference.addKeyPressedListener(keyEventConsumer);
+    }
+
+    public void addKeyReleasedListener(Consumer<KeyEvent> keyEventConsumer) {
+        RTAnimation.staticReference.addKeyReleasedListener(keyEventConsumer);
     }
 }
