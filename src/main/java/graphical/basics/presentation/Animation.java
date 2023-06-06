@@ -367,4 +367,5 @@ public abstract class Animation extends AnimationStaticReference {
         gobjects = new ArrayList<>();
         prePaintTasks = new ArrayList<>();
     }
+
 }

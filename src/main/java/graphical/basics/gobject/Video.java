@@ -33,6 +33,14 @@ public class Video extends Gobject {
         heith = img.getHeight();
     }
 
+    public Video(String path) {
+        this.location = Location.at(0, 0);
+        decodeAndCaptureFrames = new DecodeAndCaptureFrames(path);
+        var img = decodeAndCaptureFrames.getFrame();
+        width = img.getWidth();
+        heith = img.getHeight();
+    }
+
     @Override
     public void paint(Graphics g) {
         var img = decodeAndCaptureFrames.getFrame();
@@ -87,5 +95,17 @@ public class Video extends Gobject {
 
     public void startOver() {
         decodeAndCaptureFrames.config();
+    }
+
+    public void resize() {
+        var config = AnimationStaticReference.staticReference.getPresentationConfig();
+        var wr = (width + 0.0) / config.getWidth();
+        var hr = (heith + 0.0) / config.getHeight();
+        var mr = Math.max(wr, hr);
+
+        if (mr > 0.8 && mr < 1) {
+            return;
+        }
+        getScale().setValue(1.0 / mr);
     }
 }

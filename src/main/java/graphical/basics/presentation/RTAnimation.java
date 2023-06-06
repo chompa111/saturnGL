@@ -25,13 +25,14 @@ import java.util.function.Consumer;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public abstract class RTAnimation extends AnimationStaticReference {
-
     public static RTAnimation staticReference;
 
     private boolean switchProcessing = true;
     private boolean disableCodec;
     private boolean isDisablePreview;
     private boolean isEnableTransparency;
+
+    private boolean refresh = true;
 
     private DragListener dragListener;
     private ClickListener clickListener;
@@ -74,27 +75,28 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
         this.camera = new Camera(Location.at((presentationConfig.getHeight() / 2.0), presentationConfig.getWidth() / 2.0), presentationConfig.getScale());
 
+        if (frame == null) {
+            frame = new JFrame() {
+                @Override
+                public void paint(Graphics g) {
+                    if (graphicEngine != null)
+                        g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
+                    lastMesure = System.currentTimeMillis();
+                }
+            };
+            //preview windowSize
+            frame.setUndecorated(!presentationConfig.isPreviewWindowBarVisible());
+            frame.setSize((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
+            //eable preview
 
-        frame = new JFrame() {
-            @Override
-            public void paint(Graphics g) {
-                if (graphicEngine != null)
-                    g.drawImage(graphicEngine.getActualFrame(), 0, 0, null);
-                lastMesure = System.currentTimeMillis();
-            }
-        };
+            frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        }
+
         dragListener = new DragListener(frame);
         clickListener = new ClickListener(frame);
         keyListener = new KeyListener(frame);
 
-
-        //preview windowSize
-        frame.setUndecorated(!presentationConfig.isPreviewWindowBarVisible());
-        frame.setSize((int) (presentationConfig.getWidth() * presentationConfig.getScale()), (int) (presentationConfig.getHeight() * presentationConfig.getScale()));
-        //eable preview
-
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setVisible(true);
 
         if (presentationConfig.getEngine() != null) {
             switch (presentationConfig.getEngine()) {
@@ -110,7 +112,9 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
         }
         // this.bufferedImage = graphicEngine.getActualFrame();
-        bufferedGraphics = graphicEngine.getGraphics();
+        if (bufferedGraphics == null) {
+            bufferedGraphics = graphicEngine.getGraphics();
+        }
 
 
     }
@@ -154,6 +158,35 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
         new Thread(() -> {
             while (true) {
+                if (refresh) {
+                    backGroundTask.step();
+                    processFrame();
+                }
+                try {
+                    Thread.sleep(25);
+                    //System.out.println("print");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
+    }
+
+    public RTAnimation(RTAnimation rtAnimation) {
+        this.frame = rtAnimation.frame;
+        this.bufferedGraphics = rtAnimation.bufferedGraphics;
+
+        staticReference = this;
+        AnimationStaticReference.staticReference = this;
+        setup(presentationConfig);
+        applyConfigs(presentationConfig);
+
+        backGround = new BackGround(presentationConfig.getWidth(), presentationConfig.getHeight());
+
+        new Thread(() -> {
+            while (true) {
+                if (kill) return;
                 backGroundTask.step();
                 processFrame();
                 try {
@@ -266,4 +299,28 @@ public abstract class RTAnimation extends AnimationStaticReference {
         gobjects = new ArrayList<>();
         prePaintTasks = new ArrayList<>();
     }
+
+    public void disable() {
+        refresh = false;
+    }
+
+    public void enabled() {
+        refresh = true;
+    }
+
+    public void resetContext() {
+        AnimationStaticReference.staticReference = this;
+    }
+
+    boolean kill = false;
+
+    public void kill() {
+        kill = true;
+    }
+
+    @Override
+    public PresentationConfig getPresentationConfig() {
+        return presentationConfig;
+    }
+
 }

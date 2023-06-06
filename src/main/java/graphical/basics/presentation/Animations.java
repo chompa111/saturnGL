@@ -15,17 +15,18 @@ import graphical.basics.value.DoubleHolder;
 
 import java.awt.*;
 
+import static graphical.basics.presentation.AnimationStaticReference.staticReference;
+
 public class Animations {
 
 
-    private static final AnimationStaticReference presentation = AnimationStaticReference.staticReference;
 
     public static Task fadeOut(Gobject gobject, int steps) {
         return new ColorTranform(gobject, new Color(0, 0, 0, 0), steps);
     }
 
     public static Task fadeOut(Gobject gobject) {
-        return new ColorTranform(gobject, new Color(0, 0, 0, 0), presentation.seconds(1));
+        return new ColorTranform(gobject, new Color(0, 0, 0, 0), staticReference.seconds(1));
     }
 
     public static Task fadeIn(Gobject gobject, int steps) {
@@ -41,24 +42,24 @@ public class Animations {
     }
 
     public static Task fadeIn(Gobject gobject) {
-        return fadeIn(gobject, presentation.seconds(1));
+        return fadeIn(gobject, staticReference.seconds(1));
     }
 
 
     public static Task strokeAndFill(Gobject gobject, int steps) {
         if (gobject instanceof ShapeGobject2) {
             var sw = new StrokeGobject((ShapeGobject2) gobject);
-            presentation.add(sw);
+            staticReference.add(sw);
             return sw.getPerc().change(1, steps)
                     .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
-                    .step(() -> presentation.remove(sw));
+                    .step(() -> staticReference.remove(sw));
         }
         if (gobject instanceof ShapeLike) {
             var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
-            presentation.add(sw);
+            staticReference.add(sw);
             return sw.getPerc().change(1, steps)
                     .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
-                    .step(() -> presentation.remove(sw));
+                    .step(() -> staticReference.remove(sw));
 
         }
 
@@ -78,20 +79,20 @@ public class Animations {
         if (gobject instanceof ShapeGobject2) {
             var sw = new StrokeGobject((ShapeGobject2) gobject);
             sw.getPerc().setValue(1);
-            presentation.add(sw);
+            staticReference.add(sw);
 
             return fadeOut(gobject, steps)
                     .andThen(sw.getPerc().change(-1, steps))
-                    .step(() -> presentation.remove(sw));
+                    .step(() -> staticReference.remove(sw));
         }
         if (gobject instanceof ShapeLike) {
             var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
             sw.getPerc().setValue(1);
-            presentation.add(sw);
+            staticReference.add(sw);
 
             return fadeOut(gobject, steps)
                     .andThen(sw.getPerc().change(-1, steps))
-                    .step(() -> presentation.remove(sw));
+                    .step(() -> staticReference.remove(sw));
 
         }
 
@@ -108,7 +109,7 @@ public class Animations {
 
 
     public static Task strokeAndFill(Gobject gobject) {
-        return strokeAndFill(gobject, presentation.seconds(1));
+        return strokeAndFill(gobject, staticReference.seconds(1));
     }
 
 
@@ -138,11 +139,11 @@ public class Animations {
             var colorHolders = gobject.getColors();
             var beforeColors = ColorHolder.toColorList(colorHolders);
 
-            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, presentation.seconds(0.5));
+            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, staticReference.seconds(0.5));
 
-            return new ColorTranform2(gobject, Color.yellow, 1.5, presentation.seconds(0.5))
-                    .parallel(gobject.getScale().change(0.1, presentation.seconds(0.5)))
-                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
+            return new ColorTranform2(gobject, Color.yellow, 1.5, staticReference.seconds(0.5))
+                    .parallel(gobject.getScale().change(0.1, staticReference.seconds(0.5)))
+                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, staticReference.seconds(0.5))));
         });
     }
 
@@ -151,19 +152,19 @@ public class Animations {
             var colorHolders = gobject.getColors();
             var beforeColors = ColorHolder.toColorList(colorHolders);
 
-            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, presentation.seconds(0.5));
+            var backToOriginalColor = new ColorListTranform(gobject.getColors(), beforeColors, staticReference.seconds(0.5));
 
-            return new ColorTranform2(gobject, color, 1.5, presentation.seconds(0.5))
-                    .parallel(gobject.getScale().change(0.1, presentation.seconds(0.5)))
-                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, presentation.seconds(0.5))));
+            return new ColorTranform2(gobject, color, 1.5, staticReference.seconds(0.5))
+                    .parallel(gobject.getScale().change(0.1, staticReference.seconds(0.5)))
+                    .andThen(backToOriginalColor.parallel(gobject.getScale().change(-0.1, staticReference.seconds(0.5))));
         });
     }
 
 
     public static Task wooble(Gobject gobject) {
-        return gobject.getAngle().change(0.5, presentation.seconds(0.5))
-                .andThen(gobject.getAngle().change(-1.0, presentation.seconds(0.5))
-                        .andThen(gobject.getAngle().change(0.5, presentation.seconds(0.5))));
+        return gobject.getAngle().change(0.5, staticReference.seconds(0.5))
+                .andThen(gobject.getAngle().change(-1.0, staticReference.seconds(0.5))
+                        .andThen(gobject.getAngle().change(0.5, staticReference.seconds(0.5))));
     }
 
     public static Task wooble2(Gobject gobject) {
@@ -197,27 +198,27 @@ public class Animations {
         var line2 = new Line(bounds.l1plusWidth(), bounds.l2minusWidth(), new Color(180, 20, 0));
         line2.setStrokeThickness(new DoubleHolder(3));
 
-        return strokeAndFill(line1, steps).parallel(new WaitTask(presentation.seconds(0.10)).andThen(strokeAndFill(line2, steps)));
+        return strokeAndFill(line1, steps).parallel(new WaitTask(staticReference.seconds(0.10)).andThen(strokeAndFill(line2, steps)));
     }
 
     public static Task clipInit(Gobject gobject) {
         var borders = gobject.getBorders();
         var clipBox = new ClipBox(borders.getL1().copy(), borders.getL2().copy());
-        presentation.remove(gobject);
-        presentation.add(clipBox);
+        staticReference.remove(gobject);
+        staticReference.add(clipBox);
         clipBox.add(gobject);
         gobject.changeSetPosition(0, -borders.getheight());
 
         return gobject.move(0, borders.getheight()).andThen(new SingleStepTask(() -> {
-            presentation.remove(clipBox);
-            presentation.add(gobject);
+            staticReference.remove(clipBox);
+            staticReference.add(gobject);
         })).parallel(fadeIn(gobject));
     }
 
     public static Task replace(Gobject replaced, Gobject newGObject) {
         return new SupplierTask(() -> {
             newGObject.setPositionTo(replaced.getMidPoint());
-            return t3b1b(replaced, newGObject, presentation.seconds(1));
+            return t3b1b(replaced, newGObject, staticReference.seconds(1));
         });
     }
 
@@ -225,7 +226,7 @@ public class Animations {
         var rect = Rect.backgroundFor(g, 15);
         rect.setStrokeColorHolder(new ColorHolder(Color.orange));
         rect.setFillColorHolder(new ColorHolder(new Color(0, 0, 0, 0)));
-        return strokeAndFill(rect, presentation.seconds(1));
+        return strokeAndFill(rect, staticReference.seconds(1));
     }
 
 }

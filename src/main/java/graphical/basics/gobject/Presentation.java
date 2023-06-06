@@ -1,7 +1,9 @@
 package graphical.basics.gobject;
 
+import graphical.basics.presentation.PresentationConfig;
 import graphical.basics.presentation.RTAnimation;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -36,8 +38,14 @@ public abstract class Presentation extends RTAnimation {
         });
     }
 
+    @Override
+    public void setup(PresentationConfig presentationConfig) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        presentationConfig.setWidth(screenSize.width);
+        presentationConfig.setHeight(screenSize.height);
+        presentationConfig.setPreviewWindowBarVisible(false);
 
-
+    }
 
     public void addSlide(SaturnSlide saturnSlide) {
         slideSequence.add(saturnSlide);

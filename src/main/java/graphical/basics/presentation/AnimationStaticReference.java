@@ -1,6 +1,7 @@
 package graphical.basics.presentation;
 
 import graphical.basics.gobject.struct.Gobject;
+import graphical.basics.location.Location;
 import graphical.basics.task.InterruptableTask;
 import graphical.basics.task.Task;
 
@@ -27,4 +28,11 @@ public abstract class AnimationStaticReference {
     public abstract void remove(Gobject gobject);
 
     public abstract void clear();
+
+    public abstract PresentationConfig getPresentationConfig();
+
+    public Location midScreen() {
+        var config = getPresentationConfig();
+        return Location.at(config.getWidth() / 2.0, config.getHeight() / 2.0);
+    }
 }

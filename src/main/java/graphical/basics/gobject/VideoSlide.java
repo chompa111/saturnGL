@@ -6,8 +6,10 @@ public class VideoSlide implements SaturnSlide {
     Video mainVideo;
     Video revertVideo;
 
-    public VideoSlide(Video mainVideo) {
-        this.mainVideo = mainVideo;
+    public VideoSlide(String path) {
+        this.mainVideo = new Video(path);
+        mainVideo.resize();
+        mainVideo.setPositionTo(AnimationStaticReference.staticReference.midScreen());
     }
 
     @Override
@@ -27,7 +29,6 @@ public class VideoSlide implements SaturnSlide {
     }
 
 
-
     @Override
     public void remove() {
         AnimationStaticReference.staticReference.remove(mainVideo);
@@ -39,7 +40,7 @@ public class VideoSlide implements SaturnSlide {
     }
 
     @Override
-    public void release(){
+    public void release() {
         AnimationStaticReference.staticReference.remove(mainVideo);
         mainVideo.startOver();
     }
