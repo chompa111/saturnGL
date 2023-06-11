@@ -1,7 +1,5 @@
 package graphical.basics.gobject;
 
-import graphical.basics.examples.WebPageEmbeder;
-import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.presentation.RTAnimation;
 
 public class WebPageSlide implements SaturnSlide {
