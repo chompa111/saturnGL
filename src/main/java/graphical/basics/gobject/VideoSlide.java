@@ -1,10 +1,13 @@
 package graphical.basics.gobject;
 
 import graphical.basics.presentation.AnimationStaticReference;
+import graphical.basics.task.InterruptableTask;
 
 public class VideoSlide implements SaturnSlide {
     Video mainVideo;
     Video revertVideo;
+
+    InterruptableTask videoTask;
 
     public VideoSlide(String path) {
         this.mainVideo = new Video(path);
@@ -15,7 +18,7 @@ public class VideoSlide implements SaturnSlide {
     @Override
     public void perform() {
         AnimationStaticReference.staticReference.add(mainVideo);
-        mainVideo.play()
+        videoTask = mainVideo.play()
                 .executeInBackGround();
     }
 
@@ -32,6 +35,8 @@ public class VideoSlide implements SaturnSlide {
     @Override
     public void remove() {
         AnimationStaticReference.staticReference.remove(mainVideo);
+        videoTask.kill();
+        mainVideo.seek();
     }
 
     @Override
@@ -42,6 +47,7 @@ public class VideoSlide implements SaturnSlide {
     @Override
     public void release() {
         AnimationStaticReference.staticReference.remove(mainVideo);
+        videoTask.kill();
         mainVideo.startOver();
     }
 

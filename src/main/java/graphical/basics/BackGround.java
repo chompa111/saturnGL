@@ -3,6 +3,7 @@ package graphical.basics;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
+import graphical.basics.presentation.RTAnimation;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -44,4 +45,5 @@ public class BackGround extends Gobject {
     public ColorHolder getBackGroundColor() {
         return backGroundColor;
     }
+
 }

@@ -18,6 +18,10 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
 
     boolean pepe = false;
 
+    public void seek() {
+
+    }
+
 
     public DecodeAndCaptureFrames(String videoFile) {
         this.videoFile = videoFile;
@@ -38,13 +42,14 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
         long duration = container.getDuration();
 
         container.close();
-        return (double) duration / 1000000;
+        return (double) duration / 1_000_000;
     }
 
     public void config() {
         bu = null;
         // create a media reader for processing video
         reader = ToolFactory.makeReader(videoFile);
+        reader.setQueryMetaData(false);
 
         // stipulate that we want BufferedImages created in BGR 24bit color space
         reader.setBufferedImageTypeToGenerate(BufferedImage.TYPE_3BYTE_BGR);

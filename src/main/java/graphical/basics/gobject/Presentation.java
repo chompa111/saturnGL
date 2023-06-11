@@ -11,7 +11,6 @@ public abstract class Presentation extends RTAnimation {
     public ArrayList<SaturnSlide> slideSequence = new ArrayList<>();
     int index = 0;
 
-
     @Override
     public void buildAnimation() {
 

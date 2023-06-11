@@ -33,6 +33,11 @@ public class Video extends Gobject {
         heith = img.getHeight();
     }
 
+    public void seek(){
+        decodeAndCaptureFrames.seek();
+        decodeAndCaptureFrames.processFrame();
+    }
+
     public Video(String path) {
         this.location = Location.at(0, 0);
         decodeAndCaptureFrames = new DecodeAndCaptureFrames(path);
