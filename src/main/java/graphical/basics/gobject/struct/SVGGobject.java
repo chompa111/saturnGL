@@ -1,16 +1,24 @@
 package graphical.basics.gobject.struct;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.animations.ifood2.SVGShapeExtractor;
 import graphical.basics.gobject.Group;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.value.DoubleHolder;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.bridge.BridgeContext;
+import org.apache.batik.bridge.GVTBuilder;
+import org.apache.batik.bridge.UserAgentAdapter;
+import org.apache.batik.gvt.CompositeGraphicsNode;
+import org.apache.batik.gvt.GraphicsNode;
+import org.apache.batik.gvt.ShapeNode;
 import org.apache.batik.parser.AWTPathProducer;
 import org.apache.batik.parser.PathParser;
+import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.svg.SVGDocument;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,6 +29,7 @@ import javax.xml.xpath.XPathFactory;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -279,5 +288,54 @@ public class SVGGobject extends Gobject {
                 .map(c -> (ShapeGobject) c).collect(Collectors.toList());
         copy.scale = new DoubleHolder(scale.getValue());
         return copy;
+    }
+
+    public static class SVGShapeExtractor {
+
+        public static List<Shape> extractShapes(String svgFilePath) throws Exception {
+            // Create a SAX-based SVG document factory
+            String parser = XMLResourceDescriptor.getXMLParserClassName();
+            SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(parser);
+
+            // Parse the SVG file into a document
+            SVGDocument doc = factory.createSVGDocument(new File(svgFilePath).toURI().toString());
+
+            // Create a Batik context and builder
+            UserAgentAdapter userAgent = new UserAgentAdapter();
+            BridgeContext ctx = new BridgeContext(userAgent);
+            GVTBuilder builder = new GVTBuilder();
+
+            // Build the SVG graphics node tree
+            GraphicsNode rootNode = builder.build(ctx, doc);
+
+
+
+            // Extract the shapes from the root node
+            List<Shape> shapes = new ArrayList<>();
+            extractShapesFromNode(rootNode, shapes, new AffineTransform(),ctx);
+
+            return shapes;
+        }
+
+        private static void extractShapesFromNode(GraphicsNode node, List<Shape> shapes, AffineTransform transform , BridgeContext ctx) {
+            // Apply the transformation to get the Shape in the correct coordinate space
+
+
+            Shape shape = node.getOutline();
+            if (shape != null && node instanceof ShapeNode) {
+                ctx.getElement(node);
+                shapes.add(transform.createTransformedShape(shape));
+            }
+
+            // If the node is a CompositeGraphicsNode, it has children
+            if (node instanceof CompositeGraphicsNode) {
+                CompositeGraphicsNode compositeNode = (CompositeGraphicsNode) node;
+                for (var childNode : compositeNode.getChildren()) {
+                    extractShapesFromNode((GraphicsNode) childNode, shapes, transform,ctx);
+                }
+            }
+
+        }
+
     }
 }
