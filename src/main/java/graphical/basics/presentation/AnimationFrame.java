@@ -1,14 +1,10 @@
 package graphical.basics.presentation;
 
-import codec.engine.JavaGraphicEngine;
-import graphical.basics.examples.regex.Dispatcher;
 import graphical.basics.gobject.SaturnJComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Area;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;

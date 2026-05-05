@@ -1,13 +1,13 @@
 package graphical.basics.gobject;
 
-import graphical.basics.examples.regex.Dispatcher;
 import graphical.basics.location.Location;
-import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.presentation.RTAnimation;
 import graphical.basics.value.DoubleHolder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Area;
 
 public class SaturnJComponent {
@@ -79,4 +79,28 @@ public class SaturnJComponent {
         }
     }
 
+    public static class Dispatcher implements KeyEventDispatcher, AWTEventListener {
+        private JFrame targetFrame;
+
+        public Dispatcher(JFrame targetFrame) {
+            this.targetFrame = targetFrame;
+        }
+
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent e) {
+            if (Thread.currentThread().getStackTrace().length > 30) {
+                return false;
+            }
+            targetFrame.dispatchEvent(e);
+            return false;
+        }
+
+        @Override
+        public void eventDispatched(AWTEvent event) {
+
+            if (Thread.currentThread().getStackTrace().length > 30) return;
+
+            targetFrame.dispatchEvent(event);
+        }
+    }
 }
