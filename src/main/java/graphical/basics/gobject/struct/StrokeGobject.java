@@ -2,17 +2,13 @@ package graphical.basics.gobject.struct;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.DynamicPath;
-import graphical.basics.location.Location;
-import graphical.basics.location.LocationPair;
 import graphical.basics.value.DoubleHolder;
 import graphical.basics.value.NumberHolder;
 import org.apache.batik.ext.awt.geom.PathLength;
 import java.awt.Stroke;
 import java.awt.*;
-import java.util.Comparator;
-import java.util.List;
 
-public class StrokeGobject extends ShapeGobject2 {
+public class StrokeGobject extends ShapeGobject {
 
     NumberHolder perc = new DoubleHolder(0);
     double len;
@@ -22,16 +18,17 @@ public class StrokeGobject extends ShapeGobject2 {
         super(shape, fillColor, strokeColor);
     }
 
-    public StrokeGobject(ShapeGobject2 shapeGobject2) {
-        this.strokeColorHolder = shapeGobject2.strokeColorHolder != null ? new ColorHolder(shapeGobject2.strokeColorHolder.getColor())
-                : shapeGobject2.fillColorHolder != null ? new ColorHolder(shapeGobject2.fillColorHolder.getColor()) : new ColorHolder(new Color(0, 0, 0, 0));
-        this.shapeOfsetX = shapeGobject2.shapeOfsetX;
-        this.shapeOfsetY = shapeGobject2.shapeOfsetY;
-        this.shape = shapeGobject2.shape;
-        this.location = shapeGobject2.location;
-        this.angle = shapeGobject2.getAngle();
-        this.scale = shapeGobject2.getScale();
-        this.setStrokeThickness(shapeGobject2.getStrokeThickness());
+    public StrokeGobject(ShapeGobject shapeGobject) {
+        this.strokeColorHolder = shapeGobject.strokeColorHolder != null ? new ColorHolder(shapeGobject.strokeColorHolder.getColor())
+                : shapeGobject.fillColorHolder != null ? new ColorHolder(shapeGobject.fillColorHolder.getColor()) : new ColorHolder(new Color(0, 0, 0, 0));
+        this.shapeOfsetX = shapeGobject.shapeOfsetX;
+        this.shapeOfsetY = shapeGobject.shapeOfsetY;
+        this.shape = shapeGobject.shape;
+        this.location = shapeGobject.location;
+        this.angle = shapeGobject.getAngle();
+        this.scale = shapeGobject.getScale();
+        this.setStrokeThickness(shapeGobject.getStrokeThickness());
+        this.setStroke(shapeGobject.getStroke().copy());
 
         // funciona bem pra figuras
 
@@ -42,13 +39,13 @@ public class StrokeGobject extends ShapeGobject2 {
 
     }
 
-    public StrokeGobject(ShapeGobject2 shapeGobject2, Color color) {
+    public StrokeGobject(ShapeGobject shapeGobject, Color color) {
         this.strokeColorHolder = new ColorHolder(color);
-        this.shapeOfsetX = shapeGobject2.shapeOfsetX;
-        this.shapeOfsetY = shapeGobject2.shapeOfsetY;
-        this.shape = shapeGobject2.shape;
-        this.location = shapeGobject2.location;
-        this.setStrokeThickness(shapeGobject2.getStrokeThickness());
+        this.shapeOfsetX = shapeGobject.shapeOfsetX;
+        this.shapeOfsetY = shapeGobject.shapeOfsetY;
+        this.shape = shapeGobject.shape;
+        this.location = shapeGobject.location;
+        this.setStrokeThickness(shapeGobject.getStrokeThickness());
 
         len = new PathLength(shape).lengthOfPath();
     }

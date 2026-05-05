@@ -33,7 +33,10 @@ public class ParalelTask implements Task {
                 task.step();
             }
         }
-        toRemove.forEach(task -> taskList.remove(task));
+        toRemove.forEach(task -> {
+            taskList.remove(task);
+            task.shutDown();
+        });
     }
 
     @Override

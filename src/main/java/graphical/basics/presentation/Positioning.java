@@ -1,6 +1,6 @@
 package graphical.basics.presentation;
 
-import graphical.basics.gobject.struct.Char2;
+import graphical.basics.gobject.struct.Char;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.Point;
@@ -131,7 +131,7 @@ public class Positioning {
         List<Task> taskList = new ArrayList<>();
 
         for (int i = 0; i < l1.size(); i++) {
-            if(l1.get(i) instanceof Char2){
+            if(l1.get(i) instanceof Char){
                 var char1=l1.get(i);
                 var char2=l2.get(i);
 

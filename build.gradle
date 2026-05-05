@@ -1,16 +1,19 @@
 
 plugins {
     id 'java'
+    id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'com.teamdev.jxbrowser' version '1.0.1'
+//    id 'org.beryx.jlink' version '2.24.0'
 }
 
 javafx {
-    version = "16"
+    version = "22"
     modules = [ 'javafx.controls', 'javafx.swing','javafx.web']
 }
 
 group 'org.example'
-version '1.0.11'
+version '1.0.18'
 
 repositories {
     mavenCentral()
@@ -25,6 +28,9 @@ repositories {
 
     maven { url 'https://jitpack.io' }
 
+}
+jxbrowser {
+    version '7.37.1'
 }
 
 dependencies {
@@ -41,17 +47,38 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
     implementation 'org.jfree:org.jfree.fxgraphics2d:2.1.2'
     implementation 'com.github.sealedtx:java-youtube-downloader:3.0.1'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.1'
+    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
+    implementation group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0'
+
+    implementation 'net.java.dev.jna:jna:5.9.0'
+    implementation 'net.java.dev.jna:jna-platform:5.9.0'
+//    implementation jxbrowser.crossPlatform
+//    implementation jxbrowser.swing
+
+    implementation 'org.fxyz3d:fxyz3d-importers:0.6.0'
+
+    implementation 'me.friwi:jcefmaven:122.1.10'
 
 }
+
 
 test {
     useJUnitPlatform()
 }
 
 
+jar {
 
+    manifest {
+        attributes 'Main-Class': 'graphical.basics.animations.ifood2.ifoodAnim2'
+    }
 
-
-
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 
 

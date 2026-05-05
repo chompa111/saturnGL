@@ -5,15 +5,21 @@ import graphical.basics.gobject.struct.FillAndStroke;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.location.Point;
+import graphical.basics.presentation.AnimationStaticReference;
+import graphical.basics.presentation.Animations;
+import graphical.basics.presentation.RTAnimation;
+import graphical.basics.task.WaitTask;
+import javafx.util.Pair;
+import org.apache.batik.ext.awt.geom.PathLength;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DynamicPath extends FillAndStroke {
 
@@ -30,7 +36,6 @@ public class DynamicPath extends FillAndStroke {
     }
 
 
-
     @Override
     public void paint(Graphics g) {
 
@@ -44,18 +49,18 @@ public class DynamicPath extends FillAndStroke {
             g2d.fill(shape);
         }
         if (strokeColorHolder != null) {
-            ((Graphics2D)g).setStroke(new BasicStroke((float)getStrokeThickness().getValue()));
+            ((Graphics2D) g).setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
             g.setColor(strokeColorHolder.getColor());
             g2d.draw(shape);
         }
 
 //        g.setColor(Color.green);
-//        for(int i=0;i<vertices.size();i++){
-//            var l= vertices.get(i);
-//            g.setFont(new Font("Dialog",Font.PLAIN,3));
-//            g.drawString(i+"",(int)l.getX(),(int)l.getY());
-//            double radius=2;
-//            g2d.fill(new Ellipse2D.Double(l.getX()-radius/2,l.getY()-radius/2, radius,radius));
+//        for (int i = 0; i < vertices.size(); i++) {
+//            var l = vertices.get(i);
+//            g.setFont(new Font("Dialog", Font.PLAIN, 3));
+//            g.drawString(i + "", (int) l.getX(), (int) l.getY());
+//            double radius = 4;
+//            g2d.fill(new Ellipse2D.Double(l.getX() - radius / 2, l.getY() - radius / 2, radius, radius));
 //        }
 
     }
@@ -144,14 +149,14 @@ public class DynamicPath extends FillAndStroke {
 
             if (nextElement[0] == PathIterator.SEG_LINETO) {
 
-                locations.add(new Point(nextElement[1]+Math.random()*0.001, nextElement[2]+Math.random()*0.001));
+                locations.add(new Point(nextElement[1] + Math.random() * 0.001, nextElement[2] + Math.random() * 0.001));
 
             } else if (nextElement[0] == PathIterator.SEG_CLOSE) {
-                locations.add(new Point(start[1], start[2]));
+               // locations.add(new Point(start[1], start[2]));
             }
 
         }
-      //  locations.remove(locations.size()-1);
+        //  locations.remove(locations.size()-1);
 
         return locations;
     }
@@ -169,7 +174,7 @@ public class DynamicPath extends FillAndStroke {
             double[] pathIteratorCoords = {type, coords[0], coords[1]};
             areaPoints.add(pathIteratorCoords);
         }
-        GeneralPath generalPath= new GeneralPath();
+        GeneralPath generalPath = new GeneralPath();
 
         double[] start = new double[3]; // To record where each polygon starts
 
@@ -185,10 +190,10 @@ public class DynamicPath extends FillAndStroke {
 
             // Make the lines
             if (currentElement[0] == PathIterator.SEG_MOVETO) {
-                if(!(start[0]==0 && start[1]==0 && start[2]==0)){
+                if (!(start[0] == 0 && start[1] == 0 && start[2] == 0)) {
                     generalPath.closePath();
                     shapes.add(generalPath);
-                    generalPath=new GeneralPath();
+                    generalPath = new GeneralPath();
                 }
                 generalPath.moveTo(currentElement[1], currentElement[2]);
                 start = currentElement; // Record where the polygon started to close it later
@@ -209,7 +214,109 @@ public class DynamicPath extends FillAndStroke {
     }
 
 
+    public double perimeterOfPath (DynamicPath path){
+        var totaldistance = 0.0;
+        var locations=path.getReferenceLocations();
+        for (int i = 1; i < locations.size(); i++) {
+            var pointA = locations.get(i - 1);
+            var pointB = locations.get(i);
+            totaldistance += pointA.distanceTo(pointB);
+        }
+        return totaldistance;
+    }
 
+    public void equalizeNumPoints(DynamicPath otherShape) {
+        var perimeterThis =perimeterOfPath(this);
+        var perimeterOther =perimeterOfPath(otherShape);
+
+        List<Double> percentagesThis = new ArrayList<>();
+
+        var totalThis = 0.0;
+        var mapA = new HashMap<Integer,Double>();
+        for (int i = 1; i < this.vertices.size(); i++) {
+            var pointA = vertices.get(i - 1);
+            var pointB = vertices.get(i);
+            totalThis += pointA.distanceTo(pointB);
+            var percentage = totalThis / perimeterThis;
+            percentagesThis.add(percentage);
+            mapA.put(System.identityHashCode(pointB),percentage);
+        }
+
+
+        List<Double> percentagesOther = new ArrayList<>();
+
+        var mapB = new HashMap<Integer,Double>();
+
+        var totalOther = 0.0;
+        var pointOther = otherShape.getReferenceLocations();
+        for (int i = 1; i < pointOther.size(); i++) {
+            var pointA = pointOther.get(i - 1);
+            var pointB = pointOther.get(i);
+            totalOther += pointA.distanceTo(pointB);
+            var percentage =totalOther / perimeterOther;
+            percentagesOther.add(percentage);
+            mapB.put(System.identityHashCode(pointB),percentage);
+        }
+        var x = new HashSet<>(percentagesThis);
+        x.addAll(percentagesOther);
+        var L = x.stream().sorted().collect(Collectors.toList());
+
+        insertNewPoints(mapA, this.vertices, L);
+        insertNewPoints(mapB, pointOther, L);
+    }
+
+    private void insertNewPoints(HashMap<Integer, Double> mapA, List<Location> pointOther, List<Double> percentageList) {
+        int indexA = 1;
+        EXTERNAL_FOR:
+        for (var l : percentageList) {
+            for (int i = indexA; i < pointOther.size(); i++) {
+                indexA = i;
+                var point = pointOther.get(i);
+                if (f(mapA, point) == l) continue EXTERNAL_FOR;
+                if (f(mapA, point) > l) break;
+            }
+            var refPoint1 = pointOther.get(indexA - 1);
+            var refPoint2 = pointOther.get(indexA);
+
+            try {
+                var factor = (l-f(mapA,refPoint1))/(f(mapA, refPoint2)-f(mapA, refPoint1) );
+
+                var newPoint = new Point(refPoint1.getX() + (refPoint2.getX() - refPoint1.getX()) * factor,
+                        refPoint1.getY() + (refPoint2.getY() - refPoint1.getY()) * factor);
+                pointOther.add(indexA, newPoint);
+
+                AnimationStaticReference.staticReference.add(CircleBuilder.aCircle().withRadius(7).withColor(Color.red).withCenter(newPoint).build());
+                AnimationStaticReference.staticReference.execute(new WaitTask(1));
+
+                indexA++;
+            }catch (Exception e){
+                System.out.println();
+            }
+
+        }
+    }
+
+    double f(Map<Integer,Double> map,Location l) {
+
+        return map.getOrDefault(System.identityHashCode(l),0.0);
+    }
+
+    public void addPointsV2(int amount) {
+        int total = 0;
+        while(true){
+            List<Pair<Location,Location>> list = new ArrayList<>();
+            for(int i=0;i<vertices.size()-1;i++){
+                list.add(new Pair<>(vertices.get(i),vertices.get(i+1)));
+            }
+            while (list.size()>0){
+                var index=(int)(list.size()*Math.random());
+                var pair=list.remove(index);
+                vertices.add(vertices.indexOf(pair.getKey())+1,Location.midPoint(pair.getKey(),pair.getValue()));
+                total++;
+                if(amount==total)return;
+            }
+        }
+    }
 
     public void addPoints(int amount) {
 
@@ -217,6 +324,7 @@ public class DynamicPath extends FillAndStroke {
 
         Set<Location> prohibited = new HashSet<>();
         Set<Location> visitedPositions = new HashSet<>();
+
         boolean next = false;
         for (int i = 1; i < vertices.size(); i++) {
             var vertex = vertices.get(i);

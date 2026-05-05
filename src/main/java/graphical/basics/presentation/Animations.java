@@ -3,7 +3,7 @@ package graphical.basics.presentation;
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.Line;
-import graphical.basics.gobject.latex.Rect;
+import graphical.basics.gobject.Rect;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.*;
 import graphical.basics.presentation.effects.T3b1b;
@@ -18,7 +18,6 @@ import java.awt.*;
 import static graphical.basics.presentation.AnimationStaticReference.staticReference;
 
 public class Animations {
-
 
 
     public static Task fadeOut(Gobject gobject, int steps) {
@@ -47,8 +46,8 @@ public class Animations {
 
 
     public static Task strokeAndFill(Gobject gobject, int steps) {
-        if (gobject instanceof ShapeGobject2) {
-            var sw = new StrokeGobject((ShapeGobject2) gobject);
+        if (gobject instanceof ShapeGobject) {
+            var sw = new StrokeGobject((ShapeGobject) gobject);
             staticReference.add(sw);
             return sw.getPerc().change(1, steps)
                     .andThen(fadeIn(gobject, steps).parallel(fadeOut(sw, steps)))
@@ -73,13 +72,18 @@ public class Animations {
 
         return fadeIn(gobject, steps);
     }
-
-
     public static Task unstrokeAndUnFill(Gobject gobject, int steps) {
-        if (gobject instanceof ShapeGobject2) {
-            var sw = new StrokeGobject((ShapeGobject2) gobject);
+        return unstrokeAndUnFill(gobject,steps,0);
+    }
+
+    public static Task unstrokeAndUnFill(Gobject gobject, int steps, int index) {
+
+        var originalIndex = staticReference.getObjectIndex(gobject);
+        originalIndex = originalIndex == -1 ? index : originalIndex;
+        if (gobject instanceof ShapeGobject) {
+            var sw = new StrokeGobject((ShapeGobject) gobject);
             sw.getPerc().setValue(1);
-            staticReference.add(sw);
+            staticReference.add(sw, originalIndex);
 
             return fadeOut(gobject, steps)
                     .andThen(sw.getPerc().change(-1, steps))
@@ -88,7 +92,7 @@ public class Animations {
         if (gobject instanceof ShapeLike) {
             var sw = new StrokeGobject(((ShapeLike) gobject).asShapeGobject());
             sw.getPerc().setValue(1);
-            staticReference.add(sw);
+            staticReference.add(sw, originalIndex);
 
             return fadeOut(gobject, steps)
                     .andThen(sw.getPerc().change(-1, steps))
@@ -97,11 +101,12 @@ public class Animations {
         }
 
         if (gobject instanceof Group) {
-            return ((Group) gobject).onChildren(x -> Animations.unstrokeAndUnFill(x, steps), 0.7);
+            int finalOriginalIndex = originalIndex;
+            return ((Group) gobject).onChildren(x -> Animations.unstrokeAndUnFill(x, steps, finalOriginalIndex), 0);
         }
 
         if (gobject instanceof SVGGobject) {
-            return unstrokeAndUnFill(((SVGGobject) gobject).toGroupGobject(), steps);
+            return unstrokeAndUnFill(((SVGGobject) gobject).toGroupGobject(), steps, originalIndex);
         }
 
         return fadeOut(gobject, steps);
@@ -160,6 +165,16 @@ public class Animations {
         });
     }
 
+    public static Task blink(Gobject gobject, Color color,double factor, int frames) {
+        return new SupplierTask(() -> {
+            var colorHolders = gobject.getColors();
+            var beforeColors = ColorHolder.toColorList(colorHolders);
+
+            return new ColorTranform2(gobject, color, factor, frames)
+                    .andThen(()->new ColorListTranform(gobject.getColors(), beforeColors, frames));
+        });
+    }
+
 
     public static Task wooble(Gobject gobject) {
         return gobject.getAngle().change(0.5, staticReference.seconds(0.5))
@@ -213,6 +228,18 @@ public class Animations {
             staticReference.remove(clipBox);
             staticReference.add(gobject);
         })).parallel(fadeIn(gobject));
+    }
+
+    public static Task clipDestroy(Gobject gobject) {
+        var borders = gobject.getBorders();
+        var clipBox = new ClipBox(borders.getL1().copy(), borders.getL2().copy());
+        staticReference.remove(gobject);
+        staticReference.add(clipBox);
+        clipBox.add(gobject);
+        return gobject.move(0, borders.getheight()).andThen(new SingleStepTask(() -> {
+            staticReference.remove(clipBox);
+            staticReference.add(gobject);
+        })).parallel(fadeOut(gobject));
     }
 
     public static Task replace(Gobject replaced, Gobject newGObject) {

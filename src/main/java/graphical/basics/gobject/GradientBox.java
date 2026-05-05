@@ -1,7 +1,6 @@
 package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
-import graphical.basics.gobject.latex.Rect;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;

@@ -2,7 +2,7 @@ package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
-import graphical.basics.gobject.struct.ShapeGobject2;
+import graphical.basics.gobject.struct.ShapeGobject;
 import graphical.basics.location.Location;
 import graphical.basics.task.SupplierTask;
 import graphical.basics.task.SequenceTask;
@@ -25,6 +25,10 @@ public class StringGobject extends Group {
 
     public StringGobject(String string) {
         this(string, Fonts.JETBRAINS_MONO.deriveFont(30f), Location.at(0, 0), Color.white);
+    }
+
+    public StringGobject(String string, float size) {
+        this(string, Fonts.JETBRAINS_MONO.deriveFont(size), Location.at(0, 0), Color.white);
     }
 
 
@@ -50,7 +54,7 @@ public class StringGobject extends Group {
             t.translate(location.getX(), location.getY());
             sh = t.createTransformedShape(sh);
             //gobjects.add(new Char2(font, new Point(sh.getBounds().x , sh.getBounds().y ), new char[]{c}, font.getSize(), color));
-            gobjects.add(new ShapeGobject2(sh, new ColorHolder(color), null));
+            gobjects.add(new ShapeGobject(sh, new ColorHolder(color), null));
         }
 
         return gobjects;
@@ -157,13 +161,19 @@ public class StringGobject extends Group {
     }
 
 
-    public void set(String s){
+    public void set(String s) {
         this.string = s;
         this.spacemapping = extractSpaceMapping(s);
         deleteGobjects();
         addAll(generateText(Fonts.JETBRAINS_MONO.deriveFont(30f), s, ref, Color.white));
     }
 
+    public void set(String s, Font font, Color color) {
+        this.string = s;
+        this.spacemapping = extractSpaceMapping(s);
+        deleteGobjects();
+        addAll(generateText(font, s, ref, Color.white));
+    }
 
 
     @Override
@@ -177,4 +187,26 @@ public class StringGobject extends Group {
     public StringGobject putInFront(String string, Font font, Color color) {
         return new StringGobject(string, font, getRef().plus(getBorders().getwidth(), 0), color);
     }
+
+    public Task insertGobjectL(int index, Gobject gobject) {
+        var x = new Integer[index];
+        for (int i = 0 ; i < index; i++) {
+            x[i]=i;
+        }
+        var beforeItem=subGroup(x);
+
+        var curObj=subGroup(index);
+        var prevObj=subGroup(index-1);
+
+        var space = curObj.getBorders().getL1().getX()-prevObj.getBorders().getL2().getX();
+        var gobjectWidth=gobject.getWidth();
+
+
+        var delta = space-gobjectWidth;
+        var finalDest=curObj.getMidPoint().plus(delta/2-(curObj.getWidth()/2),0);
+
+        return beforeItem.move(delta,0).parallel(gobject.moveTo(finalDest));
+    }
+
+
 }

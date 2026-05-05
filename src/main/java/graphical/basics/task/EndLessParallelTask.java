@@ -32,6 +32,7 @@ public class EndLessParallelTask implements Task {
             }
             if (task.isDone()) {
                 toRemove.add(task);
+                task.shutDown();
             } else {
                 task.step();
             }

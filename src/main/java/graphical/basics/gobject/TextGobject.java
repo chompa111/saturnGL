@@ -2,7 +2,7 @@ package graphical.basics.gobject;
 
 import graphical.basics.ColorHolder;
 import graphical.basics.gobject.struct.Gobject;
-import graphical.basics.gobject.struct.ShapeGobject2;
+import graphical.basics.gobject.struct.ShapeGobject;
 import graphical.basics.location.Location;
 import graphical.basics.presentation.Animations;
 import graphical.basics.presentation.Animation;
@@ -44,7 +44,7 @@ public class TextGobject extends Group {
             t.translate(location.getX(), location.getY());
             sh = t.createTransformedShape(sh);
             //gobjects.add(new Char2(font, new Point(sh.getBounds().x , sh.getBounds().y ), new char[]{c}, font.getSize(), color));
-            gobjects.add(new ShapeGobject2(sh, new ColorHolder(color), null));
+            gobjects.add(new ShapeGobject(sh, new ColorHolder(color), null));
         }
 
         return gobjects;
@@ -74,7 +74,7 @@ public class TextGobject extends Group {
 
     public Shape toSingleShape() {
         Path2D path = new Path2D.Float();
-        for (Shape shape : this.getGobjects().stream().map(x -> (ShapeGobject2) x).map(ShapeGobject2::getShape).collect(Collectors.toList())) {
+        for (Shape shape : this.getGobjects().stream().map(x -> (ShapeGobject) x).map(ShapeGobject::getShape).collect(Collectors.toList())) {
             path.append(shape, false);
         }
         return path;

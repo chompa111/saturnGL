@@ -6,6 +6,8 @@ import codec.engine.JavaGraphicEngine;
 import codec.engine.JavaNativeEngine;
 import graphical.basics.BackGround;
 import graphical.basics.gobject.Camera;
+import graphical.basics.gobject.Group;
+import graphical.basics.gobject.Line;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.task.*;
@@ -17,8 +19,11 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -197,6 +202,12 @@ public abstract class Animation extends AnimationStaticReference {
         }
     }
 
+    public void flushBackGroundTasks(){
+        if (backGroundTask.hasTasks()) {
+            backGroundTask.clear();
+        }
+    }
+
 
     public void processFrame() {
         for (int i = 0; i < prePaintTasks.size(); i++) {
@@ -255,11 +266,19 @@ public abstract class Animation extends AnimationStaticReference {
         return gobjects.indexOf(gobject);
     }
 
+    public  int minIndexOf(Gobject... gobjects){return Stream.of(gobjects).mapToInt(this::getObjectIndex).min().orElseThrow();}
+
     public void add(Gobject g, int index) {
         gobjects.add(index, g);
     }
 
     public void remove(Gobject... gobjects) {
+        for (Gobject gobject : gobjects) {
+            this.gobjects.remove(gobject);
+        }
+    }
+
+    public void remove(Collection<Gobject> gobjects) {
         for (Gobject gobject : gobjects) {
             this.gobjects.remove(gobject);
         }
@@ -286,6 +305,13 @@ public abstract class Animation extends AnimationStaticReference {
         return backGroundTask.append(task);
     }
 
+    @Override
+    public InterruptableTask executeSyncForFrames(Task task, int frames) {
+        var partialTask =new PartialTask(frames,task);
+        partialTask.execute();
+        return executeInBackGround(partialTask.remainingTask());
+    }
+
     public void execute(Task... tasks) {
         execute(new ParalelTask(tasks));
     }
@@ -303,7 +329,8 @@ public abstract class Animation extends AnimationStaticReference {
 
 
     public int seconds(double seconds) {
-        return (int) (seconds * FRAME_RATE);
+        var frames= (int) (seconds * FRAME_RATE);
+        return frames %2==0?frames:frames+1;
     }
 
     public Task paralel(Task... tasks) {
@@ -368,4 +395,23 @@ public abstract class Animation extends AnimationStaticReference {
         prePaintTasks = new ArrayList<>();
     }
 
+    public Gobject grid(){
+        var group = new Group();
+        for(int i = 0 ;i< getPresentationConfig().getWidth();i+=10){
+            group.add(new Line(Location.at(i,0),Location.at(i, getPresentationConfig().getHeight()),new Color(255,255,255,20)));
+        }
+
+        for(int i = 0 ;i< getPresentationConfig().getWidth();i+=50){
+            group.add(new Line(Location.at(i,0),Location.at(i, getPresentationConfig().getHeight()),new Color(255,0,0,20)));
+        }
+
+        for(int i = 0 ;i< getPresentationConfig().getHeight();i+=10){
+            group.add(new Line(Location.at(0,i),Location.at(getPresentationConfig().getWidth(),i),new Color(255,255,255,20)));
+        }
+
+        for(int i = 0 ;i< getPresentationConfig().getHeight();i+=50){
+            group.add(new Line(Location.at(0,i),Location.at(getPresentationConfig().getWidth(),i),new Color(255,0,0,20)));
+        }
+        return group;
+    }
 }

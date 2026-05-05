@@ -19,6 +19,11 @@ public interface Location {
 
     void setY(double y);
 
+    default void set(Location l){
+        this.setX(l.getX());
+        this.setY(l.getY());
+    }
+
     default void incrementX(double amount) {
         this.setX(this.getX() + amount);
     }
@@ -68,4 +73,5 @@ public interface Location {
     default Task sendTo(Location l, int steps) {
         return new PositionListTransform(List.of(this), List.of(l.copy()), steps);
     }
+
 }

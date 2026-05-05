@@ -6,6 +6,7 @@ public class SequenceTask implements Task {
 
     List<Task> taskList;
     List<Task> tasks;
+    Set<Task> setup = new HashSet<>();
 
     public SequenceTask(Task... tasks) {
         this.tasks = new ArrayList<>(Arrays.asList(tasks));
@@ -18,17 +19,27 @@ public class SequenceTask implements Task {
     @Override
     public void setup() {
         taskList = new ArrayList<>(tasks);
-        taskList.get(0).setup();
+//        for (var task : taskList) task.setup();
     }
 
     @Override
     public void step() {
-        taskList.get(0).step();
+
+        var task = taskList.get(0);
+        if (!setup.contains(task)) {
+            setup.add(task);
+            task.setup();
+        }
+        task.step();
         //TODO problemas de desempenho
-        if (taskList.get(0).isDone()) {
-            taskList.remove(taskList.get(0));
-            if (taskList.size() != 0)
-                taskList.get(0).setup();
+        if (task.isDone()) {
+
+            taskList.remove(task);
+            task.shutDown();
+            if (taskList.size() != 0){
+                setup = new HashSet<>();
+                task.setup();
+            }
         } else {
             //  taskList.get(0).step();
         }

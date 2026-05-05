@@ -1,15 +1,16 @@
 package graphical.basics.gobject;
 
-import graphical.basics.gobject.latex.Rect;
 import graphical.basics.location.Location;
 import graphical.basics.presentation.Animations;
 import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.RTAnimation;
 import graphical.basics.task.SupplierTask;
 import graphical.basics.task.Task;
 import graphical.basics.task.WaitTask;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class CodeBlock extends Group {
 
@@ -28,7 +29,7 @@ public class CodeBlock extends Group {
 
     private Text text;
 
-    private JavaHilighter javaHilighter = new JavaHilighter();
+    private RustHilighter javaHilighter = new RustHilighter();
 
     private Text textComment;
 
@@ -119,28 +120,28 @@ public class CodeBlock extends Group {
 
     }
 
-    public void removeLines(int i,int j) {
+    public void removeLines(int i, int j) {
         textGutter.removeLine(lineCounter - 2);
-        for(int x=i;x<=j;x++){
+        for (int x = i; x <= j; x++) {
             text.removeLine(x);
         }
-        background.getLowerRightPoint().setY(background.getLowerRightPoint().getY() - (j-i+1)*textSize * 1.15);
-        backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() - (j-i+1)*textSize * 1.15);
-        gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() - (j-i+1)*textSize * 1.15);
-        gutterLine.getP2().setY(gutterLine.getP2().getY() - (j-i+1)*textSize * 1.15);
-        lineCounter-=(j-i+1);
+        background.getLowerRightPoint().setY(background.getLowerRightPoint().getY() - (j - i + 1) * textSize * 1.15);
+        backgroundShadow.getLowerRightPoint().setY(backgroundShadow.getLowerRightPoint().getY() - (j - i + 1) * textSize * 1.15);
+        gutter.getLowerRightPoint().setY(gutter.getLowerRightPoint().getY() - (j - i + 1) * textSize * 1.15);
+        gutterLine.getP2().setY(gutterLine.getP2().getY() - (j - i + 1) * textSize * 1.15);
+        lineCounter -= (j - i + 1);
     }
 
     public Task removeLinesAnimated(int i, int j) {
-        return text.removeLinesAnimated(i,j)
-                .parallel(background.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(backgroundShadow.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(gutter.getLowerRightPoint().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(gutterLine.getP2().move(0, -(j-i+1)*textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(Animations.fadeoutGrow(textGutter.getLinesAsGroup((lineCounter-2)-(j-i),lineCounter-2), Animation.staticReference.seconds(0.75)))
-                .afterConclusion(()->{
-                    textGutter.removeLines((lineCounter-2)-(j-i),lineCounter-2);
-                    lineCounter-=(j-i+1);
+        return text.removeLinesAnimated(i, j)
+                .parallel(background.getLowerRightPoint().move(0, -(j - i + 1) * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
+                .parallel(backgroundShadow.getLowerRightPoint().move(0, -(j - i + 1) * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
+                .parallel(gutter.getLowerRightPoint().move(0, -(j - i + 1) * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
+                .parallel(gutterLine.getP2().move(0, -(j - i + 1) * textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
+                .parallel(Animations.fadeoutGrow(textGutter.getLinesAsGroup((lineCounter - 2) - (j - i), lineCounter - 2), Animation.staticReference.seconds(0.75)))
+                .afterConclusion(() -> {
+                    textGutter.removeLines((lineCounter - 2) - (j - i), lineCounter - 2);
+                    lineCounter -= (j - i + 1);
                 });
 
     }
@@ -151,8 +152,8 @@ public class CodeBlock extends Group {
                 .parallel(backgroundShadow.getLowerRightPoint().move(0, -textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutter.getLowerRightPoint().move(0, -textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
                 .parallel(gutterLine.getP2().move(0, -textSize * 1.15, AnimationStaticReference.staticReference.seconds(1)))
-                .parallel(Animations.fadeOut(textGutter.getLine(lineCounter-2), AnimationStaticReference.staticReference.seconds(1)))
-                .afterConclusion(()->{
+                .parallel(Animations.fadeOut(textGutter.getLine(lineCounter - 2), AnimationStaticReference.staticReference.seconds(1)))
+                .afterConclusion(() -> {
                     textGutter.removeLine(lineCounter - 2);
                     lineCounter--;
                 });
@@ -203,7 +204,7 @@ public class CodeBlock extends Group {
         return new SupplierTask(() -> {
             var delta = line - debuggerCurrentLine;
             debuggerCurrentLine = line;
-            return debbugLine.move(0, delta * textSize * EXTRA_SPACEMENT, frames);
+            return debbugLine.move(0, delta * textSize * (EXTRA_SPACEMENT+0.15), frames);
         });
     }
 
@@ -236,11 +237,35 @@ public class CodeBlock extends Group {
         return text;
     }
 
-    public JavaHilighter getJavaHilighter() {
+    public RustHilighter getJavaHilighter() {
         return javaHilighter;
     }
 
     public Text getTextComment() {
         return textComment;
+    }
+
+    public void enableInteraction() {
+        RTAnimation.staticReference.addKeyPressedListener((e) -> {
+            if (!RTAnimation.staticReference.isOnFocus(this)) return;
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                this.newLineAnimated(1,"").executeInBackGround();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                var string = text.getLine(0).getString();
+                var newString = string.substring(0, string.length() - 1);
+                text.getLine(0).set(newString,text.getFont(),text.getColor());
+            } else {
+                char keyChar = e.getKeyChar();
+                // if (Character.isLetter(keyChar)) {
+                String keyText = Character.toString(keyChar);
+                text.getLine(0).set(text.getLine(0).getString() + keyText,text.getFont(),text.getColor());
+            }
+            javaHilighter.colorize(text);
+        });
+       // addBehavior(()->javaHilighter.colorize(text));
+        onFocus(()->{});
+        outOfFocus(()->{});
     }
 }

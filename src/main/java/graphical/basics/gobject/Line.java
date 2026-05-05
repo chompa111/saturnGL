@@ -45,7 +45,7 @@ public class Line extends FillAndStroke implements ShapeLike {
 
         line2D.setLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke((float) getStrokeThickness().getValue()));
+        ((Graphics2D) g).setStroke(getStroke().getStroke());
         g.setColor(colorHolder.getColor());
         g2.draw(line2D);
         g2.setStroke(new BasicStroke(1));

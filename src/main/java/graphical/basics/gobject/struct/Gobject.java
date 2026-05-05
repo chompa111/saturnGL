@@ -6,6 +6,7 @@ import graphical.basics.gobject.Group;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.presentation.AnimationStaticReference;
+import graphical.basics.presentation.RTAnimation;
 import graphical.basics.task.TimeDefinedTask;
 import graphical.basics.task.transformation.gobject.ColorTranform;
 import graphical.basics.task.transformation.gobject.MorfTransform;
@@ -15,6 +16,7 @@ import graphical.basics.value.NumberHolder;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +29,9 @@ public abstract class Gobject {
     public NumberHolder scale = new DoubleHolder(1);
 
     public void paint(Graphics g, boolean b) {
-        var midpoint = getBorders().midPoint();
+        var borders = getBorders();
+        if (borders == null) return;
+        var midpoint = borders.midPoint();
         var g2d = (Graphics2D) g;
         var oldT = (AffineTransform) g2d.getTransform().clone();
         g2d.translate(midpoint.getX(), midpoint.getY());
@@ -37,7 +41,7 @@ public abstract class Gobject {
         paint(g);
 
         g2d.setTransform(oldT);
-
+//
 //        var x = getBorders().midPoint();
 //        g.setColor(Color.green);
 //        var xx = (int) x.getX();
@@ -47,6 +51,9 @@ public abstract class Gobject {
 //        g.fillOval(xx - 3, yy - 3, 6, 6);
 //        g.setColor(Color.black);
 //        g.fillOval(xx - 1, yy - 1, 2, 2);
+
+
+
     }
 
     public abstract void paint(Graphics g);
@@ -110,7 +117,10 @@ public abstract class Gobject {
     }
 
     public void setPositionTo(Location location) {
-        var myLocation = this.getBorders().midPoint();
+        var borders = this.getBorders();
+        if (borders == null) return;
+        var myLocation = borders.midPoint();
+
         var diffx = location.getX() - myLocation.getX();
         var diffy = location.getY() - myLocation.getY();
         changeSetPosition(diffx, diffy);
@@ -214,5 +224,12 @@ public abstract class Gobject {
 
     public void removeBehavior(Runnable r) {
         AnimationStaticReference.staticReference.removeBehavior(r);
+    }
+
+    public void onFocus(Runnable r) {
+        RTAnimation.staticReference.onFocus(this, r);
+    }
+    public void outOfFocus(Runnable r) {
+        RTAnimation.staticReference.outOfFocus(this, r);
     }
 }

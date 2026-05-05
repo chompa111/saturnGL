@@ -70,8 +70,13 @@ public interface Task {
         return AnimationStaticReference.staticReference.executeInBackGround(this);
     }
 
+    default InterruptableTask executeSyncForFrames(int frames) {
+        return AnimationStaticReference.staticReference.executeSyncForFrames(this, frames);
+    }
+
     default void shutDown() {
     }
+
 
 //
 //    public static <T extends Task> Collector<T, ?, ParalelTask> toList() {

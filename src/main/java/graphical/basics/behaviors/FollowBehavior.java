@@ -36,6 +36,20 @@ public class FollowBehavior {
         };
     }
 
+    public static Runnable right(Gobject followedGobject, Gobject followerGobject, double margin) {
+        return () -> {
+            var fd = followedGobject.getBorders();
+            var fr = followerGobject.getBorders();
+            var fdh2 = fd.getwidth() / 2;
+            var frh2 = fr.getwidth() / 2;
+            var fdmid = fd.midPoint();
+
+            var desirredPoint = Location.at(fd.midPoint().getX() + fdh2 + frh2 + margin, fd.midPoint().getY());
+
+            followerGobject.setPositionTo(desirredPoint);
+        };
+    }
+
     public static Runnable asSubtitleWithDelay(Gobject followedGobject, Gobject followerGobject, double margin, double delay) {
         asSubtitle(followedGobject, followerGobject, margin).run();
         return () -> {
@@ -47,6 +61,50 @@ public class FollowBehavior {
             var frmid = fr.midPoint();
 
             var desirredPoint = Location.at(fdmid.getX(), fdmid.getY() + fdh2 + frh2 + margin);
+
+            followerGobject.changeSetPosition((desirredPoint.getX() - frmid.getX()) * delay, (desirredPoint.getY() - frmid.getY()) * delay);
+        };
+    }
+
+    public static Runnable rightWithDelay(Gobject followedGobject, Gobject followerGobject, double margin,double delay) {
+        right(followedGobject,followerGobject,margin).run();
+        return () -> {
+            var fd = followedGobject.getBorders();
+            var fr = followerGobject.getBorders();
+            var fdh2 = fd.getwidth() / 2;
+            var frh2 = fr.getwidth() / 2;
+            var frmid = fr.midPoint();
+
+            var desirredPoint = Location.at(fd.midPoint().getX() + fdh2 + frh2 + margin, fd.midPoint().getY());
+
+            followerGobject.changeSetPosition((desirredPoint.getX() - frmid.getX()) * delay, (desirredPoint.getY() - frmid.getY()) * delay);
+        };
+    }
+
+    public static Runnable asSubtitleWithDelayFromPlace(Gobject followedGobject, Gobject followerGobject, double margin, double delay) {
+        return () -> {
+            var fd = followedGobject.getBorders();
+            var fr = followerGobject.getBorders();
+            var fdh2 = fd.getheight() / 2;
+            var frh2 = fr.getheight() / 2;
+            var fdmid = fd.midPoint();
+            var frmid = fr.midPoint();
+
+            var desirredPoint = Location.at(fdmid.getX(), fdmid.getY() + fdh2 + frh2 + margin);
+
+            followerGobject.changeSetPosition((desirredPoint.getX() - frmid.getX()) * delay, (desirredPoint.getY() - frmid.getY()) * delay);
+        };
+    }
+
+    public static Runnable rightWithDelayFromPlace(Gobject followedGobject, Gobject followerGobject, double margin,double delay) {
+        return () -> {
+            var fd = followedGobject.getBorders();
+            var fr = followerGobject.getBorders();
+            var fdh2 = fd.getwidth() / 2;
+            var frh2 = fr.getwidth() / 2;
+            var frmid = fr.midPoint();
+
+            var desirredPoint = Location.at(fd.midPoint().getX() + fdh2 + frh2 + margin, fd.midPoint().getY());
 
             followerGobject.changeSetPosition((desirredPoint.getX() - frmid.getX()) * delay, (desirredPoint.getY() - frmid.getY()) * delay);
         };

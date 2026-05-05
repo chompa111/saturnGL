@@ -5,6 +5,7 @@ import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Location;
 import graphical.basics.location.LocationPair;
 import graphical.basics.presentation.Animation;
+import graphical.basics.presentation.AnimationStaticReference;
 import graphical.basics.task.transformation.gobject.Pixel;
 
 import java.awt.*;
@@ -23,8 +24,8 @@ public class GobjectFrame extends Gobject {
 
     public GobjectFrame(Gobject gobject) {
 
-        int w = Animation.staticReference.getPresentationConfig().getWidth();
-        int h = Animation.staticReference.getPresentationConfig().getHeight();
+        int w = AnimationStaticReference.staticReference.getPresentationConfig().getWidth();
+        int h = AnimationStaticReference.staticReference.getPresentationConfig().getHeight();
 
         bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         this.gobject = gobject;

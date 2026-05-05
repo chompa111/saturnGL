@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Text extends Group {
+    private static final double LINE_SPACE_CONSTANT = 1.30;
 
     Color color;
 
@@ -29,7 +30,7 @@ public class Text extends Group {
     }
 
     public void newLine(String line) {
-        var newLine = new StringGobject(line, font, location.plus(0, lines.size() * font.getSize() * 1.15), color);
+        var newLine = new StringGobject(line, font, location.plus(0, lines.size() * font.getSize() * LINE_SPACE_CONSTANT), color);
         lines.add(newLine);
         if (!line.isBlank()) {
             add(newLine);
@@ -38,14 +39,14 @@ public class Text extends Group {
 
     public void removeLine(int index){
         var lineToBeRemoved=lines.get(index);
-        getLinesAsGroup(index+1,lines.size()-1).changeSetPosition(0,-font.getSize() * 1.15);
+        getLinesAsGroup(index+1,lines.size()-1).changeSetPosition(0,-font.getSize() * LINE_SPACE_CONSTANT);
         if(!lineToBeRemoved.getString().isBlank()){
             remove(lineToBeRemoved);
         }
     }
 
     public void removeLines(int i, int j){
-        getLinesAsGroup(j+1,lines.size()-1).changeSetPosition(0,-(j-i+1)*font.getSize() * 1.15);
+        getLinesAsGroup(j+1,lines.size()-1).changeSetPosition(0,-(j-i+1)*font.getSize() * LINE_SPACE_CONSTANT);
        for (var lineToBeRemoved : getLines(i,j)){
            lines.remove(lineToBeRemoved);
            if(!lineToBeRemoved.getString().isBlank()){
@@ -55,7 +56,7 @@ public class Text extends Group {
     }
 
     public Task removeLinesAnimated(int i,int j){
-        return getLinesAsGroup(j+1,lines.size()-1).move(0,-(j-i+1)*font.getSize() * 1.15).afterConclusion(()->{
+        return getLinesAsGroup(j+1,lines.size()-1).move(0,-(j-i+1)*font.getSize() * LINE_SPACE_CONSTANT).afterConclusion(()->{
             for (var lineToBeRemoved : getLines(i,j)){
                 lines.remove(lineToBeRemoved);
                 if(!lineToBeRemoved.getString().isBlank()){
@@ -67,7 +68,7 @@ public class Text extends Group {
 
     public Task removeLineAnimated(int index){
         var lineToBeRemoved=lines.get(index);
-        return getLinesAsGroup(index+1,lines.size()-1).move(0,-font.getSize() * 1.15).afterConclusion(()->{
+        return getLinesAsGroup(index+1,lines.size()-1).move(0,-font.getSize() * LINE_SPACE_CONSTANT).afterConclusion(()->{
             if(!lineToBeRemoved.getString().isBlank()){
                 remove(lineToBeRemoved);
             }
@@ -75,7 +76,7 @@ public class Text extends Group {
     }
 
     public void newLine(int index, String line) {
-        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
+        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * LINE_SPACE_CONSTANT), color);
 
         for (int i = index; i < lines.size(); i++) {
             lines.get(i).changeSetPosition(0, font.getSize());
@@ -87,7 +88,7 @@ public class Text extends Group {
     }
 
     public StringGobject replaceLine(int index, String line) {
-        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
+        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * LINE_SPACE_CONSTANT), color);
         var removedLine = lines.remove(index);
         lines.add(index, newLine);
         remove(index);
@@ -99,7 +100,7 @@ public class Text extends Group {
     public Task newLineAnimated(int index, String line) {
 
         var list = new ArrayList<Task>();
-        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * 1.15), color);
+        var newLine = new StringGobject(line, font, location.plus(0, index * font.getSize() * LINE_SPACE_CONSTANT), color);
 
         for (int i = index; i < lines.size(); i++) {
             list.add(lines.get(i).move(0, font.getSize() * 1.15));
@@ -117,13 +118,13 @@ public class Text extends Group {
     public Task newLinesAnimated(int index, String... newLineslines) {
         var list = new ArrayList<Task>();
         for (int i = index; i < lines.size(); i++) {
-            list.add(lines.get(i).move(0, newLineslines.length * font.getSize() * 1.15));
+            list.add(lines.get(i).move(0, newLineslines.length * font.getSize() * LINE_SPACE_CONSTANT));
 
         }
         return new ParalelTask(list).afterConclusion(() -> {
 
             for (int i = 0; i < newLineslines.length; i++) {
-                var newLine = new StringGobject(newLineslines[i], font, location.plus(0, (index + i) * font.getSize() * 1.15), color);
+                var newLine = new StringGobject(newLineslines[i], font, location.plus(0, (index + i) * font.getSize() * LINE_SPACE_CONSTANT), color);
                 lines.add(index + i, newLine);
 
                 if (!newLineslines[i].isBlank()) {
@@ -177,8 +178,11 @@ public class Text extends Group {
         return locations;
     }
 
-    @Override
-    public LocationPair borderWhenEmpty() {
-        return new LocationPair(location, location);
+    public Font getFont() {
+        return font;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

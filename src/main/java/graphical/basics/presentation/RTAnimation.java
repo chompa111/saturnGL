@@ -8,11 +8,10 @@ import graphical.basics.gobject.Camera;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.listeners.ClickListener;
 import graphical.basics.listeners.DragListener;
+import graphical.basics.listeners.FocusListener;
 import graphical.basics.listeners.KeyListener;
 import graphical.basics.location.Location;
-import graphical.basics.task.EndLessParallelTask;
-import graphical.basics.task.InterruptableTask;
-import graphical.basics.task.Task;
+import graphical.basics.task.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,9 +29,10 @@ public abstract class RTAnimation extends AnimationStaticReference {
     public RTAnimation parent;
 
 
-    private DragListener dragListener;
-    private ClickListener clickListener;
-    private KeyListener keyListener;
+    private final DragListener dragListener;
+    private final ClickListener clickListener;
+    private final KeyListener keyListener;
+    private final FocusListener focusListener;
 
     AnimationFrame animationFrame;
 
@@ -119,13 +119,14 @@ public abstract class RTAnimation extends AnimationStaticReference {
         animationFrame = new AnimationFrame(this);
         var frame = animationFrame.getFrame();
         dragListener = new DragListener(animationFrame);
-        clickListener = new ClickListener(frame);
+        clickListener = new ClickListener(animationFrame);
+        focusListener = new FocusListener(animationFrame);
         keyListener = new KeyListener(frame);
         animationFrame.startPaintingCycle();
     }
 
     public RTAnimation(RTAnimation rtAnimation) {
-        animationFrame=rtAnimation.getAnimationFrame();
+        animationFrame = rtAnimation.getAnimationFrame();
         staticReference = this;
         AnimationStaticReference.staticReference = this;
         setup(presentationConfig);
@@ -135,7 +136,8 @@ public abstract class RTAnimation extends AnimationStaticReference {
         var aframe = rtAnimation.getAnimationFrame();
         var frame = aframe.getFrame();
         dragListener = new DragListener(animationFrame);
-        clickListener = new ClickListener(frame);
+        clickListener = new ClickListener(animationFrame);
+        focusListener = new FocusListener(animationFrame);
         keyListener = new KeyListener(frame);
         parent = rtAnimation;
         rtAnimation.getAnimationFrame().setAnimation(this);
@@ -177,7 +179,8 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
     @Override
     public int seconds(double seconds) {
-        return (int) (FRAME_RATE * seconds);
+        var frames= (int) (seconds * FRAME_RATE);
+        return frames %2==0?frames:frames+1;
     }
 
     @Override
@@ -202,6 +205,15 @@ public abstract class RTAnimation extends AnimationStaticReference {
         return backGroundTask.append(task);
     }
 
+
+    @Override
+    public InterruptableTask executeSyncForFrames(Task task, int frames) {
+        var partialTask =new PartialTask(frames,task);
+        partialTask.execute();
+        return executeInBackGround(partialTask.remainingTask());
+    }
+
+
     @Override
     public Runnable addBehavior(Runnable task) {
         prePaintTasks.add(task);
@@ -225,6 +237,18 @@ public abstract class RTAnimation extends AnimationStaticReference {
 
     public void addClickListener(Gobject gobject, Runnable r) {
         clickListener.add(gobject, r);
+    }
+
+    public void onFocus(Gobject gobject, Runnable r) {
+        focusListener.onFocus(gobject, r);
+    }
+
+    public void outOfFocus(Gobject gobject, Runnable r) {
+        focusListener.outOfFocus(gobject, r);
+    }
+
+    public boolean isOnFocus(Gobject gobject) {
+        return gobject == focusListener.getGobjectOnFocus();
     }
 
     public void addKeyPressedListener(Consumer<KeyEvent> keyEventConsumer) {
@@ -270,4 +294,14 @@ public abstract class RTAnimation extends AnimationStaticReference {
     public Graphics getBufferedGraphics() {
         return bufferedGraphics;
     }
+
+    @Override
+    public List<Gobject> getGobjects() {
+        return gobjects;
+    }
+
+    public Task wait(int steps) {
+        return new WaitTask(steps);
+    }
+
 }

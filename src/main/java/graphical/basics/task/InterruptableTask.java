@@ -22,6 +22,26 @@ public class InterruptableTask implements Task {
         }
     }
 
+    public Task joinTask(){
+        InterruptableTask thiz = this;
+        return new Task(){
+            @Override
+            public void setup() {
+
+            }
+
+            @Override
+            public void step() {
+
+            }
+
+            @Override
+            public boolean isDone() {
+                return thiz.isDone();
+            }
+        };
+    }
+
     @Override
     public boolean isDone() {
         return killed||slave.isDone();
@@ -36,5 +56,10 @@ public class InterruptableTask implements Task {
     }
     public void resume(){
         interrupted=false;
+    }
+
+    @Override
+    public void shutDown() {
+        slave.shutDown();
     }
 }

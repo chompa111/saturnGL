@@ -41,19 +41,22 @@ public class Group extends Gobject {
     public LocationPair getBorders() {
 
         if (gobjects.isEmpty()) {
-            return borderWhenEmpty();
+            System.out.println("invalid operation 2");
+            return null;
         }
 
         var borders = new ArrayList<LocationPair>();
         for (Gobject gobject : gobjects) {
-            borders.add(gobject.getBorders());
+            var gobjectBorders = gobject.getBorders();
+            if (gobjectBorders != null) {
+                borders.add(gobjectBorders);
+            }
+        }
+        if (borders.isEmpty()) {
+            return null;
         }
 
         return new LocationPair(borders, scale.getValue());
-    }
-
-    public LocationPair borderWhenEmpty() {
-        throw new RuntimeException("no border available");
     }
 
     @Override
@@ -126,9 +129,24 @@ public class Group extends Gobject {
 
 
     public Group subGroup(Integer... index) {
+        if (this.gobjects.size() == 0) {
+            System.out.println("invalid operation");
+            return new Group();
+        }
         var list = new ArrayList<Gobject>();
         for (Integer i : index) {
             list.add(gobjects.get(i));
+        }
+        return new Group(list);
+    }
+    public Group subGroupInterval(int i, int j) {
+        if (this.gobjects.size() == 0) {
+            System.out.println("invalid operation");
+            return new Group();
+        }
+        var list = new ArrayList<Gobject>();
+        for (int k=i ;k<j;k++) {
+            list.add(gobjects.get(k));
         }
         return new Group(list);
     }
@@ -162,5 +180,25 @@ public class Group extends Gobject {
         var copy = new Group(gobjects.stream().map(Gobject::copy).collect(Collectors.toList()));
         copyBasicFields(copy, this);
         return copy;
+    }
+
+    public Task insertGobjectR(int index, Gobject gobject, double margin) {
+        var x = new Integer[this.getGobjects().size()-index];
+        for (int i = index ; i < this.getGobjects().size(); i++) {
+            x[i-(index)]=i;
+        }
+        var afterItems=subGroup(x);
+
+        var curObj=subGroup(index);
+        var prevObj=subGroup(index-1);
+
+        var space = curObj.getBorders().getL1().getX()-prevObj.getBorders().getL2().getX();
+        var gobjectWidth=gobject.getWidth()+margin;
+
+
+        var delta = -(space-gobjectWidth);
+        var finalDest=prevObj.getMidPoint().plus(delta/2+(prevObj.getWidth()/2),0);
+
+        return afterItems.move(delta,0).parallel(gobject.moveTo(finalDest));
     }
 }

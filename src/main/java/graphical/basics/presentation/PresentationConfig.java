@@ -18,7 +18,7 @@ public class PresentationConfig {
     private CodecType codecType;
     private EngineType engineType;
     private Boolean disableCodec;
-    private Integer framerate;
+    private Integer framerate = 30;
     private boolean enableTransparency;
     private double scale = 1.0d;
 

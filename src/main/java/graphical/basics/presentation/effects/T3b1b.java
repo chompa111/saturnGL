@@ -5,7 +5,8 @@ import graphical.basics.gobject.DynamicPath;
 import graphical.basics.gobject.Group;
 import graphical.basics.gobject.shape.ShapeLike;
 import graphical.basics.gobject.struct.Gobject;
-import graphical.basics.gobject.struct.ShapeGobject2;
+import graphical.basics.gobject.struct.SVGGobject;
+import graphical.basics.gobject.struct.ShapeGobject;
 import graphical.basics.presentation.Animation;
 import graphical.basics.task.ParalelTask;
 import graphical.basics.task.Task;
@@ -30,13 +31,13 @@ public class T3b1b {
     private static final Animation ANIMATION = Animation.staticReference;
 
     public static Task turnInto(Gobject a, Gobject b, int steps) {
-        ShapeGobject2 sa = null;
-        ShapeGobject2 sb = null;
-        if (a instanceof ShapeGobject2) {
-            sa = (ShapeGobject2) a;
+        ShapeGobject sa = null;
+        ShapeGobject sb = null;
+        if (a instanceof ShapeGobject) {
+            sa = (ShapeGobject) a;
         }
-        if (b instanceof ShapeGobject2) {
-            sb = (ShapeGobject2) b;
+        if (b instanceof ShapeGobject) {
+            sb = (ShapeGobject) b;
         }
 
         //todos os objetos são stroke and fill então vale o caso de colocar cores transparestes para fazer o stroke aparecer ou sumir caso um dos objetos não tenha stroke
@@ -50,15 +51,16 @@ public class T3b1b {
         ANIMATION.add(dpa);
 
         //equalizing number of vertex;
-        var sizea = dpa.getReferenceLocations().size();
-        var sizeb = dpb.getReferenceLocations().size();
+        var sizeA = dpa.getReferenceLocations().size();
+        var sizeB = dpb.getReferenceLocations().size();
 
-        if (sizea < sizeb) {
-            dpa.addPoints(sizeb - sizea);
-        } else {
-            dpb.addPoints(sizea - sizeb);
+        if (sizeA < sizeB) {
+            dpa.addPoints(sizeB - sizeA);
+        } else if(sizeA > sizeB) {
+            dpb.addPoints(sizeA - sizeB);
         }
 
+//        dpa.equalizeNumPoints(dpb);
         var thicknessDiff = dpb.getStrokeThickness().getValue() - dpa.getStrokeThickness().getValue();
         var strokeTask = dpa.getStrokeThickness().change(thicknessDiff, steps);
 
@@ -78,8 +80,8 @@ public class T3b1b {
         var gobjectAIndexAux = ANIMATION.getObjectIndex(a);
         var gobjectAIndex = gobjectAIndexAux == -1 ? 0: gobjectAIndexAux;
                 ANIMATION.remove(a);
-        List<ShapeGobject2> la = asShapeList(a);
-        List<ShapeGobject2> lb = asShapeList(b);
+        List<ShapeGobject> la = asShapeList(a);
+        List<ShapeGobject> lb = asShapeList(b);
 
         List<Task> taskList = new ArrayList<>();
 
@@ -177,10 +179,10 @@ public class T3b1b {
     }
 
 
-    private static List<ShapeGobject2> asShapeList(Gobject g) {
+    private static List<ShapeGobject> asShapeList(Gobject g) {
 
-        if (g instanceof ShapeGobject2) {
-            return Arrays.asList((ShapeGobject2) g);
+        if (g instanceof ShapeGobject) {
+            return Arrays.asList((ShapeGobject) g);
         }
 
         if (g instanceof ShapeLike) {
@@ -188,11 +190,15 @@ public class T3b1b {
             return Arrays.asList(auxShape);
         }
         if (g instanceof Group) {
-            List<ShapeGobject2> list = new ArrayList<>();
+            List<ShapeGobject> list = new ArrayList<>();
             for (Gobject gobject : ((Group) g).getGobjects()) {
                 list.addAll(asShapeList(gobject));
             }
             return list;
+        }
+
+        if(g instanceof SVGGobject){
+           return  ((SVGGobject)g).getShapeGobjects();
         }
         throw new RuntimeException("não foi possivel conveter o objeto:" + g.getClass() + ", que não é Shape, ShapeLike ou Coleção/Grupo");
     }

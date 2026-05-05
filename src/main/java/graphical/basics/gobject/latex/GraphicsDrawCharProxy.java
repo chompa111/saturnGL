@@ -1,7 +1,8 @@
 package graphical.basics.gobject.latex;
 
 
-import graphical.basics.gobject.struct.Char2;
+import graphical.basics.gobject.Rect;
+import graphical.basics.gobject.struct.Char;
 import graphical.basics.gobject.struct.Gobject;
 import graphical.basics.location.Point;
 import java.awt.Color;
@@ -28,14 +29,14 @@ public class GraphicsDrawCharProxy extends GraphicsProxy {
         super.drawChars(data, offset, length, x, y);
     }
 
-    private Char2 buildChar(final char[] data) {
+    private Char buildChar(final char[] data) {
         var font = getFont();
         var transform = getTransform();
         var xx = transform.getTranslateX();
         var yy = transform.getTranslateY();
         var size = (int) (transform.getScaleX() * 100);
         final var dynamicLocation = new Point((int) xx, (int) yy);
-        return new Char2(font, dynamicLocation, data, size, color);
+        return new Char(font, dynamicLocation, data, size, color);
     }
 
     @Override

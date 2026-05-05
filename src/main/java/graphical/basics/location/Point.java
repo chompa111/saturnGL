@@ -44,6 +44,6 @@ public class Point implements Location {
     }
 
     public String toString() {
-        return "(" + (int)getX() + "," + (int)getX() + ")";
+        return "(" + (int)getX() + "," + (int)getY() + ")";
     }
 }

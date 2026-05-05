@@ -42,11 +42,11 @@ public class LocationPair {
     }
 
     public Location l1plusWidth() {
-        return new Point(l1.getX() - getwidth(), l1.getY());
+        return new Point(l1.getX() + getwidth(), l1.getY());
     }
 
     public Location l2minusWidth() {
-        return new Point(l2.getX() + getwidth(), l2.getY());
+        return new Point(l2.getX() - getwidth(), l2.getY());
     }
 
     public LocationPair(List<LocationPair> pairs) {
